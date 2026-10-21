@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0000AA">
+<title>Manual · NEVEL-98</title>
+<meta name="description" content="The NEVEL-98 manual: the machine, console commands, the visual novel engine, the full Lua API, the editors and the cartridge format.">
+<link rel="canonical" href="https://nevel98.bluemoon.moe/docs/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nevel98.bluemoon.moe/docs/">
+<meta property="og:title" content="NEVEL-98 Manual">
+<meta property="og:description" content="Console, visual novel engine, Lua API, editors and cartridge format.">
+<meta property="og:image" content="https://nevel98.bluemoon.moe/assets/og.png">
+<link rel="icon" type="image/png" href="../assets/icon64.png">
+<link rel="apple-touch-icon" href="../assets/icon.png">
+<style>
+{{COMMON_CSS}}
+
+.layout{
+  display:grid;
+  grid-template-columns:280px minmax(0, 1fr);
+  max-width:1280px;
+  margin:0 auto;
+}
+
+/* ---------- sidebar ---------- */
+
+.side{
+  position:sticky; top:34px;
+  height:calc(100vh - 34px);
+  height:calc(100dvh - 34px);
+  overflow-y:auto;
+  padding:22px 16px 40px 20px;
+  border-right:2px solid var(--blue);
+  background:var(--black);
+  scrollbar-width:thin;
+  scrollbar-color:var(--blue) var(--black);
+}
+.finder{ position:relative; margin-bottom:22px; }
+.finder label{ display:block; margin-bottom:6px; font-family:var(--pixel); font-size:15px; color:var(--cyan); }
+.finder input{
+  width:100%;
+  padding:8px 10px;
+  border:2px solid var(--blue);
+  border-radius:0;
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--code);
+  font-size:16px;
+}
+.finder input::placeholder{ color:#7b7bb8; }
+.finder input:focus{ outline:none; border-color:var(--cyan); }
+.results{
+  position:absolute; left:0; right:0; top:100%;
+  z-index:5;
+  margin:4px 0 0; padding:4px 0;
+  list-style:none;
+  background:var(--blue);
+  border:2px solid var(--white);
+  max-height:60vh; overflow-y:auto;
+}
+.results[hidden]{ display:none; }
+.results a{
+  display:block;
+  padding:4px 10px;
+  color:var(--white);
+  text-decoration:none;
+  font-family:var(--code);
+  font-size:15px;
+  line-height:1.3;
+}
+.results a small{ display:block; color:#b8b8ff; font-family:var(--prose); font-size:12px; }
+.results a:hover, .results a.sel{ background:var(--cyan); color:var(--black); }
+.results a:hover small, .results a.sel small{ color:#003; }
+.results .none{ padding:6px 10px; color:#d0d0ff; font-size:14px; }
+
+.toc{ font-family:var(--pixel); font-size:15px; line-height:1.35; }
+.toc ol{ list-style:none; margin:0; padding:0; }
+.toc > ol > li{ margin-bottom:10px; }
+.toc > ol > li > a{ color:var(--white); }
+.toc ol ol{ margin:4px 0 0 0; padding-left:12px; border-left:1px solid var(--dgrey); }
+.toc ol ol a{ color:var(--grey); font-size:14px; }
+.toc a{ display:block; padding:2px 6px; text-decoration:none; }
+.toc a:hover{ color:var(--white); background:var(--navy); }
+.toc a.on{ background:var(--cyan); color:var(--black); }
+.toc-mobile{ display:none; }
+
+/* ---------- article ---------- */
+
+.doc{ padding:40px 48px 96px; min-width:0; }
+.doc > *{ max-width:860px; }
+.doc .hello{
+  display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center;
+  margin:0 0 36px; padding:16px 18px;
+  border:2px solid var(--blue);
+  background:var(--navy);
+}
+.doc .hello p{ margin:0; flex:1 1 280px; color:#d9d4c6; }
+.doc .hello .btn{ font-size:16px; padding:8px 14px 7px; box-shadow:3px 3px 0 var(--black); }
+
+.doc h1{
+  margin:0 0 20px;
+  font-family:var(--code);
+  font-weight:400;
+  font-size:64px;
+  line-height:1;
+  color:var(--white);
+}
+.doc h2{
+  margin:64px 0 18px;
+  padding:4px 12px;
+  background:var(--blue);
+  font-family:var(--code);
+  font-weight:400;
+  font-size:32px;
+  line-height:1.25;
+  color:var(--white);
+}
+.doc h3{
+  margin:40px 0 12px;
+  font-family:var(--code);
+  font-weight:400;
+  font-size:24px;
+  line-height:1.2;
+  color:var(--cyan);
+}
+.doc h4{ margin:28px 0 10px; font-family:var(--code); font-weight:400; font-size:20px; color:var(--yellow); }
+.doc h2 a.anchor, .doc h3 a.anchor{ margin-left:8px; color:inherit; opacity:0; text-decoration:none; font-size:.8em; }
+.doc h2:hover a.anchor, .doc h3:hover a.anchor, .doc a.anchor:focus{ opacity:.6; }
+.doc p, .doc li{ color:#ddd8ca; }
+.doc strong{ color:var(--white); }
+.doc ul, .doc ol{ padding-left:1.3em; }
+.doc li{ margin-bottom:4px; }
+.doc li::marker{ color:var(--cyan); }
+.doc hr{ display:none; }
+
+.doc pre{ margin:18px 0 22px; border:2px solid var(--blue); }
+.doc pre.plain{ color:var(--grey); }
+
+.tablewrap{ overflow-x:auto; margin:16px 0 24px; border:2px solid var(--blue); }
+.doc table{ width:100%; border-collapse:collapse; font-size:.9688rem; }
+.doc th{
+  padding:6px 12px;
+  background:var(--blue);
+  color:var(--white);
+  font-family:var(--pixel);
+  font-weight:400;
+  text-align:left;
+  white-space:nowrap;
+}
+.doc td{ padding:8px 12px; border-top:1px solid #1f1f5c; vertical-align:top; color:#ddd8ca; }
+.doc tbody tr:nth-child(even) td{ background:#05051c; }
+.doc td:first-child{ white-space:nowrap; }
+.doc td:first-child code{ background:transparent; padding:0; color:var(--cyan); }
+.doc tr:target td{ background:#2a2a00 !important; box-shadow:inset 3px 0 0 var(--yellow); }
+.doc table code{ font-size:15px; }
+
+.doc .end{ margin-top:72px; padding-top:20px; border-top:2px solid var(--blue); color:var(--grey); font-size:.9375rem; }
+
+@media (max-width:900px){
+  .layout{ grid-template-columns:minmax(0,1fr); }
+  .doc h1{ font-size:48px; }
+  .doc h2{ font-size:24px; }
+  .side{ position:static; height:auto; overflow:visible; border-right:0; border-bottom:2px solid var(--blue); padding:16px; }
+  .toc{ display:none; }
+  .toc-mobile{ display:block; }
+  .toc-mobile summary{ cursor:pointer; font-family:var(--pixel); color:var(--white); padding:6px 0; }
+  .toc-mobile .toc{ display:block; margin-top:10px; }
+  .doc{ padding:28px 16px 72px; }
+  .doc td:first-child{ white-space:normal; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="../">NEVEL-98</a>
+  <nav aria-label="Site">
+    <a href="../">Home</a>
+    <a href="./" aria-current="page">Docs</a>
+    <a href="../app/">Open</a>
+  </nav>
+  <a class="right" href="../play/">Play <span class="tri" aria-hidden="true"></span></a>
+</header>
+
+<div class="layout">
+  <aside class="side" aria-label="Manual navigation">
+    <div class="finder" role="search">
+      <label for="q">Find a function or command</label>
+      <input id="q" type="search" placeholder="say, import, fillp…" autocomplete="off" spellcheck="false" aria-controls="res" aria-expanded="false">
+      <ul class="results" id="res" hidden></ul>
+    </div>
+    <nav class="toc" aria-label="Contents">{{TOC}}</nav>
+    <details class="toc-mobile"><summary>Contents</summary><nav class="toc" aria-label="Contents">{{TOC}}</nav></details>
+  </aside>
+
+  <main class="doc" id="doc">
+    <h1>NEVEL-98 Manual</h1>
+    <div class="hello">
+      <p>New to NEVEL-98? Open the machine in your browser, type <code>demo</code> and then <code>run</code>.</p>
+      <a class="btn primary" href="../app/">Open NEVEL-98</a>
+      <a class="btn" href="../play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
+    </div>
+{{BODY}}
+    <p class="end">This page is generated from <code>docs/MANUAL.md</code> and the README of NEVEL-98.</p>
+  </main>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>NEVEL-98 is released under the MIT license. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation.</p>
+    <nav aria-label="Footer">
+      <a href="../play/">Play</a>
+      <a href="../app/">Open</a>
+      <a href="../">Home</a>
+      <a href="https://bluemooncoder.itch.io/">itch.io</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var doc = document.getElementById("doc");
+
+  /* ---- index every table row by its first cell: functions, commands, keys ---- */
+  var index = [];
+  var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); };
+  var seen = {};
+  [].forEach.call(doc.querySelectorAll("table"), function (t) {
+    var h = t.closest(".tablewrap").previousElementSibling;
+    while (h && !/^H[234]$/.test(h.tagName)) h = h.previousElementSibling;
+    var section = h ? h.textContent.replace(/¶$/, "").trim() : "";
+    [].forEach.call(t.querySelectorAll("tbody tr"), function (tr) {
+      var first = tr.cells[0]; if (!first) return;
+      var label = first.textContent.trim(); if (!label) return;
+      var id = "r-" + slug(label).slice(0, 48);
+      if (seen[id]) id += "-" + (++seen[id]); else seen[id] = 1;
+      tr.id = id;
+      var desc = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
+      index.push({ id: id, label: label, desc: desc, section: section, hay: (label + " " + desc).toLowerCase() });
+    });
+  });
+
+  var q = document.getElementById("q"), res = document.getElementById("res");
+  var sel = -1, items = [];
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function render() {
+    var v = q.value.trim().toLowerCase();
+    sel = -1;
+    if (!v) { res.hidden = true; q.setAttribute("aria-expanded", "false"); return; }
+    var starts = [], label = [], other = [];
+    index.forEach(function (e) {
+      var l = e.label.toLowerCase();
+      if (l.indexOf(v) === 0 || l.indexOf("`" + v) === 0) starts.push(e);
+      else if (l.indexOf(v) >= 0) label.push(e);
+      else if (e.hay.indexOf(v) >= 0) other.push(e);
+    });
+    items = starts.concat(label, other).slice(0, 14);
+    res.innerHTML = items.length ? items.map(function (e, i) {
+      return '<li><a href="#' + e.id + '" data-i="' + i + '">' + esc(e.label) + "<small>" + esc(e.section) + (e.desc ? " · " + esc(e.desc.slice(0, 70)) : "") + "</small></a></li>";
+    }).join("") : '<li class="none">Nothing found. Try a shorter word.</li>';
+    res.hidden = false; q.setAttribute("aria-expanded", "true");
+  }
+  function mark() { [].forEach.call(res.querySelectorAll("a"), function (a, i) { a.classList.toggle("sel", i === sel); if (i === sel) { var t = a.offsetTop, h = a.offsetHeight; if (t < res.scrollTop) res.scrollTop = t; else if (t + h > res.scrollTop + res.clientHeight) res.scrollTop = t + h - res.clientHeight; } }); }
+  q.addEventListener("input", render);
+  q.addEventListener("keydown", function (e) {
+    if (res.hidden) return;
+    if (e.key === "ArrowDown") { sel = Math.min(items.length - 1, sel + 1); mark(); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); mark(); e.preventDefault(); }
+    else if (e.key === "Enter") { var it = items[sel < 0 ? 0 : sel]; if (it) { location.hash = it.id; close(); } e.preventDefault(); }
+    else if (e.key === "Escape") { close(); }
+  });
+  function close() { res.hidden = true; q.setAttribute("aria-expanded", "false"); }
+  res.addEventListener("click", function (e) { if (e.target.closest("a")) close(); });
+  document.addEventListener("click", function (e) { if (!e.target.closest(".finder")) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && document.activeElement !== q && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+  });
+
+  /* ---- highlight the current section in the contents ---- */
+  var links = {};
+  [].forEach.call(document.querySelectorAll(".side > .toc a"), function (a) { links[a.getAttribute("href").slice(1)] = a; });
+  var heads = [].slice.call(doc.querySelectorAll("h2[id], h3[id]"));
+  var on = null;
+  function spy() {
+    var cur = null;
+    for (var i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top < 120) cur = heads[i]; else break; }
+    var a = cur && links[cur.id];
+    if (a === on) return;
+    if (on) on.classList.remove("on");
+    on = a || null;
+    if (on) { on.classList.add("on"); var side = on.closest(".side"); var r = on.getBoundingClientRect(), s = side.getBoundingClientRect(); if (side.scrollHeight > side.clientHeight && (r.top < s.top + 80 || r.bottom > s.bottom - 20)) side.scrollTop += r.top - s.top - s.height / 2; }
+  }
+  var raf = 0;
+  window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; spy(); }); }, { passive: true });
+  spy();
+  [].forEach.call(document.querySelectorAll(".toc-mobile a"), function (a) { a.addEventListener("click", function () { a.closest("details").open = false; }); });
+})();
+</script>
+</body>
+</html>

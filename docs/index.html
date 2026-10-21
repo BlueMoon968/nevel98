@@ -1,0 +1,1639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0000AA">
+<title>Manual · NEVEL-98</title>
+<meta name="description" content="The NEVEL-98 manual: the machine, console commands, the visual novel engine, the full Lua API, the editors and the cartridge format.">
+<link rel="canonical" href="https://nevel98.bluemoon.moe/docs/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nevel98.bluemoon.moe/docs/">
+<meta property="og:title" content="NEVEL-98 Manual">
+<meta property="og:description" content="Console, visual novel engine, Lua API, editors and cartridge format.">
+<meta property="og:image" content="https://nevel98.bluemoon.moe/assets/og.png">
+<link rel="icon" type="image/png" href="../assets/icon64.png">
+<link rel="apple-touch-icon" href="../assets/icon.png">
+<style>
+/* fonts are served from this site: DotGothic16 and M PLUS 1p (OFL), Spleen (BSD) */
+@font-face{ font-family:"DotGothic16"; src:url("../assets/fonts/dotgothic16.woff2") format("woff2"); font-display:swap; }
+@font-face{ font-family:"M PLUS 1p"; font-weight:400; src:url("../assets/fonts/mplus1p-400.woff2") format("woff2"); font-display:swap; }
+@font-face{ font-family:"M PLUS 1p"; font-weight:700; src:url("../assets/fonts/mplus1p-700.woff2") format("woff2"); font-display:swap; }
+@font-face{ font-family:"Spleen"; src:url("../assets/fonts/spleen-8x16.woff2") format("woff2"); font-display:swap; }
+
+:root{
+  /* the machine's 16-color interface palette */
+  --black:#000000;
+  --blue:#0000AA;
+  --navy:#111144;
+  --lblue:#5555FF;
+  --cyan:#55FFFF;
+  --green:#55FF55;
+  --yellow:#FFFF55;
+  --magenta:#FF55FF;
+  --grey:#AAAAAA;
+  --dgrey:#555555;
+  --white:#FFFFFF;
+  /* the room and the monitor, from the web player */
+  --wall:#3b4250;
+  --wall-d:#2c313c;
+  --ivory:#d9d3c3;
+  --ivory-s:#b9b19c;
+  --paper:#ece6d6;
+  --led:#6fd36a;
+  /* the demo cart */
+  --gold:#DDAA44;
+  --red:#EE2222;
+
+  --pixel:"DotGothic16", "MS Gothic", ui-monospace, monospace;
+  --prose:"M PLUS 1p", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --code:"Spleen", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme:dark;
+}
+
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-padding-top:48px; }
+body{
+  margin:0;
+  background:var(--black);
+  color:var(--paper);
+  font-family:var(--prose);
+  font-size:1.0625rem;
+  line-height:1.65;
+}
+img{ max-width:100%; }
+a{ color:var(--cyan); text-underline-offset:3px; }
+a:hover{ color:var(--white); }
+::selection{ background:var(--cyan); color:var(--black); }
+:focus-visible{ outline:2px solid var(--yellow); outline-offset:2px; }
+
+.pixelated{ image-rendering:pixelated; image-rendering:crisp-edges; }
+
+/* ---------- top bar, like the editors' ---------- */
+
+.topbar{
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:stretch; gap:4px;
+  height:34px;
+  padding:0 12px;
+  padding-left:max(12px, env(safe-area-inset-left));
+  padding-right:max(12px, env(safe-area-inset-right));
+  background:var(--blue);
+  font-family:var(--pixel);
+  font-size:17px;
+  line-height:34px;
+  white-space:nowrap;
+}
+.topbar .brand{ color:var(--white); text-decoration:none; margin-right:14px; }
+.topbar nav{ display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1; min-width:0; }
+.topbar nav::-webkit-scrollbar{ display:none; }
+.topbar nav a{ display:block; padding:0 9px; color:var(--white); text-decoration:none; text-transform:uppercase; }
+.topbar nav a:hover{ background:var(--lblue); }
+.topbar nav a[aria-current="page"], .topbar nav a.on{ background:var(--cyan); color:var(--black); }
+.topbar .right{ color:var(--cyan); text-decoration:none; padding:0 4px 0 10px; }
+.topbar .right:hover{ color:var(--white); }
+
+/* ---------- inline code and code windows ---------- */
+
+code, kbd, .mono{ font-family:var(--code); font-size:16px; }
+:not(pre) > code{
+  padding:0 4px;
+  background:var(--navy);
+  color:var(--white);
+  border-radius:2px;
+}
+kbd{
+  display:inline-block;
+  padding:0 5px;
+  border:1px solid var(--grey);
+  border-bottom-width:3px;
+  border-radius:3px;
+  color:var(--white);
+  line-height:1.2;
+}
+
+pre{
+  margin:0;
+  padding:14px 16px;
+  overflow-x:auto;
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--code);
+  font-size:16px;
+  line-height:20px;
+  tab-size:2;
+}
+pre code{ font-size:inherit; }
+.tk-kw{ color:var(--yellow); }
+.tk-api{ color:var(--cyan); }
+.tk-str{ color:var(--green); }
+.tk-num{ color:var(--magenta); }
+.tk-com{ color:#8c8c8c; }
+
+/* ---------- buttons, like PC-98 menus ---------- */
+
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:10px 18px 9px;
+  border:2px solid var(--white);
+  background:var(--blue);
+  color:var(--white);
+  font-family:var(--pixel);
+  font-size:18px;
+  line-height:1.2;
+  text-decoration:none;
+  box-shadow:4px 4px 0 var(--black);
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.btn:hover{ color:var(--white); background:var(--lblue); }
+.btn:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--black); }
+.btn.primary{ background:var(--cyan); color:var(--black); border-color:var(--cyan); }
+.btn.primary:hover{ background:var(--white); border-color:var(--white); color:var(--black); }
+
+/* a play triangle: the bitmap fonts have no ▶ */
+.tri{
+  display:inline-block;
+  width:.55em; height:.7em;
+  background:currentColor;
+  clip-path:polygon(0 0, 100% 50%, 0 100%);
+  vertical-align:-.02em;
+}
+
+/* ---------- footer ---------- */
+
+.foot{
+  padding:40px 24px 48px;
+  padding-bottom:calc(48px + env(safe-area-inset-bottom, 0px));
+  border-top:2px solid var(--blue);
+  color:var(--grey);
+  font-size:.9375rem;
+}
+.foot .wrap{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:space-between; }
+.foot p{ margin:0; max-width:62ch; }
+.foot nav{ display:flex; flex-wrap:wrap; gap:6px 18px; font-family:var(--pixel); }
+.foot nav a{ color:var(--white); text-decoration:none; }
+.foot nav a:hover{ color:var(--cyan); }
+
+@media (prefers-reduced-motion:reduce){
+  *{ transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+  html{ scroll-behavior:auto; }
+}
+
+
+.layout{
+  display:grid;
+  grid-template-columns:280px minmax(0, 1fr);
+  max-width:1280px;
+  margin:0 auto;
+}
+
+/* ---------- sidebar ---------- */
+
+.side{
+  position:sticky; top:34px;
+  height:calc(100vh - 34px);
+  height:calc(100dvh - 34px);
+  overflow-y:auto;
+  padding:22px 16px 40px 20px;
+  border-right:2px solid var(--blue);
+  background:var(--black);
+  scrollbar-width:thin;
+  scrollbar-color:var(--blue) var(--black);
+}
+.finder{ position:relative; margin-bottom:22px; }
+.finder label{ display:block; margin-bottom:6px; font-family:var(--pixel); font-size:15px; color:var(--cyan); }
+.finder input{
+  width:100%;
+  padding:8px 10px;
+  border:2px solid var(--blue);
+  border-radius:0;
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--code);
+  font-size:16px;
+}
+.finder input::placeholder{ color:#7b7bb8; }
+.finder input:focus{ outline:none; border-color:var(--cyan); }
+.results{
+  position:absolute; left:0; right:0; top:100%;
+  z-index:5;
+  margin:4px 0 0; padding:4px 0;
+  list-style:none;
+  background:var(--blue);
+  border:2px solid var(--white);
+  max-height:60vh; overflow-y:auto;
+}
+.results[hidden]{ display:none; }
+.results a{
+  display:block;
+  padding:4px 10px;
+  color:var(--white);
+  text-decoration:none;
+  font-family:var(--code);
+  font-size:15px;
+  line-height:1.3;
+}
+.results a small{ display:block; color:#b8b8ff; font-family:var(--prose); font-size:12px; }
+.results a:hover, .results a.sel{ background:var(--cyan); color:var(--black); }
+.results a:hover small, .results a.sel small{ color:#003; }
+.results .none{ padding:6px 10px; color:#d0d0ff; font-size:14px; }
+
+.toc{ font-family:var(--pixel); font-size:15px; line-height:1.35; }
+.toc ol{ list-style:none; margin:0; padding:0; }
+.toc > ol > li{ margin-bottom:10px; }
+.toc > ol > li > a{ color:var(--white); }
+.toc ol ol{ margin:4px 0 0 0; padding-left:12px; border-left:1px solid var(--dgrey); }
+.toc ol ol a{ color:var(--grey); font-size:14px; }
+.toc a{ display:block; padding:2px 6px; text-decoration:none; }
+.toc a:hover{ color:var(--white); background:var(--navy); }
+.toc a.on{ background:var(--cyan); color:var(--black); }
+.toc-mobile{ display:none; }
+
+/* ---------- article ---------- */
+
+.doc{ padding:40px 48px 96px; min-width:0; }
+.doc > *{ max-width:860px; }
+.doc .hello{
+  display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center;
+  margin:0 0 36px; padding:16px 18px;
+  border:2px solid var(--blue);
+  background:var(--navy);
+}
+.doc .hello p{ margin:0; flex:1 1 280px; color:#d9d4c6; }
+.doc .hello .btn{ font-size:16px; padding:8px 14px 7px; box-shadow:3px 3px 0 var(--black); }
+
+.doc h1{
+  margin:0 0 20px;
+  font-family:var(--code);
+  font-weight:400;
+  font-size:64px;
+  line-height:1;
+  color:var(--white);
+}
+.doc h2{
+  margin:64px 0 18px;
+  padding:4px 12px;
+  background:var(--blue);
+  font-family:var(--code);
+  font-weight:400;
+  font-size:32px;
+  line-height:1.25;
+  color:var(--white);
+}
+.doc h3{
+  margin:40px 0 12px;
+  font-family:var(--code);
+  font-weight:400;
+  font-size:24px;
+  line-height:1.2;
+  color:var(--cyan);
+}
+.doc h4{ margin:28px 0 10px; font-family:var(--code); font-weight:400; font-size:20px; color:var(--yellow); }
+.doc h2 a.anchor, .doc h3 a.anchor{ margin-left:8px; color:inherit; opacity:0; text-decoration:none; font-size:.8em; }
+.doc h2:hover a.anchor, .doc h3:hover a.anchor, .doc a.anchor:focus{ opacity:.6; }
+.doc p, .doc li{ color:#ddd8ca; }
+.doc strong{ color:var(--white); }
+.doc ul, .doc ol{ padding-left:1.3em; }
+.doc li{ margin-bottom:4px; }
+.doc li::marker{ color:var(--cyan); }
+.doc hr{ display:none; }
+
+.doc pre{ margin:18px 0 22px; border:2px solid var(--blue); }
+.doc pre.plain{ color:var(--grey); }
+
+.tablewrap{ overflow-x:auto; margin:16px 0 24px; border:2px solid var(--blue); }
+.doc table{ width:100%; border-collapse:collapse; font-size:.9688rem; }
+.doc th{
+  padding:6px 12px;
+  background:var(--blue);
+  color:var(--white);
+  font-family:var(--pixel);
+  font-weight:400;
+  text-align:left;
+  white-space:nowrap;
+}
+.doc td{ padding:8px 12px; border-top:1px solid #1f1f5c; vertical-align:top; color:#ddd8ca; }
+.doc tbody tr:nth-child(even) td{ background:#05051c; }
+.doc td:first-child{ white-space:nowrap; }
+.doc td:first-child code{ background:transparent; padding:0; color:var(--cyan); }
+.doc tr:target td{ background:#2a2a00 !important; box-shadow:inset 3px 0 0 var(--yellow); }
+.doc table code{ font-size:15px; }
+
+.doc .end{ margin-top:72px; padding-top:20px; border-top:2px solid var(--blue); color:var(--grey); font-size:.9375rem; }
+
+@media (max-width:900px){
+  .layout{ grid-template-columns:minmax(0,1fr); }
+  .doc h1{ font-size:48px; }
+  .doc h2{ font-size:24px; }
+  .side{ position:static; height:auto; overflow:visible; border-right:0; border-bottom:2px solid var(--blue); padding:16px; }
+  .toc{ display:none; }
+  .toc-mobile{ display:block; }
+  .toc-mobile summary{ cursor:pointer; font-family:var(--pixel); color:var(--white); padding:6px 0; }
+  .toc-mobile .toc{ display:block; margin-top:10px; }
+  .doc{ padding:28px 16px 72px; }
+  .doc td:first-child{ white-space:normal; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="../">NEVEL-98</a>
+  <nav aria-label="Site">
+    <a href="../">Home</a>
+    <a href="./" aria-current="page">Docs</a>
+    <a href="../app/">Open</a>
+  </nav>
+  <a class="right" href="../play/">Play <span class="tri" aria-hidden="true"></span></a>
+</header>
+
+<div class="layout">
+  <aside class="side" aria-label="Manual navigation">
+    <div class="finder" role="search">
+      <label for="q">Find a function or command</label>
+      <input id="q" type="search" placeholder="say, import, fillp…" autocomplete="off" spellcheck="false" aria-controls="res" aria-expanded="false">
+      <ul class="results" id="res" hidden></ul>
+    </div>
+    <nav class="toc" aria-label="Contents"><ol><li><a href="#1-the-machine">1. The machine</a></li><li><a href="#2-getting-around">2. Getting around</a></li><li><a href="#3-console-commands">3. Console commands</a><ol><li><a href="#files">Files</a></li><li><a href="#carts">Carts</a></li><li><a href="#media">Media</a></li><li><a href="#text-tables">Text tables</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#system">System</a></li></ol></li><li><a href="#4-writing-a-visual-novel">4. Writing a visual novel</a><ol><li><a href="#texts-and-languages">Texts and languages</a></li><li><a href="#scenes-and-flow">Scenes and flow</a></li><li><a href="#pictures">Pictures</a></li><li><a href="#text">Text</a></li><li><a href="#framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)</a></li><li><a href="#choices">Choices</a></li><li><a href="#timing-and-effects">Timing and effects</a></li><li><a href="#state-and-saving">State and saving</a></li><li><a href="#the-system-menu">The system menu</a></li></ol></li><li><a href="#5-machine-api">5. Machine API</a><ol><li><a href="#drawing">Drawing</a></li><li><a href="#images">Images</a></li><li><a href="#palette-and-screen">Palette and screen</a></li><li><a href="#input">Input</a></li><li><a href="#sound">Sound</a></li><li><a href="#data-and-system">Data and system</a></li><li><a href="#math-helpers">Math helpers</a></li><li><a href="#game-mode">Game mode</a></li></ol></li><li><a href="#6-the-editors">6. The editors</a><ol><li><a href="#code-f1">Code (F1)</a></li><li><a href="#image-f2">Image (F2)</a></li><li><a href="#text-f3">Text (F3)</a></li><li><a href="#sound-f4">Sound (F4)</a></li><li><a href="#music-f5">Music (F5)</a></li></ol></li><li><a href="#7-cartridge-format">7. Cartridge format</a><ol><li><a href="#custom-fonts">Custom fonts</a></li></ol></li><li><a href="#8-limits-and-tips">8. Limits and tips</a></li><li><a href="#9-running-and-building">9. Running and building</a><ol><li><a href="#playing-in-the-browser">Playing in the browser</a></li><li><a href="#building">Building</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#fonts">Fonts</a></li><li><a href="#license">License</a></li></ol></li></ol></nav>
+    <details class="toc-mobile"><summary>Contents</summary><nav class="toc" aria-label="Contents"><ol><li><a href="#1-the-machine">1. The machine</a></li><li><a href="#2-getting-around">2. Getting around</a></li><li><a href="#3-console-commands">3. Console commands</a><ol><li><a href="#files">Files</a></li><li><a href="#carts">Carts</a></li><li><a href="#media">Media</a></li><li><a href="#text-tables">Text tables</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#system">System</a></li></ol></li><li><a href="#4-writing-a-visual-novel">4. Writing a visual novel</a><ol><li><a href="#texts-and-languages">Texts and languages</a></li><li><a href="#scenes-and-flow">Scenes and flow</a></li><li><a href="#pictures">Pictures</a></li><li><a href="#text">Text</a></li><li><a href="#framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)</a></li><li><a href="#choices">Choices</a></li><li><a href="#timing-and-effects">Timing and effects</a></li><li><a href="#state-and-saving">State and saving</a></li><li><a href="#the-system-menu">The system menu</a></li></ol></li><li><a href="#5-machine-api">5. Machine API</a><ol><li><a href="#drawing">Drawing</a></li><li><a href="#images">Images</a></li><li><a href="#palette-and-screen">Palette and screen</a></li><li><a href="#input">Input</a></li><li><a href="#sound">Sound</a></li><li><a href="#data-and-system">Data and system</a></li><li><a href="#math-helpers">Math helpers</a></li><li><a href="#game-mode">Game mode</a></li></ol></li><li><a href="#6-the-editors">6. The editors</a><ol><li><a href="#code-f1">Code (F1)</a></li><li><a href="#image-f2">Image (F2)</a></li><li><a href="#text-f3">Text (F3)</a></li><li><a href="#sound-f4">Sound (F4)</a></li><li><a href="#music-f5">Music (F5)</a></li></ol></li><li><a href="#7-cartridge-format">7. Cartridge format</a><ol><li><a href="#custom-fonts">Custom fonts</a></li></ol></li><li><a href="#8-limits-and-tips">8. Limits and tips</a></li><li><a href="#9-running-and-building">9. Running and building</a><ol><li><a href="#playing-in-the-browser">Playing in the browser</a></li><li><a href="#building">Building</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#fonts">Fonts</a></li><li><a href="#license">License</a></li></ol></li></ol></nav></details>
+  </aside>
+
+  <main class="doc" id="doc">
+    <h1>NEVEL-98 Manual</h1>
+    <div class="hello">
+      <p>New to NEVEL-98? Open the machine in your browser, type <code>demo</code> and then <code>run</code>.</p>
+      <a class="btn primary" href="../app/">Open NEVEL-98</a>
+      <a class="btn" href="../play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
+    </div>
+<p>NEVEL-98 is a fantasy computer for visual novels. It imagines a 1990s Japanese personal computer in the style of the NEC PC-9801: a 640×400 screen, 16 colors from a palette of 4096, FM sound, and a Lua interpreter with a visual novel engine built in.</p>
+<p>This manual covers the machine, the console, every API function, the editors, and the cartridge format.</p>
+<hr />
+<h2 id="1-the-machine">1. The machine<a class="anchor" aria-label="Link to this section" href="#1-the-machine" title="Permanent link">¶</a></h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Screen</td>
+<td>640×400 pixels, 60 frames per second</td>
+</tr>
+<tr>
+<td>Colors</td>
+<td>16 on screen at once, each one of 4096 (12-bit <code>0xRGB</code>)</td>
+</tr>
+<tr>
+<td>Palettes</td>
+<td>one cart palette, plus an optional own palette per image</td>
+</tr>
+<tr>
+<td>Fonts</td>
+<td>8×16 (80×25 text, like PC-98 text mode) and 6×12; Latin-1, arrows, box drawing, ♥ ♪ etc.</td>
+</tr>
+<tr>
+<td>Sound</td>
+<td>6 channels; each plays a 4-operator FM voice, an SSG square wave or noise</td>
+</tr>
+<tr>
+<td>Instruments</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Patterns</td>
+<td>64, each 32 rows × 6 channels</td>
+</tr>
+<tr>
+<td>Songs</td>
+<td>8, each an order list of up to 64 patterns with a loop point</td>
+</tr>
+<tr>
+<td>Images</td>
+<td>64 per cart, up to 640×400, 4 bits per pixel, optional transparent color</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>Lua 5.4, up to 512 KB of source</td>
+</tr>
+</tbody>
+</table></div>
+<p>Lua's <code>io</code>, <code>os</code>, <code>debug</code> and <code>require</code> are not available; carts can only touch the machine through the API below. <code>math.random</code> is replaced by a deterministic generator so that saved games replay exactly.</p>
+<hr />
+<h2 id="2-getting-around">2. Getting around<a class="anchor" aria-label="Link to this section" href="#2-getting-around" title="Permanent link">¶</a></h2>
+<p>The machine boots into the <strong>console</strong>. From there:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Esc</td>
+<td>switch between the console and the last editor</td>
+</tr>
+<tr>
+<td>F1 / F2 / F3 / F4 / F5</td>
+<td>code, image, text, sound and music editors</td>
+</tr>
+<tr>
+<td>F6 or Ctrl+R</td>
+<td>run the cart</td>
+</tr>
+<tr>
+<td>Ctrl+S</td>
+<td>save the cart under its current name</td>
+</tr>
+<tr>
+<td>F7</td>
+<td>while a cart runs: capture the screen as the cart's label</td>
+</tr>
+<tr>
+<td>F9</td>
+<td>4:3 aspect (PC-98 monitors stretched the 640×400 picture)</td>
+</tr>
+<tr>
+<td>F10</td>
+<td>scanlines</td>
+</tr>
+<tr>
+<td>F11 or Alt+Enter</td>
+<td>fullscreen</td>
+</tr>
+</tbody>
+</table></div>
+<p>While a cart is running, <strong>Esc</strong> opens the game's own system menu (save, load, log, settings) and <strong>F1–F5</strong> stop the cart and return to the editors. Runtime errors stop the cart and print the message in the console; press <strong>F1</strong> to open the code at the line that failed.</p>
+<p>The mouse works everywhere: click the tabs in the top bar, the function key labels at the bottom of the console, and every button. Over the machine's screen the pointer becomes a PC-98 style arrow; while a cart runs it hides itself after three seconds without movement, and a cart can hide it for good with <code>cursor(false)</code>.</p>
+<hr />
+<h2 id="3-console-commands">3. Console commands<a class="anchor" aria-label="Link to this section" href="#3-console-commands" title="Permanent link">¶</a></h2>
+<p>Commands are not case sensitive. File names without an extension are looked up as <code>.n98</code>, then <code>.n98.png</code>. <strong>Tab</strong> completes file names, <strong>Up/Down</strong> recall previous commands.</p>
+<h3 id="files">Files<a class="anchor" aria-label="Link to this section" href="#files" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ls [folder]</code></td>
+<td>list files: carts in green, floppy images in yellow, pictures in magenta</td>
+</tr>
+<tr>
+<td><code>cd &lt;folder&gt;</code> / <code>cd ..</code> / <code>cd</code></td>
+<td>change folder</td>
+</tr>
+<tr>
+<td><code>mkdir &lt;name&gt;</code></td>
+<td>create a folder</td>
+</tr>
+<tr>
+<td><code>rm &lt;file&gt;</code></td>
+<td>delete a file</td>
+</tr>
+<tr>
+<td><code>folder</code></td>
+<td>show (and on desktop open) the drive folder</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="carts">Carts<a class="anchor" aria-label="Link to this section" href="#carts" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new</code></td>
+<td>start an empty cart</td>
+</tr>
+<tr>
+<td><code>load &lt;cart&gt;</code></td>
+<td>load a <code>.n98</code> or <code>.n98.png</code> cart</td>
+</tr>
+<tr>
+<td><code>save [name]</code></td>
+<td>save as <code>name.n98</code> (or under the current name)</td>
+</tr>
+<tr>
+<td><code>run</code></td>
+<td>run the cart</td>
+</tr>
+<tr>
+<td><code>demo</code></td>
+<td>load the demo novel</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td>sizes, counts and where the drive is</td>
+</tr>
+<tr>
+<td><code>title &lt;text&gt;</code> / <code>author &lt;text&gt;</code></td>
+<td>set the cart's title and author</td>
+</tr>
+</tbody>
+</table></div>
+<p>Commands that would discard unsaved work ask you to repeat them.</p>
+<h3 id="media">Media<a class="anchor" aria-label="Link to this section" href="#media" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>import &lt;picture&gt; [name] [options]</code></td>
+<td>convert a PNG, JPG, BMP or GIF into a 16-color image</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td>list the images in the cart</td>
+</tr>
+<tr>
+<td><code>rmimg &lt;name&gt;</code></td>
+<td>remove an image</td>
+</tr>
+<tr>
+<td><code>importfont &lt;sheet.png&gt;</code></td>
+<td>install a custom 8×16 font in the cart</td>
+</tr>
+<tr>
+<td><code>font reset</code></td>
+<td>go back to the built-in font</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>import</code> options:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-o</code></td>
+<td>ordered (Bayer) dithering, the PC-98 look; the default</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>error-diffusion (Floyd–Steinberg) dithering</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>no dithering, nearest color</td>
+</tr>
+<tr>
+<td><code>-p</code></td>
+<td>give the image its own palette, computed from the picture</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>compute a new palette from the picture and make it the cart palette</td>
+</tr>
+<tr>
+<td><code>-s WxH</code></td>
+<td>shrink to fit within W×H (pictures larger than 640×400 always shrink)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Transparent pixels in the source picture become color 0, which is set as the image's transparent color. A common workflow is to build a palette from a collage of all your art (<code>import collage.png pal -c</code>, then <code>rmimg pal</code>) and import every picture against it.</p>
+<h3 id="text-tables">Text tables<a class="anchor" aria-label="Link to this section" href="#text-tables" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>importtext &lt;file.csv&gt;</code></td>
+<td>merge a CSV into the text tables (first row <code>keys,en,it,...</code>)</td>
+</tr>
+<tr>
+<td><code>exporttext &lt;file.csv&gt;</code></td>
+<td>write the text tables as CSV, ready for a spreadsheet or a translator</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="sharing">Sharing<a class="anchor" aria-label="Link to this section" href="#sharing" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>export name.n98</code></td>
+<td>write the cart as text</td>
+</tr>
+<tr>
+<td><code>export name.png</code></td>
+<td>write a floppy-disk image (<code>name.n98.png</code>) that contains the whole cart</td>
+</tr>
+<tr>
+<td><code>export name.html</code></td>
+<td>write a standalone web player, one file with everything inside</td>
+</tr>
+</tbody>
+</table></div>
+<p>In the browser version, exports are downloaded; on the desktop they are written to the drive.</p>
+<h3 id="system">System<a class="anchor" aria-label="Link to this section" href="#system" title="Permanent link">¶</a></h3>
+<p><code>cls</code>, <code>keys</code> (shortcut reference), <code>help</code>, <code>reboot</code>, <code>shutdown</code>.</p>
+<hr />
+<h2 id="4-writing-a-visual-novel">4. Writing a visual novel<a class="anchor" aria-label="Link to this section" href="#4-writing-a-visual-novel" title="Permanent link">¶</a></h2>
+<p>A cart's code runs once when the cart starts. Usually it only defines scenes; the engine then starts the scene named <code>"title"</code> if there is one, otherwise <code>"start"</code>.</p>
+<pre><code><span class="tk-api">speaker</span>(<span class="tk-str">"Rei"</span>, <span class="tk-num">11</span>)                         <span class="tk-com">-- name color for Rei</span>
+
+<span class="tk-api">scene</span>(<span class="tk-str">"title"</span>, <span class="tk-kw">function</span>()
+  <span class="tk-api">title_screen</span>{ <span class="tk-api">bg</span> = <span class="tk-str">"station"</span>, <span class="tk-api">music</span> = <span class="tk-num">0</span> }
+  <span class="tk-api">jump</span>(<span class="tk-str">"start"</span>)
+<span class="tk-kw">end</span>)
+
+<span class="tk-api">scene</span>(<span class="tk-str">"start"</span>, <span class="tk-kw">function</span>()
+  <span class="tk-api">bg</span>(<span class="tk-str">"station"</span>, <span class="tk-str">"dither"</span>)
+  <span class="tk-api">show</span>(<span class="tk-str">"rei"</span>, <span class="tk-str">"center"</span>)
+  <span class="tk-api">say</span>(<span class="tk-str">"Rei"</span>, <span class="tk-str">"You missed it too?"</span>)
+  <span class="tk-kw">local</span> c = <span class="tk-api">choice</span>{ <span class="tk-str">"Who are you?"</span>, <span class="tk-str">"Missed what?"</span> }
+  <span class="tk-kw">if</span> c == <span class="tk-num">2</span> <span class="tk-kw">then</span> <span class="tk-api">flag</span>.honest = <span class="tk-kw">true</span> <span class="tk-kw">end</span>
+  <span class="tk-api">jump</span>(<span class="tk-str">"ending"</span>)
+<span class="tk-kw">end</span>)
+
+<span class="tk-api">scene</span>(<span class="tk-str">"ending"</span>, <span class="tk-kw">function</span>()
+  <span class="tk-api">say</span>(<span class="tk-str">"The board flickers and goes dark."</span>)
+  <span class="tk-api">the_end</span>(<span class="tk-str">"NEXT YEAR"</span>)
+<span class="tk-kw">end</span>)
+</code></pre>
+<p>Each function call below waits for as long as it needs to: <code>say</code> waits for the player to read the line, <code>bg</code> with a transition waits until the transition ends, <code>choice</code> waits for an answer. You write the story top to bottom.</p>
+<p>If you don't define any scenes, the top-level code itself is the story.</p>
+<h3 id="texts-and-languages">Texts and languages<a class="anchor" aria-label="Link to this section" href="#texts-and-languages" title="Permanent link">¶</a></h3>
+<p>Write your lines in the <strong>TEXT</strong> editor (F3) instead of in the code. Each row has a <strong>key</strong> and one string per language, like Godot's CSV translations:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>key</th>
+<th>en</th>
+<th>it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>char.rei</code></td>
+<td>Rei</td>
+<td>Rei</td>
+</tr>
+<tr>
+<td><code>rei.hello</code></td>
+<td>Hi, {1}!</td>
+<td>Ciao, {1}!</td>
+</tr>
+</tbody>
+</table></div>
+<p>In the code, <code>tr("rei.hello", "Taro")</code> returns "Hi, Taro!" (or "Ciao, Taro!" in Italian). <code>{1}</code>, <code>{2}</code>... are replaced by the extra arguments. A missing key comes back unchanged, so you can see what's left to write; a missing translation falls back to the first language.</p>
+<p>Every visual novel function also accepts keys directly: a string that starts with <code>@</code> is looked up in the table.</p>
+<pre><code><span class="tk-api">speaker</span>(<span class="tk-str">"@char.rei"</span>, <span class="tk-num">7</span>)
+<span class="tk-api">say</span>(<span class="tk-str">"@char.rei"</span>, <span class="tk-str">"@rei.hello"</span>)
+<span class="tk-kw">if</span> <span class="tk-api">choice</span>{ <span class="tk-str">"@c.yes"</span>, <span class="tk-str">"@c.no"</span> } == <span class="tk-num">1</span> <span class="tk-kw">then</span> ... <span class="tk-kw">end</span>
+<span class="tk-api">the_end</span>(<span class="tk-str">"@end.good"</span>)
+</code></pre>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tr(key, ...)</code></td>
+<td>the string for <code>key</code> in the current language</td>
+</tr>
+<tr>
+<td><code>hastr(key)</code></td>
+<td>whether the key exists</td>
+</tr>
+<tr>
+<td><code>lang()</code> / <code>lang("it")</code></td>
+<td>the current language code / switch language (returns false if it doesn't exist)</td>
+</tr>
+<tr>
+<td><code>langs()</code></td>
+<td>the list of language codes, e.g. <code>{"en", "it"}</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>When a cart has more than one language, the <strong>Settings</strong> menu gets a <strong>Language</strong> row and the player's choice is remembered. The first language is the source: the editor shows it next to the language you are translating.</p>
+<p>The engine's own texts (title screen, system menu, settings, "THE END") can be translated too, by adding keys that start with <code>ui.</code>: <code>ui.new_game</code>, <code>ui.continue</code>, <code>ui.load</code>, <code>ui.options</code>, <code>ui.quit</code>, <code>ui.save</code>, <code>ui.log</code>, <code>ui.auto_on</code>, <code>ui.auto_off</code>, <code>ui.skip</code>, <code>ui.settings</code>, <code>ui.title</code>, <code>ui.quit_to_editor</code>, <code>ui.close</code>, <code>ui.system</code>, <code>ui.save_game</code>, <code>ui.load_game</code>, <code>ui.empty</code>, <code>ui.backlog</code>, <code>ui.settings_title</code>, <code>ui.instant</code>, <code>ui.text_speed</code>, <code>ui.auto_delay</code>, <code>ui.music_volume</code>, <code>ui.sound_volume</code>, <code>ui.language</code>, <code>ui.lang_name</code> (the name of each language, shown in Settings), <code>ui.back</code>, <code>ui.return_to_title</code>, <code>ui.yes</code>, <code>ui.no</code>, <code>ui.the_end</code>, <code>ui.nothing_to_save</code>, <code>ui.saved_slot</code> and <code>ui.slot_empty</code> (both use <code>%d</code> for the slot number). The demo cart translates all of them into Italian.</p>
+<h3 id="scenes-and-flow">Scenes and flow<a class="anchor" aria-label="Link to this section" href="#scenes-and-flow" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scene(name, fn)</code></td>
+<td>define a scene</td>
+</tr>
+<tr>
+<td><code>jump(name)</code></td>
+<td>leave the current scene and start another</td>
+</tr>
+<tr>
+<td><code>the_end([text])</code></td>
+<td>show an ending card ("THE END" by default), then return to the title</td>
+</tr>
+</tbody>
+</table></div>
+<p>A scene that finishes without jumping ends the game with <code>the_end()</code>.</p>
+<h3 id="pictures">Pictures<a class="anchor" aria-label="Link to this section" href="#pictures" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bg(image [, transition [, seconds]])</code></td>
+<td>set the background; clears characters. <code>image</code> may also be a color number or <code>nil</code> for black</td>
+</tr>
+<tr>
+<td><code>cg(...)</code></td>
+<td>same as <code>bg</code>, for event pictures</td>
+</tr>
+<tr>
+<td><code>show(image [, pos [, transition [, seconds]]])</code></td>
+<td>show a character. <code>pos</code> is <code>"left"</code>, <code>"center"</code>, <code>"right"</code>, <code>"farleft"</code>, <code>"farright"</code> or an x coordinate; showing another image at the same position replaces it (use this for expressions)</td>
+</tr>
+<tr>
+<td><code>hide([pos or image [, transition [, seconds]]])</code></td>
+<td>remove a character, or all of them</td>
+</tr>
+<tr>
+<td><code>effect(name, fn)</code></td>
+<td>register a named effect: <code>fn(t)</code> draws on top of the scene every frame</td>
+</tr>
+<tr>
+<td><code>effect(name)</code> / <code>effect(nil)</code></td>
+<td>turn an effect on / off (saved with the game)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Characters are drawn bottom-aligned to the screen. If a background image has its own palette, the palette is switched with it.</p>
+<p>Transitions: <code>"dither"</code> (ordered dissolve), <code>"wipe"</code> (left to right), <code>"down"</code> (top to bottom), <code>"blinds"</code>, <code>"curtain"</code> (from the center), <code>"mosaic"</code>, and <code>"fade"</code> (through black).</p>
+<h3 id="text">Text<a class="anchor" aria-label="Link to this section" href="#text" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>say(who, text)</code></td>
+<td>a line of dialogue with a name box</td>
+</tr>
+<tr>
+<td><code>say(text)</code> / <code>narrate(text)</code></td>
+<td>narration</td>
+</tr>
+<tr>
+<td><code>speaker(name, color)</code></td>
+<td>color for a speaker's name</td>
+</tr>
+<tr>
+<td><code>window{...}</code></td>
+<td>style the message window (see below)</td>
+</tr>
+<tr>
+<td><code>textspeed(cps)</code></td>
+<td>characters per second, 0 = instant</td>
+</tr>
+<tr>
+<td><code>hide_window()</code> / <code>show_window()</code></td>
+<td>hide the message window (it reappears on the next <code>say</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Text wraps automatically. Inline tags:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Tag</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{c:N}...{/c}</code></td>
+<td>color N, then back to normal</td>
+</tr>
+<tr>
+<td><code>{w:0.5}</code></td>
+<td>pause for half a second</td>
+</tr>
+<tr>
+<td><code>{speed:20}</code></td>
+<td>change the typing speed for the rest of the line</td>
+</tr>
+<tr>
+<td><code>{n}</code> or a newline</td>
+<td>line break</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>window</code> fields: <code>x, y, w, h</code> (default 16, 290, 608, 100), <code>bg</code>, <code>fg</code>, <code>border</code> (colors; by default the darkest, brightest and a middle color of the current palette), <code>style</code> (<code>"solid"</code> or <code>"mesh"</code> for a see-through dithered window), <code>lines</code> (default 4), <code>blip</code> (a pattern played as a typing sound).</p>
+<h3 id="framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)<a class="anchor" aria-label="Link to this section" href="#framed-layouts-the-pc-98-look" title="Permanent link">¶</a></h3>
+<p>Most PC-98 adventures show the scene in a window inside an ornate frame, with side panels for the date, a clock or the command menu, and the text in a console below. <code>layout</code> sets this up:</p>
+<pre><code>layout(<span class="tk-str">"game"</span>, {
+  view = { <span class="tk-num">16</span>, <span class="tk-num">16</span>, <span class="tk-num">448</span>, <span class="tk-num">264</span> },          <span class="tk-com">-- where the scene is drawn</span>
+  <span class="tk-api">frame</span> = <span class="tk-str">"frame"</span>,                      <span class="tk-com">-- full-screen image drawn on top; its transparent color shows the scene</span>
+  hud = <span class="tk-kw">function</span>(t) ... <span class="tk-kw">end</span>,            <span class="tk-com">-- draws panels (clock, date...) every frame, after the frame</span>
+  <span class="tk-api">menu</span> = { <span class="tk-num">486</span>, <span class="tk-num">156</span>, <span class="tk-num">130</span> },             <span class="tk-com">-- menu{} appears here, as a list without a box</span>
+  menu_step = <span class="tk-num">21</span>, menu_text_dx = <span class="tk-num">20</span>,    <span class="tk-com">-- row height and text offset (match your button art)</span>
+  menu_bar = <span class="tk-num">3</span>, menu_bar_dx = <span class="tk-num">15</span>,       <span class="tk-com">-- color and offset of the bar behind the selected entry</span>
+  menu_sel = <span class="tk-num">6</span>, menu_idle = <span class="tk-num">8</span>,          <span class="tk-com">-- colors for the selected / other entries</span>
+  choices = <span class="tk-str">"window"</span>,                   <span class="tk-com">-- choice{} is listed inside the text window</span>
+  <span class="tk-api">window</span> = { x = <span class="tk-num">16</span>, y = <span class="tk-num">298</span>, w = <span class="tk-num">608</span>, h = <span class="tk-num">92</span>, style = <span class="tk-str">"none"</span>,
+             name_style = <span class="tk-str">"plate"</span>, name_x = <span class="tk-num">46</span>, name_y = <span class="tk-num">288</span> },
+})
+
+<span class="tk-api">scene</span>(<span class="tk-str">"start"</span>, <span class="tk-kw">function</span>()
+  layout(<span class="tk-str">"game"</span>)                        <span class="tk-com">-- switch to it (saved with the game)</span>
+  ...
+<span class="tk-kw">end</span>)
+</code></pre>
+<p><code>layout(name, def)</code> defines a layout, <code>layout(name)</code> switches to it and <code>layout(nil)</code> goes back to full screen. Inside a layout, backgrounds are centered in the view, characters stand on the view's bottom edge, positions such as <code>"right"</code> are relative to the view, and effects are clipped to it. The layout's <code>window</code> entries override <code>window{}</code>.</p>
+<p>Extra <code>window</code> fields: <code>style = "none"</code> draws no box (use it when the frame image already has one); <code>name_style = "plate"</code> prints the speaker's name at <code>name_x, name_y</code> (over a name plate in your frame art), <code>"inline"</code> writes it at the start of the text, and the default draws a small name box; <code>name_format</code> formats inline names; <code>cursor</code> colors the ▼ prompt.</p>
+<p>The demo cart shows a complete framed layout, with a red LED clock drawn by its <code>hud</code> function.</p>
+<h3 id="choices">Choices<a class="anchor" aria-label="Link to this section" href="#choices" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>choice{ "A", "B", ... } → index</code></td>
+<td>a centered choice box</td>
+</tr>
+<tr>
+<td><code>choice("Question?", { ... })</code></td>
+<td>with a question above the options</td>
+</tr>
+<tr>
+<td><code>menu{ "Look", "Talk", "Move" } → index</code></td>
+<td>a PC-98 adventure-style command menu in the top-right corner</td>
+</tr>
+<tr>
+<td><code>interact(update, draw) → value</code></td>
+<td>a custom interactive moment: <code>update()</code> runs every frame until it returns a value; <code>draw()</code> draws on top</td>
+</tr>
+</tbody>
+</table></div>
+<p>A <code>false</code> entry hides an option while keeping the numbering: <code>choice{ "Leave", flag.key and "Open the door" }</code>.</p>
+<h3 id="timing-and-effects">Timing and effects<a class="anchor" aria-label="Link to this section" href="#timing-and-effects" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wait(seconds)</code></td>
+<td>pause</td>
+</tr>
+<tr>
+<td><code>waitclick()</code></td>
+<td>wait for the player</td>
+</tr>
+<tr>
+<td><code>fadeout([seconds [, rgb]])</code> / <code>fadein([seconds])</code></td>
+<td>palette fade to a color (black by default) and back</td>
+</tr>
+<tr>
+<td><code>flash([rgb [, seconds]])</code></td>
+<td>a quick flash (white by default)</td>
+</tr>
+<tr>
+<td><code>quake([seconds [, strength]])</code></td>
+<td>shake the screen</td>
+</tr>
+<tr>
+<td><code>music(n [, fade_seconds])</code> / <code>music(nil [, fade_seconds])</code></td>
+<td>play / stop a song</td>
+</tr>
+<tr>
+<td><code>sfx(pattern [, speed])</code></td>
+<td>play a pattern once as a sound effect</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="state-and-saving">State and saving<a class="anchor" aria-label="Link to this section" href="#state-and-saving" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Name</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flag</code></td>
+<td>a table for story state; saved with the game</td>
+</tr>
+<tr>
+<td><code>persist</code></td>
+<td>a table shared by every playthrough (endings seen, unlocks); kept automatically</td>
+</tr>
+<tr>
+<td><code>remember()</code></td>
+<td>write <code>persist</code> to disk now</td>
+</tr>
+<tr>
+<td><code>has_saves()</code></td>
+<td>whether any save slot is used</td>
+</tr>
+<tr>
+<td><code>title_screen{...}</code></td>
+<td>a ready-made title screen with New Game / Continue / Load / Quit</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>title_screen</code> options: <code>bg</code>, <code>color</code>, <code>music</code>, <code>title</code> (use <code>\n</code> for several lines), <code>subtitle</code>, <code>scale</code> (title size, default 3), <code>title_x</code>, <code>title_y</code>, <code>menu_x</code>, <code>menu_y</code> (centers and tops), <code>title_color</code>, <code>text_color</code>.</p>
+<p>The player can save and load from the system menu at any time. A save records the scene, the flags as they were when the scene began, and every choice made since; loading replays the scene instantly up to the saved line. Two rules keep this exact:</p>
+<ol>
+<li>Keep story state in <code>flag</code> (and <code>persist</code>), not in other global variables.</li>
+<li>Use <code>rnd</code>/<code>irnd</code> (or <code>math.random</code>) for randomness: the generator is saved too.</li>
+</ol>
+<h3 id="the-system-menu">The system menu<a class="anchor" aria-label="Link to this section" href="#the-system-menu" title="Permanent link">¶</a></h3>
+<p>Esc or a right click opens it: <strong>Save</strong>, <strong>Load</strong>, <strong>Log</strong> (backlog; the mouse wheel also opens it), <strong>Auto</strong>, <strong>Skip</strong>, <strong>Settings</strong> (text speed, auto delay, music and sound volume), <strong>Title</strong>, and <strong>Quit</strong>. Holding <strong>Ctrl</strong> skips text; <strong>A</strong> toggles auto mode.</p>
+<hr />
+<h2 id="5-machine-api">5. Machine API<a class="anchor" aria-label="Link to this section" href="#5-machine-api" title="Permanent link">¶</a></h2>
+<p>All drawing happens in the cart's 16 colors (0–15). Coordinates are in pixels, <code>(0, 0)</code> is the top-left corner.</p>
+<h3 id="drawing">Drawing<a class="anchor" aria-label="Link to this section" href="#drawing" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cls([c])</code></td>
+<td>clear the screen</td>
+</tr>
+<tr>
+<td><code>pset(x, y, c)</code> / <code>pget(x, y)</code></td>
+<td>set / read a pixel</td>
+</tr>
+<tr>
+<td><code>line(x0, y0, x1, y1, c)</code></td>
+<td>line</td>
+</tr>
+<tr>
+<td><code>rect(x, y, w, h, c)</code> / <code>rectfill(x, y, w, h, c)</code></td>
+<td>rectangle outline / filled</td>
+</tr>
+<tr>
+<td><code>circ(x, y, r, c)</code> / <code>circfill(x, y, r, c)</code></td>
+<td>circle</td>
+</tr>
+<tr>
+<td><code>oval(x0, y0, x1, y1, c [, fill])</code></td>
+<td>ellipse inside a box</td>
+</tr>
+<tr>
+<td><code>tri(x0, y0, x1, y1, x2, y2, c)</code></td>
+<td>filled triangle</td>
+</tr>
+<tr>
+<td><code>print(text, x, y, c [, small]) → width</code></td>
+<td>text (8×16, or 6×12 when <code>small</code>)</td>
+</tr>
+<tr>
+<td><code>printx(text, x, y, c [, scale [, small]]) → width</code></td>
+<td>scaled text</td>
+</tr>
+<tr>
+<td><code>textw(text [, small]) → width</code></td>
+<td>width of text in pixels</td>
+</tr>
+<tr>
+<td><code>fillp([pattern [, c2]])</code></td>
+<td>4×4 dither pattern for all drawing; bits set use <code>c2</code>, or stay transparent</td>
+</tr>
+<tr>
+<td><code>clip([x, y, w, h])</code></td>
+<td>restrict drawing to a rectangle; no arguments to reset</td>
+</tr>
+<tr>
+<td><code>drawbox(x, y, w, h, bg, border [, mesh])</code></td>
+<td>a PC-98 style double-bordered window</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>DITHER</code> holds ready-made patterns: <code>solid</code>, <code>d12</code>, <code>d25</code>, <code>d50</code>, <code>d75</code>, <code>d87</code>, <code>hlines</code>, <code>vlines</code>, <code>diag</code>. For example <code>fillp(DITHER.d50)</code> then <code>rectfill(...)</code> draws a checkerboard mesh, the classic PC-98 shading.</p>
+<h3 id="images">Images<a class="anchor" aria-label="Link to this section" href="#images" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>img(name, x, y [, flip [, scale]])</code></td>
+<td>draw an image; <code>flip</code> 1 = horizontal, 2 = vertical, 3 = both</td>
+</tr>
+<tr>
+<td><code>imgpart(name, x, y, sx, sy, sw, sh [, flip [, scale]])</code></td>
+<td>draw part of an image</td>
+</tr>
+<tr>
+<td><code>imgsize(name) → w, h</code></td>
+<td>size, or nothing if missing</td>
+</tr>
+<tr>
+<td><code>imgexists(name)</code></td>
+<td>whether an image exists</td>
+</tr>
+<tr>
+<td><code>imgpget(name, x, y) → c</code></td>
+<td>read an image pixel (-1 outside)</td>
+</tr>
+<tr>
+<td><code>imgpal(name) → bool</code></td>
+<td>switch to the image's own palette, if it has one</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="palette-and-screen">Palette and screen<a class="anchor" aria-label="Link to this section" href="#palette-and-screen" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pal(i, 0xRGB)</code> / <code>pal(i)</code></td>
+<td>set / read a palette entry</td>
+</tr>
+<tr>
+<td><code>pal({ [0] = 0x000, ... })</code></td>
+<td>set several entries</td>
+</tr>
+<tr>
+<td><code>pal()</code></td>
+<td>restore the cart palette</td>
+</tr>
+<tr>
+<td><code>fade(amount [, 0xRGB])</code></td>
+<td>fade the whole display toward a color (0..1), in 16 steps like a real palette fade</td>
+</tr>
+<tr>
+<td><code>snap()</code> + <code>trans(kind, t)</code></td>
+<td>snapshot the screen, then draw a transition from the snapshot to the new frame (<code>t</code> from 0 to 1)</td>
+</tr>
+<tr>
+<td><code>shake(dx, dy)</code></td>
+<td>offset the display</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="input">Input<a class="anchor" aria-label="Link to this section" href="#input" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>btn(b)</code> / <code>btnp(b)</code></td>
+<td>held / pressed this frame (<code>btnp</code> repeats when held). Buttons: <code>"a"</code> (Z, Enter, Space, left click), <code>"b"</code> (X, Backspace), <code>"menu"</code> (Esc, right click), <code>"up"</code>, <code>"down"</code>, <code>"left"</code>, <code>"right"</code>, <code>"skip"</code> (Ctrl)</td>
+</tr>
+<tr>
+<td><code>key(name)</code> / <code>keyp(name)</code></td>
+<td>any key: <code>"a"</code>…<code>"z"</code>, <code>"0"</code>…<code>"9"</code>, <code>"space"</code>, <code>"return"</code>, <code>"escape"</code>, <code>"up"</code>, <code>"shift"</code>, <code>"ctrl"</code>…</td>
+</tr>
+<tr>
+<td><code>mouse() → x, y, buttons</code></td>
+<td>mouse position and buttons (1 left, 2 right, 4 middle)</td>
+</tr>
+<tr>
+<td><code>mousep([b]) → bool</code></td>
+<td>button pressed this frame</td>
+</tr>
+<tr>
+<td><code>wheel() → dy</code></td>
+<td>wheel movement this frame</td>
+</tr>
+<tr>
+<td><code>textin() → string</code></td>
+<td>characters typed this frame (for name entry)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="sound">Sound<a class="anchor" aria-label="Link to this section" href="#sound" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>music(n [, fade_seconds])</code> / <code>music(nil)</code></td>
+<td>play / stop a song</td>
+</tr>
+<tr>
+<td><code>sfx(pattern [, speed])</code></td>
+<td>play a pattern once; it takes over the channels it uses</td>
+</tr>
+<tr>
+<td><code>note(channel, note [, instrument [, volume]])</code> / <code>note(channel)</code></td>
+<td>play / release a single note (1 = C-0, 58 = A-4)</td>
+</tr>
+<tr>
+<td><code>volume(music, sfx)</code></td>
+<td>volumes from 0 to 1</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="data-and-system">Data and system<a class="anchor" aria-label="Link to this section" href="#data-and-system" title="Permanent link">¶</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dsave(key, string)</code> / <code>dload(key) → string</code> / <code>ddelete(key)</code></td>
+<td>per-cart storage</td>
+</tr>
+<tr>
+<td><code>serialize(value) → string</code> / <code>deserialize(string) → value</code></td>
+<td>tables to text and back</td>
+</tr>
+<tr>
+<td><code>deepcopy(table)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>time()</code></td>
+<td>seconds since the cart started</td>
+</tr>
+<tr>
+<td><code>frame()</code></td>
+<td>frame counter</td>
+</tr>
+<tr>
+<td><code>log(...)</code></td>
+<td>print to the console (and the terminal)</td>
+</tr>
+<tr>
+<td><code>cartinfo() → { title, author, editor, web, version }</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>restart()</code></td>
+<td>restart the cart</td>
+</tr>
+<tr>
+<td><code>label()</code></td>
+<td>capture the screen as the cart label</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="math-helpers">Math helpers<a class="anchor" aria-label="Link to this section" href="#math-helpers" title="Permanent link">¶</a></h3>
+<p><code>flr</code>, <code>ceil</code>, <code>abs</code>, <code>sgn</code>, <code>mid(a, b, c)</code>, <code>clamp(x, lo, hi)</code>, <code>lerp(a, b, t)</code>, <code>sin(t)</code> / <code>cos(t)</code> (t in turns), <code>rnd([x or table])</code>, <code>irnd(a, b)</code>, <code>srand(seed)</code>.</p>
+<h3 id="game-mode">Game mode<a class="anchor" aria-label="Link to this section" href="#game-mode" title="Permanent link">¶</a></h3>
+<p>A cart that defines <code>_draw</code> (and optionally <code>_init</code> and <code>_update</code>) and no scenes runs as a plain game loop, like PICO-8: <code>_init()</code> once, then <code>_update()</code> and <code>_draw()</code> 60 times per second.</p>
+<pre><code><span class="tk-kw">local</span> x = <span class="tk-num">320</span>
+<span class="tk-kw">function</span> _update()
+  <span class="tk-kw">if</span> <span class="tk-api">btn</span>(<span class="tk-str">"left"</span>) <span class="tk-kw">then</span> x = x - <span class="tk-num">2</span> <span class="tk-kw">end</span>
+  <span class="tk-kw">if</span> <span class="tk-api">btn</span>(<span class="tk-str">"right"</span>) <span class="tk-kw">then</span> x = x + <span class="tk-num">2</span> <span class="tk-kw">end</span>
+<span class="tk-kw">end</span>
+<span class="tk-kw">function</span> _draw()
+  <span class="tk-api">cls</span>(<span class="tk-num">0</span>)
+  <span class="tk-api">circfill</span>(x, <span class="tk-num">200</span>, <span class="tk-num">20</span>, <span class="tk-num">12</span>)
+  <span class="tk-api">print</span>(<span class="tk-str">"arrows to move"</span>, <span class="tk-num">8</span>, <span class="tk-num">8</span>, <span class="tk-num">15</span>)
+<span class="tk-kw">end</span>
+</code></pre>
+<hr />
+<h2 id="6-the-editors">6. The editors<a class="anchor" aria-label="Link to this section" href="#6-the-editors" title="Permanent link">¶</a></h2>
+<h3 id="code-f1">Code (F1)<a class="anchor" aria-label="Link to this section" href="#code-f1" title="Permanent link">¶</a></h3>
+<p>A Lua editor with syntax highlighting (keywords, API names, strings, numbers, comments).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl+Z / Ctrl+Y</td>
+<td>undo / redo</td>
+</tr>
+<tr>
+<td>Ctrl+C / Ctrl+X / Ctrl+V</td>
+<td>copy, cut, paste (the whole line when nothing is selected)</td>
+</tr>
+<tr>
+<td>Ctrl+A</td>
+<td>select all</td>
+</tr>
+<tr>
+<td>Ctrl+D</td>
+<td>duplicate line</td>
+</tr>
+<tr>
+<td>Ctrl+/</td>
+<td>comment / uncomment lines</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>find (Enter for the next match)</td>
+</tr>
+<tr>
+<td>Ctrl+G</td>
+<td>go to line</td>
+</tr>
+<tr>
+<td>Tab / Shift+Tab</td>
+<td>indent / unindent (selection too)</td>
+</tr>
+<tr>
+<td>Ctrl+←/→</td>
+<td>jump by words; Ctrl+Home/End: start/end of the code</td>
+</tr>
+</tbody>
+</table></div>
+<p>Shift extends the selection; the mouse selects by dragging.</p>
+<h3 id="image-f2">Image (F2)<a class="anchor" aria-label="Link to this section" href="#image-f2" title="Permanent link">¶</a></h3>
+<p>The image list is on the left; NEW, DEL, NAME, SIZE, KEY (make the secondary color transparent), PAL (toggle the image's own palette), IMPORT PNG and FIT are below it.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B</td>
+<td>pen</td>
+</tr>
+<tr>
+<td>L</td>
+<td>line</td>
+</tr>
+<tr>
+<td>R / T</td>
+<td>rectangle / filled box</td>
+</tr>
+<tr>
+<td>O / U</td>
+<td>oval / filled disc</td>
+</tr>
+<tr>
+<td>G</td>
+<td>fill</td>
+</tr>
+<tr>
+<td>I (or Alt+click)</td>
+<td>pick a color</td>
+</tr>
+<tr>
+<td>S</td>
+<td>select a rectangle</td>
+</tr>
+</tbody>
+</table></div>
+<p>Left click draws with the primary color, right click with the secondary color. <strong>D</strong> cycles the dither pattern: patterns mix the primary and secondary colors, so a 50% pattern with blue and black gives the classic PC-98 shading. <strong>X</strong> swaps the two colors, <strong>[ ]</strong> change the brush size, <strong>Shift</strong> constrains shapes to squares and circles.</p>
+<p>The mouse wheel zooms around the cursor; drag with the middle button (or Space + left button) to pan; the arrow keys pan too; <strong>F</strong> fits the image. <strong>Ctrl+C / Ctrl+X</strong> copy or cut the selection (or the whole image), <strong>Ctrl+V</strong> pastes it as a stamp under the mouse (click to place, <strong>H</strong> flips it, Shift+click places several), <strong>Delete</strong> clears the selection. <strong>Ctrl+Z / Ctrl+Y</strong> undo and redo. PgUp/PgDn select the previous/next image.</p>
+<p>The palette strip shows the 16 colors: left click picks the primary, right click the secondary. The R G B steppers edit the primary color; the change applies to the image's own palette if it has one, otherwise to the cart palette.</p>
+<h3 id="text-f3">Text (F3)<a class="anchor" aria-label="Link to this section" href="#text-f3" title="Permanent link">¶</a></h3>
+<p>A table of keys and their strings, one column per language. The yellow-framed language button is the source language; click another one to choose the language shown in the second column.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>↑ ↓ ← → / Tab</td>
+<td>move between rows and columns</td>
+</tr>
+<tr>
+<td>Enter (or start typing)</td>
+<td>edit the selected cell; Enter saves, Shift+Enter adds a line break, Esc cancels</td>
+</tr>
+<tr>
+<td>Ctrl+N</td>
+<td>new key, after the selected one (it suggests the same prefix, e.g. <code>rei.</code>)</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>filter rows by key or text</td>
+</tr>
+<tr>
+<td>Ctrl+↑ / Ctrl+↓</td>
+<td>move the selected row</td>
+</tr>
+<tr>
+<td>Ctrl+C / Ctrl+V</td>
+<td>copy / paste a cell</td>
+</tr>
+</tbody>
+</table></div>
+<p>The buttons on the top right add, delete (click twice), rename and find keys; <code>+</code> and <code>-</code> add and remove languages. Missing translations are shown in red. Keys may use letters, digits, <code>.</code>, <code>_</code> and <code>-</code>; dots are a good way to group them (<code>rei.hello</code>, <code>menu.look</code>, <code>end.home</code>). The panel at the bottom shows the whole text of the selected cell.</p>
+<h3 id="sound-f4">Sound (F4)<a class="anchor" aria-label="Link to this section" href="#sound-f4" title="Permanent link">¶</a></h3>
+<p>Edit the 32 instruments. Each one is:</p>
+<ul>
+<li><strong>FM</strong>: 4 operators combined by one of 8 algorithms (shown as a diagram; yellow boxes are carriers you hear, blue ones modulate). FB is operator 1's self-feedback.</li>
+<li><strong>SSG</strong>: a square wave with a duty cycle, using operator 1's envelope.</li>
+<li><strong>NOISE</strong>: noise whose rate follows the pitch, using operator 1's envelope.</li>
+</ul>
+<p>Operator parameters: <strong>AR</strong> attack rate, <strong>DR</strong> decay rate, <strong>SR</strong> sustain decay rate (0 holds the sustain level), <strong>RR</strong> release rate, <strong>SL</strong> sustain level, <strong>TL</strong> total level (attenuation, so higher is quieter), <strong>MUL</strong> frequency multiple (0 means ×0.5), <strong>DT</strong> detune. Click a value and drag up or down, or use the wheel, or the arrow keys with <code>[</code> <code>]</code>. VOL is the instrument's volume, VIB and SPD a vibrato.</p>
+<p>Play the instrument with the keyboard (Z S X D C V G B H N J M for one octave, Q 2 W 3 E R 5 T 6 Y 7 U for the next), or click the piano; PgUp/PgDn change the octave. PRESET cycles through starting points (e-piano, strings, bass, bell, lead, SSG square, hi-hat, kick, snare, sine). Ctrl+C / Ctrl+V copy instruments.</p>
+<h3 id="music-f5">Music (F5)<a class="anchor" aria-label="Link to this section" href="#music-f5" title="Permanent link">¶</a></h3>
+<p>A tracker with 6 channels. Each cell is <code>note instrument volume</code>, for example <code>C-4 01 F</code>.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Z…M, Q…U</td>
+<td>enter a note in the current octave with the current instrument</td>
+</tr>
+<tr>
+<td>1 or `</td>
+<td>note off (<code>===</code>)</td>
+</tr>
+<tr>
+<td>0–9, A–F</td>
+<td>instrument and volume digits (move the cursor into those columns)</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>clear the field under the cursor</td>
+</tr>
+<tr>
+<td>Backspace / Enter</td>
+<td>pull the channel up / push it down by one row</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>play / stop the pattern (looping)</td>
+</tr>
+<tr>
+<td>Shift+Space</td>
+<td>play the song</td>
+</tr>
+<tr>
+<td>, and .</td>
+<td>octave down / up</td>
+</tr>
+<tr>
+<td>- and =</td>
+<td>previous / next instrument</td>
+</tr>
+<tr>
+<td>Tab / Shift+Tab</td>
+<td>next / previous channel</td>
+</tr>
+<tr>
+<td>Ctrl+↑/↓ (Shift for octaves)</td>
+<td>transpose the channel</td>
+</tr>
+<tr>
+<td>Ctrl+C / Ctrl+X / Ctrl+V</td>
+<td>copy / cut / paste the pattern</td>
+</tr>
+</tbody>
+</table></div>
+<p>The left panel picks the song, its speed (frames per row at 60 frames per second; 6 means 10 rows per second) and loop point, and edits the order list: ADD inserts the current pattern after the selected slot, REMOVE deletes the slot, − and + change the slot's pattern. STEP is how many rows the cursor moves after each entry.</p>
+<p><code>sfx(n)</code> plays pattern n once and borrows only the channels the pattern uses, so put sound effects on channel 6 to keep the music going.</p>
+<hr />
+<h2 id="7-cartridge-format">7. Cartridge format<a class="anchor" aria-label="Link to this section" href="#7-cartridge-format" title="Permanent link">¶</a></h2>
+<p>A <code>.n98</code> cart is UTF-8 text, made of sections:</p>
+<pre class="plain"><code>-- nevel-98 cartridge v1
+__meta__
+title=Last Train Home
+author=Someone
+__lua__
+...code...
+__pal__
+112 612 435 ... (16 entries of 3 hex digits, 0xRGB)
+__img__ &lt;name&gt; &lt;width&gt; &lt;height&gt; &lt;key&gt; &lt;has_palette&gt;
+[palette line, if has_palette is 1]
+z&lt;base64 of zlib-compressed 4-bit pixels, two per byte, high nibble first&gt;
+ &lt;continuation lines start with a space&gt;
+__ins__
+&lt;index&gt; &lt;name&gt; &lt;type&gt; &lt;alg&gt; &lt;fb&gt; &lt;duty&gt; &lt;vib_depth&gt; &lt;vib_speed&gt; &lt;volume&gt; | &lt;AR DR SR RR SL TL MUL DT&gt; | ... (4 operators)
+__pat__ &lt;index&gt;
+C-4 01 F  --- .. .  ...   (32 rows, 6 cells per row)
+__song__ &lt;index&gt; &lt;speed&gt; &lt;loop&gt; &lt;length&gt; &lt;pattern&gt; &lt;pattern&gt; ...
+__font__
+z&lt;base64 zlib of 256 glyphs × 16 rows&gt;
+__text__ en it
+&lt;key&gt;\t&lt;english&gt;\t&lt;italian&gt;   (\n, \t and \\ are escaped)
+__label__
+&lt;palette line&gt;
+z&lt;base64 zlib of the 640×400 label&gt;
+__end__
+</code></pre>
+<p>Instruments that are unchanged from their defaults, empty patterns and empty songs are omitted.</p>
+<p>A <code>.n98.png</code> floppy is an ordinary PNG picture of a 3.5" disk showing the cart label; the full cart text is stored, zlib-compressed, in a private <code>nvCt</code> chunk. Image hosts that re-encode pictures will strip it, so share floppies as files.</p>
+<p>An exported <code>.html</code> player contains the WebAssembly machine and the zlib-compressed cart, base64-encoded, in one page.</p>
+<h3 id="custom-fonts">Custom fonts<a class="anchor" aria-label="Link to this section" href="#custom-fonts" title="Permanent link">¶</a></h3>
+<p><code>importfont</code> reads a picture of a 16×16 grid of 8×16 glyph cells (128×256 pixels, or any multiple) covering character codes 0–255 in Latin-1 order. Light pixels on a dark background (or dark on light) become the glyph. The font replaces the 8×16 font for codes 0–255 while the cart runs; other characters still use the built-in font.</p>
+<hr />
+<h2 id="8-limits-and-tips">8. Limits and tips<a class="anchor" aria-label="Link to this section" href="#8-limits-and-tips" title="Permanent link">¶</a></h2>
+<ul>
+<li>Keep full-screen backgrounds at 640×400, or size them to your layout's view (448×264 in the demo). Characters around 240×264 fit the demo's view.</li>
+<li>For characters that appear on several backgrounds, reserve a block of palette entries (the demo uses colors 0–9 for skin, hair, clothes and the frame) and give each background its own palette that keeps those entries and changes only the rest.</li>
+<li>16 colors go further with dithering: plan a palette for the whole game (<code>import collage.png pal -c</code>).</li>
+<li><code>bg()</code> clears the characters; call <code>show()</code> after it.</li>
+<li>Each frame has 5 seconds of CPU before the machine stops the cart, which catches infinite loops.</li>
+<li>Saves, settings and <code>persist</code> live in the drive under <code>.saves/&lt;cart name&gt;/</code>; renaming a cart file starts fresh saves.</li>
+</ul>
+<hr />
+<h2 id="9-running-and-building">9. Running and building<a class="anchor" aria-label="Link to this section" href="#9-running-and-building" title="Permanent link">¶</a></h2>
+<h3 id="playing-in-the-browser">Playing in the browser<a class="anchor" aria-label="Link to this section" href="#playing-in-the-browser" title="Permanent link">¶</a></h3>
+<p><code>web/dist/index.html</code> is the complete machine (console and editors) in one file; <code>web/dist/demo.html</code> plays the demo novel. Open either one directly, or upload it to any static host such as itch.io. Files you create in the browser are kept in the browser's storage; drop <code>.n98</code>, <code>.n98.png</code> or images on the page to add them.</p>
+<h3 id="building">Building<a class="anchor" aria-label="Link to this section" href="#building" title="Permanent link">¶</a></h3>
+<h4 id="desktop-windows-macos-linux">Desktop (Windows, macOS, Linux)<a class="anchor" aria-label="Link to this section" href="#desktop-windows-macos-linux" title="Permanent link">¶</a></h4>
+<p>Requirements: CMake 3.16+, a C11 compiler. SDL3 is used if installed, otherwise CMake downloads it.</p>
+<pre class="plain"><code>cmake -S . -B build
+cmake --build build --config Release
+./build/nevel98            # or build\Release\nevel98.exe on Windows
+</code></pre>
+<p>Command line:</p>
+<pre class="plain"><code>nevel98                      boot into the console
+nevel98 game.n98             boot with a cart loaded
+nevel98 --play game.n98      run a cart as a standalone player
+nevel98 --demo               play the demo novel
+nevel98 --scale 3            start with a 3x window
+</code></pre>
+<p>Carts are stored in the machine's drive, a <code>carts</code> folder inside your user application data folder (on Linux <code>~/.local/share/nevel98/NEVEL-98/carts</code>). Type <code>folder</code> in the console to see the exact path and open it. You can also drag carts and images onto the window.</p>
+<h4 id="web-webassembly">Web (WebAssembly)<a class="anchor" aria-label="Link to this section" href="#web-webassembly" title="Permanent link">¶</a></h4>
+<p>The browser build uses <a href="https://github.com/WebAssembly/wasi-sdk/releases">wasi-sdk</a> (version 25 or newer):</p>
+<pre class="plain"><code>WASI_SDK=/path/to/wasi-sdk ./web/build_web.sh
+</code></pre>
+<p>This writes <code>web/dist/nevel98.wasm</code>, <code>web/dist/index.html</code> and <code>web/dist/demo.html</code>. When <code>web/dist/nevel98.wasm</code> exists, the desktop build bundles it so the <code>export game.html</code> command works offline. A prebuilt copy is included in this repository.</p>
+<h4 id="headless-runner">Headless runner<a class="anchor" aria-label="Link to this section" href="#headless-runner" title="Permanent link">¶</a></h4>
+<p><code>nevel98_headless</code> runs the machine without a window. It is used for automated tests and can script input and save screenshots:</p>
+<pre class="plain"><code>./build/nevel98_headless --play --frames 600 --keys "60:z,120:z" --shot 300:shot.png @demo
+</code></pre>
+<h3 id="project-layout">Project layout<a class="anchor" aria-label="Link to this section" href="#project-layout" title="Permanent link">¶</a></h3>
+<pre class="plain"><code>src/core/        the machine: graphics, FM synth, carts, Lua API, editors, console
+src/core/prelude.lua   the visual novel engine, written in Lua
+src/platform/    hosts: SDL3 desktop, WebAssembly, headless
+web/             browser shell and build script; web/dist has prebuilt files
+carts/           the demo cart (.n98 and floppy .n98.png)
+assets/          application icon (.ico for Windows, PNG for the window)
+tools/           bin2c, mkhtml, the font converter
+third_party/     Lua 5.4.7, stb_image, stb_image_write
+docs/MANUAL.md   the complete manual
+</code></pre>
+<h3 id="fonts">Fonts<a class="anchor" aria-label="Link to this section" href="#fonts" title="Permanent link">¶</a></h3>
+<p>The built-in fonts are converted from <a href="https://github.com/fcambus/spleen">Spleen</a> (BSD 2-Clause). The original NEC PC-98 font ROM is copyrighted and is not included; if you own one, you can draw or convert its glyphs into a 16×16 sheet of 8×16 cells and install it in a cart with <code>importfont sheet.png</code>.</p>
+<h3 id="license">License<a class="anchor" aria-label="Link to this section" href="#license" title="Permanent link">¶</a></h3>
+<p>NEVEL-98 is released under the MIT license (see <code>LICENSE</code>). Third-party components keep their own licenses: Lua (MIT), stb (public domain / MIT), Spleen (BSD 2-Clause), SDL3 (zlib). Carts you make are yours.</p>
+    <p class="end">This page is generated from <code>docs/MANUAL.md</code> and the README of NEVEL-98.</p>
+  </main>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>NEVEL-98 is released under the MIT license. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation.</p>
+    <nav aria-label="Footer">
+      <a href="../play/">Play</a>
+      <a href="../app/">Open</a>
+      <a href="../">Home</a>
+      <a href="https://bluemooncoder.itch.io/">itch.io</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var doc = document.getElementById("doc");
+
+  /* ---- index every table row by its first cell: functions, commands, keys ---- */
+  var index = [];
+  var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); };
+  var seen = {};
+  [].forEach.call(doc.querySelectorAll("table"), function (t) {
+    var h = t.closest(".tablewrap").previousElementSibling;
+    while (h && !/^H[234]$/.test(h.tagName)) h = h.previousElementSibling;
+    var section = h ? h.textContent.replace(/¶$/, "").trim() : "";
+    [].forEach.call(t.querySelectorAll("tbody tr"), function (tr) {
+      var first = tr.cells[0]; if (!first) return;
+      var label = first.textContent.trim(); if (!label) return;
+      var id = "r-" + slug(label).slice(0, 48);
+      if (seen[id]) id += "-" + (++seen[id]); else seen[id] = 1;
+      tr.id = id;
+      var desc = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
+      index.push({ id: id, label: label, desc: desc, section: section, hay: (label + " " + desc).toLowerCase() });
+    });
+  });
+
+  var q = document.getElementById("q"), res = document.getElementById("res");
+  var sel = -1, items = [];
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function render() {
+    var v = q.value.trim().toLowerCase();
+    sel = -1;
+    if (!v) { res.hidden = true; q.setAttribute("aria-expanded", "false"); return; }
+    var starts = [], label = [], other = [];
+    index.forEach(function (e) {
+      var l = e.label.toLowerCase();
+      if (l.indexOf(v) === 0 || l.indexOf("`" + v) === 0) starts.push(e);
+      else if (l.indexOf(v) >= 0) label.push(e);
+      else if (e.hay.indexOf(v) >= 0) other.push(e);
+    });
+    items = starts.concat(label, other).slice(0, 14);
+    res.innerHTML = items.length ? items.map(function (e, i) {
+      return '<li><a href="#' + e.id + '" data-i="' + i + '">' + esc(e.label) + "<small>" + esc(e.section) + (e.desc ? " · " + esc(e.desc.slice(0, 70)) : "") + "</small></a></li>";
+    }).join("") : '<li class="none">Nothing found. Try a shorter word.</li>';
+    res.hidden = false; q.setAttribute("aria-expanded", "true");
+  }
+  function mark() { [].forEach.call(res.querySelectorAll("a"), function (a, i) { a.classList.toggle("sel", i === sel); if (i === sel) { var t = a.offsetTop, h = a.offsetHeight; if (t < res.scrollTop) res.scrollTop = t; else if (t + h > res.scrollTop + res.clientHeight) res.scrollTop = t + h - res.clientHeight; } }); }
+  q.addEventListener("input", render);
+  q.addEventListener("keydown", function (e) {
+    if (res.hidden) return;
+    if (e.key === "ArrowDown") { sel = Math.min(items.length - 1, sel + 1); mark(); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); mark(); e.preventDefault(); }
+    else if (e.key === "Enter") { var it = items[sel < 0 ? 0 : sel]; if (it) { location.hash = it.id; close(); } e.preventDefault(); }
+    else if (e.key === "Escape") { close(); }
+  });
+  function close() { res.hidden = true; q.setAttribute("aria-expanded", "false"); }
+  res.addEventListener("click", function (e) { if (e.target.closest("a")) close(); });
+  document.addEventListener("click", function (e) { if (!e.target.closest(".finder")) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && document.activeElement !== q && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+  });
+
+  /* ---- highlight the current section in the contents ---- */
+  var links = {};
+  [].forEach.call(document.querySelectorAll(".side > .toc a"), function (a) { links[a.getAttribute("href").slice(1)] = a; });
+  var heads = [].slice.call(doc.querySelectorAll("h2[id], h3[id]"));
+  var on = null;
+  function spy() {
+    var cur = null;
+    for (var i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top < 120) cur = heads[i]; else break; }
+    var a = cur && links[cur.id];
+    if (a === on) return;
+    if (on) on.classList.remove("on");
+    on = a || null;
+    if (on) { on.classList.add("on"); var side = on.closest(".side"); var r = on.getBoundingClientRect(), s = side.getBoundingClientRect(); if (side.scrollHeight > side.clientHeight && (r.top < s.top + 80 || r.bottom > s.bottom - 20)) side.scrollTop += r.top - s.top - s.height / 2; }
+  }
+  var raf = 0;
+  window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; spy(); }); }, { passive: true });
+  spy();
+  [].forEach.call(document.querySelectorAll(".toc-mobile a"), function (a) { a.addEventListener("click", function () { a.closest("details").open = false; }); });
+})();
+</script>
+</body>
+</html>

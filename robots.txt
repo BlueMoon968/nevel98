@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nevel98.bluemoon.moe/sitemap.xml
