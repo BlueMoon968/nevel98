@@ -194,6 +194,31 @@ h2{
 }
 .intro{ max-width:58ch; margin:0 0 36px; color:#cfcabd; font-size:1.125rem; }
 
+/* ---------- why: a note from the author ---------- */
+.why{ background:var(--black); border-top:2px solid var(--dgrey); border-bottom:2px solid var(--dgrey); }
+.why .wrap{ max-width:760px; }
+.why h2{ font-size:64px; }
+.why p{ margin:0 0 18px; color:#d9d4c6; font-size:1.125rem; line-height:1.7; }
+.why p.first::first-letter{ font-family:var(--code); font-size:3.2em; float:left; line-height:.9; margin:6px 10px 0 0; color:var(--magenta); }
+.why em{ color:var(--white); font-style:normal; }
+.why .limits{
+  margin:40px 0; padding:28px 30px 12px;
+  border:2px solid var(--cyan); background:var(--navy);
+  box-shadow:6px 6px 0 var(--blue);
+}
+.why .limits h3{ margin:0 0 14px; font-family:var(--code); font-weight:400; font-size:32px; color:var(--cyan); }
+.why .limits p{ color:#e3e1f4; }
+.why .specs{ font-family:var(--code); color:var(--yellow); letter-spacing:.04em; }
+.why .sign{ margin-top:30px; font-family:var(--code); font-size:24px; color:var(--yellow); }
+
+/* ---------- get ---------- */
+.get{ background:linear-gradient(180deg, var(--black) 0%, var(--navy) 100%); }
+.get .box{ display:flex; flex-direction:column; height:100%; box-sizing:border-box; }
+.get .box .price{ flex:none; margin:0 0 12px; font-family:var(--code); font-size:20px; color:var(--cyan); }
+.get .box p{ flex:1; }
+.get .box .btn{ margin-top:20px; align-self:flex-start; }
+.get .fine{ margin:28px 0 0; color:#a9afbb; font-size:.95rem; max-width:70ch; }
+
 /* ---------- hero: a monitor in a room ---------- */
 
 .hero{
@@ -423,6 +448,8 @@ h2{
   .arrow span:first-child{ transform:rotate(90deg); }
 }
 @media (max-width:620px){
+  .why h2{ font-size:40px; }
+  .why .limits{ padding:22px 18px 6px; }
   section{ padding:72px 16px; }
   .hero{ padding:36px 16px 64px; }
   .monitor{ padding:10px 10px 28px; }
@@ -450,6 +477,8 @@ h2{
     <a class="sec" href="#lua">Lua</a>
     <a class="sec" href="#editors">Editors</a>
     <a class="sec" href="#carts">Carts</a>
+    <a class="sec" href="#why">Why</a>
+    <a class="sec" href="#get">Get</a>
     <a href="docs/">Docs</a>
     <a href="app/">Open</a>
   </nav>
@@ -667,6 +696,25 @@ h2{
   </div>
 </section>
 
+<!-- ============ WHY ============ -->
+<section class="why" id="why" aria-labelledby="t-why">
+  <div class="wrap">
+    <p class="eyebrow">WHY · A NOTE FROM BLUEMOON</p>
+    <h2 id="t-why">Sixteen colors were enough</h2>
+    <p class="first">I have loved PC-98 visual novels for a long time. NEC's PC-9801 and the machines that followed it were the computers of Japan from the early 1980s to the late 1990s, and the stories written for them shaped what visual novels and adventure games still are today.</p>
+    <p>The spark for NEVEL-98 came from an anime, <em>16bit Sensation: Another Layer</em> (2023), in which an illustrator from today ends up in 1992, drawing for a bishoujo game studio. The show itself didn't stay with me for long. What stayed was its love for the PC-98: the pixels placed one by one, the cramped studio, the people who made it all work. I was already a fan, and it made me want to build something.</p>
+    <p>The PC-98 showed 640×400 pixels and sixteen colors at once, picked from 4096. On that screen Hideo Kojima made <em>Policenauts</em>, ELF made <em>YU-NO</em> and ZUN started <em>Touhou</em>, and a whole generation of artists learned to dither a sunset and shade a face by hand.</p>
+    <div class="limits">
+      <h3>The philosophy of limits</h3>
+      <p>Those developers didn't have infinite memory, infinite colors or infinite time. They had sixteen colors, a few FM voices and a floppy disk. And that was the point. When you can't add more, you have to choose: every color has to earn its place, every melody has to say something with a handful of voices, every scene has to work with one background and a few lines of text.</p>
+      <p>Limits take away the endless options and leave the one question that matters: <em>what is this story about, and how do I make you feel it?</em> That is why those games are still remembered. Not for what the machines could do, but for what people did with so little.</p>
+      <p>NEVEL-98 keeps those limits on purpose: <span class="specs">640×400 · 16 colors · 6 FM channels · one cart</span>. Not out of nostalgia, but so you stop worrying about tools and start making something.</p>
+    </div>
+    <p>I hope NEVEL-98 can be a small machine that lights a spark. If it makes you want to draw one face, write one scene or compose one melody, and then finish your story, it has done its job.</p>
+    <p class="sign">Bluemoon</p>
+  </div>
+</section>
+
 <!-- ============ START ============ -->
 <section class="start" aria-labelledby="t-start">
   <div class="wrap">
@@ -691,16 +739,29 @@ then SAVE &lt;name&gt; to keep your own copy.</span>
   </div>
 </section>
 
+<!-- ============ GET ============ -->
+<section class="get" id="get" aria-labelledby="t-get">
+  <div class="wrap">
+    <h2 id="t-get">Get NEVEL-98</h2>
+    <p class="intro">Every editor and every feature is in the free browser version. The desktop version is for working offline, and buying it keeps the machine running.</p>
+    <ul class="grid">
+      <li><div class="box"><h3>Browser</h3><p class="price">free</p><p>The whole machine and the demo, in any modern browser. Nothing to install. Carts are kept in the browser's storage, and you can save them to files.</p><a class="btn" href="app/">Open NEVEL-98</a></div></li>
+      <li><div class="box"><h3>Desktop</h3><p class="price">from $4.99 · pay what you want</p><p>Windows. Works offline, with real files and folders, fullscreen and no browser storage limits. Pay more if you want to support the project.</p><a class="btn primary" href="https://bluemooncoder.itch.io/nevel-98">Get it on itch.io</a></div></li>
+      <li><div class="box"><h3>Your games</h3><p class="price">yours</p><p>Floppies and exported pages are yours to share, give away or sell, with no fee and no royalty. The player inside an exported page is free to distribute with your game.</p><a class="btn" href="docs/">Read the docs</a></div></li>
+    </ul>
+  </div>
+</section>
+
 </main>
 
 <footer class="foot">
   <div class="wrap">
-    <p>NEVEL-98 is released under the MIT license. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation. Games you make are yours.</p>
+    <p>NEVEL-98 © 2026 Bluemoon. Free in the browser; games you make are yours to share and sell. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation. Games you make are yours.</p>
     <nav aria-label="Footer">
       <a href="play/">Play</a>
       <a href="app/">Open</a>
       <a href="docs/">Docs</a>
-      <a href="https://bluemooncoder.itch.io/">itch.io</a>
+      <a href="https://bluemooncoder.itch.io/nevel-98">itch.io</a>
     </nav>
   </div>
 </footer>

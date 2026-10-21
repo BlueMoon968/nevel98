@@ -1,37 +1,27 @@
-# nevel98.bluemoon.moe
+# NEVEL-98
 
-The website of **NEVEL-98**, a fantasy computer for making visual novels in the style of the NEC PC-9801 era.
+**NEVEL-98** is a fantasy computer for making visual novels the way they looked on the Japanese PC-9801 of the late '80s and '90s.
 
-| Path | What it is |
-|---|---|
-| `/` | landing page (`index.html`) |
-| `/docs/` | the manual, generated from `docs/MANUAL.md` of NEVEL-98 |
-| `/play/` | the demo cart *Last Train Home* (copy of `web/dist/demo.html`) |
-| `/app/` | the whole machine in the browser (copy of `web/dist/index.html`) |
-| `/carts/` | the demo as `.n98` and as a floppy `.n98.png` |
+It is a small, complete machine, like PICO-8 or TIC-80 but made for stories: a 640×400 screen with 16 colors out of 4096, a 6-channel FM synthesizer, and a visual novel engine in Lua. Code, pictures, texts, sounds and music are all made inside it, in five editors. A finished game is a single cart, shared as a text file, as a picture of a floppy disk, or as one web page that plays anywhere.
 
-The site is static and needs no build to be served. GitHub Pages serves it from the root of `main`, with the custom domain in `CNAME`.
+- **Website:** https://nevel98.bluemoon.moe/
+- **Open the machine in the browser (free):** https://nevel98.bluemoon.moe/app/
+- **Play the demo, *Last Train Home*:** https://nevel98.bluemoon.moe/play/
+- **Manual:** https://nevel98.bluemoon.moe/docs/
+- **Desktop version (Windows, pay what you want):** https://bluemooncoder.itch.io/nevel-98
 
-## Updating
+## This repository
 
-**The manual and the landing page.** After changing `docs/MANUAL.md` or the README of NEVEL-98, rebuild both pages:
+This repository holds the website, served by GitHub Pages from the root of `main` (custom domain in `CNAME`). It is generated: the sources live in the NEVEL-98 project (`site/`) and are rebuilt, together with the web version of the machine, the manual, the demo cart and the screenshots, by a single command:
 
 ```sh
-pip install markdown
-python3 tools/build_site.py /path/to/nevel98 .
+python tools/release.py --site-repo path/to/this/repo
 ```
 
-The generator reads the manual (keeping only the newer copy of any duplicated section), appends the "Running and building" part of the README, and colors Lua code like the machine's code editor. The page designs live in `tools/tpl_index.html`, `tools/tpl_docs.html` and `tools/common.css`.
+Changes made by hand here are overwritten by the next release.
 
-**The web player.** After a new web build of NEVEL-98, copy the two files:
+## License
 
-```sh
-cp /path/to/nevel98/web/dist/demo.html  play/index.html
-cp /path/to/nevel98/web/dist/index.html app/index.html
-```
+NEVEL-98 is made by Bluemoon. The browser version is free to use for anything; the desktop version is sold on itch.io. Games you make with NEVEL-98 are yours to share and sell, with no fee or royalty, and exported pages may carry the NEVEL-98 player with them. The demo cart's story, characters and art are not for reuse. The full terms are in [LICENSE.md](LICENSE.md).
 
-**The screenshots** in `assets/screens/` are real frames of the machine (640×400, 16 colors). Replace them with frames of the same size and name.
-
-## Credits
-
-NEVEL-98 is released under the MIT license. The site uses the fonts Spleen (BSD 2-Clause), DotGothic16 and M PLUS 1p (SIL Open Font License 1.1), served from `assets/fonts/` together with their licenses.
+The site uses the fonts Spleen (BSD 2-Clause), DotGothic16 and M PLUS 1p (SIL Open Font License 1.1), served from `assets/fonts/` with their licenses. NEVEL-98 is not affiliated with NEC Corporation.

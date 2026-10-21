@@ -112,6 +112,7 @@ local function ending(id)
 end
 
 local function set_clock(t) flag.clock = t end
+local function gain(stat, n) flag[stat] = (flag[stat] or 0) + n end
 local function new_year() flag.clock, flag.date, flag.day = "00:00", "01/01", "hud.sun" end
 
 ---------------------------------------------------------------------------
@@ -134,6 +135,7 @@ end)
 scene("start", function()
   music(nil)
   flag.date, flag.day = "12/31", "hud.sat"
+  flag.trust, flag.courage = 0, 0    -- hidden: how understood Rei feels / how ready I am to face home
   set_clock("23:52")
   layout("game")
   bg(0)
@@ -146,14 +148,18 @@ scene("start", function()
   sfx(40)
   say("@start.pager")
   say("@start.pager2")
+  say("@start.pager3")
+  say("@start.pager4")
 
-  -- look around before sitting down (each choice can change the story)
+  -- look around before sitting down: what you notice comes back later
   while true do
     local c = menu{ "@menu.look", "@menu.board", "@menu.drink", "@menu.sit" }
     if c == 1 then
+      flag.carving = true
       say("@look.1")
       say("@look.2")
     elseif c == 2 then
+      if not flag.board then gain("courage", 1) end
       flag.board = true
       say("@board.1")
       say("@board.2")
@@ -182,13 +188,29 @@ scene("start", function()
     say("@char.rei", "@rei.who")
     say("@char.rei", "@rei.who2")
   else
-    rei()
+    gain("courage", 1)
+    gain("trust", 1)
+    rei("sad")
     say("@char.rei", "@rei.letgo")
     say("@char.rei", "@rei.letgo2")
   end
 
+  -- what is she waiting for?
+  rei()
+  say("@p.waiting")
+  rei("sad")
+  say("@char.rei", "@rei.wait1")
+  rei("smile")
+  say("@char.rei", "@rei.wait2")
+  say("@p.maybe")
+  rei("sad")
+  say("@char.rei", "@rei.wait3")
+  rei("smile")
+  say("@char.rei", "@rei.wait4")
+  if flag.carving then say("@start.carving") end
+
   if flag.soda then
-    rei("smile")
+    gain("trust", 1)
     say("@char.rei", "@rei.soda")
     say("@start.soda")
   end
@@ -199,36 +221,80 @@ scene("start", function()
   say("@char.rei", "@rei.city2")
 
   sfx(40)
-  say("@start.pager3")
+  say("@start.pager5")
   say("@char.rei", "@rei.pager")
+  if choice{ "@c.tell", "@c.dodge" } == 1 then
+    gain("courage", 1)
+    gain("trust", 1)
+    say("@p.tell")
+    say("@char.rei", "@rei.tell1")
+    say("@p.tell2")
+    rei("smile")
+    say("@char.rei", "@rei.tell2")
+  else
+    say("@char.rei", "@rei.dodge")
+    rei("sad")
+    say("@char.rei", "@rei.dodge2")
+  end
   rei("smile")
   say("@char.rei", "@rei.pager2")
 
-  -- the question that matters: does anyone ever ask her?
+  -- the question nobody asks her
   if choice{ "@c.thanks", "@c.ask" } == 2 then
-    flag.asked = true
+    gain("trust", 1)
     rei("sad")
     say("@char.rei", "@rei.ask1")
     say("@char.rei", "@rei.ask2")
     rei("smile")
     say("@char.rei", "@rei.ask3")
     say("@start.ask4")
+    local r = choice{ "@c.pretend", "@c.song", "@c.gohome" }
+    if r == 1 then
+      gain("trust", 2)
+      gain("courage", 1)
+      rei("sad")
+      say("@char.rei", "@rei.pretend")
+      say("@start.pretend")
+    elseif r == 2 then
+      gain("trust", 1)
+      say("@char.rei", "@rei.song")
+    else
+      rei("sad")
+      say("@char.rei", "@rei.gohome")
+    end
   else
     say("@char.rei", "@rei.thanks")
   end
 
+  -- the radio that plays next year's songs
   rei()
   say("@start.radio")
   say("@char.rei", "@rei.radio")
+  sfx(40)
+  say("@start.radio2")
   music(2, 2)
   set_clock("23:58")
   say("@start.song")
+  say("@char.rei", "@rei.best")
+  say("@p.future")
+  rei("smile")
+  say("@char.rei", "@rei.best2")
+  rei("sad")
+  say("@char.rei", "@rei.best3")
+  if choice{ "@c.notknow", "@c.foryou" } == 1 then
+    rei()
+    say("@char.rei", "@rei.notknow")
+  else
+    gain("trust", 1)
+    say("@char.rei", "@rei.foryou")
+  end
   rei("sad")
   say("@char.rei", "@rei.stop")
 
   if choice({ "@c.stay", "@c.walk" }, "@q.midnight") == 1 then jump("platform") else jump("street") end
 end)
 
+-- THE LONG WAY: no miracle, just a phone call
 scene("street", function()
   hide(nil)
   bg("street", "wipe", 1.0)
@@ -248,18 +314,33 @@ scene("street", function()
   end
   say("@street.6")
   say("@street.7")
-  new_year()
   say("@street.8")
+  new_year()
   say("@street.9")
+  music(nil, 1)
+  effect(nil)
+  bg("dawn", "dither", 1.5)
+  music(2, 2)
+  say("@street.10")
+  say("@street.11")
   ending("long_way")
 end)
 
--- leaving on the train without her
-local function leave_alone()
+-- HOME: I go back alone, and she stays on the platform
+local function go_home()
+  rei("smile")
+  say("@char.rei", "@rei.guilt")
+  say("@plat.alone")
   hide(nil, "dither", 1.0)
+  music(nil, 1)
+  effect(nil)
+  bg("dawn", "curtain", 2.0)
+  music(2)
+  say("@plat.morning")
   if flag.soda then say("@plat.soda") end
+  say("@plat.call")
   say("@plat.next")
-  ending("next_year")
+  ending("home")
 end
 
 scene("platform", function()
@@ -267,6 +348,7 @@ scene("platform", function()
   bg("station", flag.ran and "wipe" or nil, 0.8)
   effect("rain")
   if flag.ran then
+    gain("trust", 1)
     say("@plat.ran")
     rei("smile", "right", "dither")
     say("@char.rei", "@rei.back")
@@ -277,51 +359,45 @@ scene("platform", function()
   rei()
   say("@char.rei", "@rei.here")
 
-  if not flag.board then
-    -- no train comes for those who never read the board
-    rei("sad")
-    say("@char.rei", "@rei.nextyear")
-    say("@char.rei", "@rei.promise")
-    say("@plat.vanish")
-    hide("rei_sad", "dither", 1.0)
-    new_year()
-    say("@plat.board_end")
-    ending("next_year")
-    return
-  end
-
-  say("@char.rei", "@rei.board1")
-  say("@char.rei", "@rei.board2")
+  -- midnight: the train that shouldn't exist
   new_year()
   sfx(40)
   say("@plat.train")
   sfx(41)
   quake(0.6, 3)
   say("@plat.train2")
+  say(flag.board and "@plat.board_yes" or "@plat.board_no")
+  rei("sad")
+  say("@char.rei", "@rei.yours")
+  say("@p.yours")
+  say("@char.rei", "@rei.mine")
+  say("@p.how")
   rei("smile")
-  say("@char.rei", "@rei.go")
-  say("@char.rei", "@rei.go2")
+  say("@char.rei", "@rei.just")
   say("@plat.decide")
 
   if choice{ "@c.alone", "@c.together" } == 1 then
-    say("@plat.alone")
-    leave_alone()
+    go_home()
     return
   end
 
-  if not flag.asked then
-    -- she won't let anyone in who never asked
+  -- she only lets someone in if she feels understood, and if I mean it
+  if (flag.trust or 0) < 4 or (flag.courage or 0) < 2 then
     say("@char.rei", "@rei.fine")
-    say("@plat.push")
-    leave_alone()
+    say("@plat.fine")
+    go_home()
     return
   end
 
+  -- NEXT YEAR
   rei("sad")
   say("@char.rei", "@rei.angry")
   say("@char.rei", "@rei.angry2")
   say("@plat.mirror")
   say("@char.rei", "@rei.admit")
+  rei()
+  say("@char.rei", "@rei.home")
+  say("@p.waiting2")
   rei("smile")
   say("@char.rei", "@rei.admit2")
   flash(0xFFF, 0.6)
@@ -334,9 +410,15 @@ scene("platform", function()
   say("@plat.dawn")
   say("@char.rei", "@rei.dawn")
   rei(nil, "left")
+  say("@plat.newsong")
+  rei("sad", "left")
+  say("@char.rei", "@rei.newsong")
+  rei("smile", "left")
+  say("@plat.newsong2")
+  rei(nil, "left")
   say("@char.rei", "@rei.promise")
-  say("@plat.home")
-  ending("home")
+  say("@plat.call2")
+  ending("next_year")
 end)
 __pal__
 000 fdb e98 912 da4 448 fff e22 98d 114 014 ec8 657 acb 226 a87
@@ -4055,22 +4137,24 @@ hud.sat	SAT	SAB
 hud.sun	SUN	DOM
 start.date	December 31st, 1994. Eight minutes to midnight.	31 dicembre 1994. Mancano otto minuti a mezzanotte.
 start.board	The departure board flickers over the empty platform.	Il tabellone delle partenze sfarfalla sopra il binario deserto.
-start.missed	The last train for Shin-Kawa left four minutes ago. I watched its lights disappear and didn't even try to run.	L'ultimo treno per Shin-Kawa è partito quattro minuti fa. Ho guardato le sue luci sparire e non ho nemmeno provato a correre.
-start.pager	My pager buzzes again. Same message as the last six times: {c:8}HOME{/c}. My sister.	Il cercapersone vibra di nuovo. Lo stesso messaggio delle ultime sei volte: {c:8}CASA{/c}. Mia sorella.
-start.pager2	We haven't spoken since the summer. I don't remember who started it. Only who stopped calling.	Non ci parliamo dall'estate. Non ricordo chi abbia cominciato. Solo chi ha smesso di chiamare.
+start.missed	The last train for Shin-Kawa left four minutes ago. I could have caught it. I watched its lights disappear instead.	L'ultimo treno per Shin-Kawa è partito quattro minuti fa. Avrei potuto prenderlo. Invece ho guardato le sue luci sparire.
+start.pager	My pager buzzes. {c:8}COME HOME. I KEPT YOUR SEAT.{/c} My sister.	Il cercapersone vibra. {c:8}TORNA A CASA. TI HO TENUTO IL POSTO.{/c} Mia sorella.
+start.pager2	In August I promised I'd be home for Dad's memorial. I didn't go.	Ad agosto avevo promesso di tornare per l'anniversario di papà. Non ci sono andato.
+start.pager3	When she called, I told her to stop waiting for me. That I wasn't coming back.	Quando ha chiamato, le ho detto di smettere di aspettarmi. Che non sarei più tornato.
+start.pager4	She has paged me every night since. I've never called back.	Da allora mi scrive ogni sera. Non l'ho mai richiamata.
 menu.look	Look around	Guarda
 menu.board	Read board	Il tabellone
 menu.drink	Buy a drink	Una bibita
 menu.sit	Sit down	Siediti
 look.1	Rain drums on the roof. Across the river the city is still awake, window by window.	La pioggia tamburella sulla tettoia. Oltre il fiume la città è ancora sveglia, una finestra alla volta.
-look.2	No guard. No cleaner. Just me, the rain and the hum of the vending machine.	Nessun controllore. Nessun inserviente. Solo io, la pioggia e il ronzio del distributore.
+look.2	Someone has carved into the bench: {c:8}R. 1989{/c}, {c:8}R. 1990{/c}, {c:8}R. 1991{/c}... one line for every year, up to this one.	Qualcuno ha inciso sulla panchina: {c:8}R. 1989{/c}, {c:8}R. 1990{/c}, {c:8}R. 1991{/c}... una riga per ogni anno, fino a questo.
 board.1	Every line reads the same: {c:7}SERVICE ENDED{/c}.	Ogni riga dice la stessa cosa: {c:7}SERVIZIO TERMINATO{/c}.
 board.2	Every line except the last one, which reads {c:8}00:00  HOME{/c}.{w:0.8} ...That can't be right.	Tutte tranne l'ultima, che dice {c:8}00:00  CASA{/c}.{w:0.8} ...Non può essere giusto.
 drink.1	The machine sells something called {c:8}MELON SODA ROYALE{/c}. The can has a little crown on it.	Il distributore vende una cosa chiamata {c:8}MELON SODA ROYALE{/c}. Sulla lattina c'è una piccola corona.
-drink.2	I buy two. I don't know why two.	Ne prendo due. Non so perché due.
+drink.2	I buy two. One for me, one out of habit: my sister always stole half of mine.	Ne prendo due. Una per me e una per abitudine: mia sorella mi rubava sempre metà della mia.
 drink.again	I already have two cans. That feels like enough melon for one night.	Ho già due lattine. Mi sembra abbastanza melone per una notte.
 start.sit	I sit down. The bench is cold enough to bite through my coat.	Mi siedo. La panchina è così fredda da mordere attraverso il cappotto.
-start.chime	A chime echoes across the platform, though no train is coming.	Un rintocco attraversa il binario, anche se non arriva nessun treno.
+start.chime	Three notes echo across the platform: the departure chime. No train is coming.	Tre note attraversano il binario: il segnale di partenza. Non sta arrivando nessun treno.
 rei.hi1	Ehehe! You missed it too?	Ehehe! Anche tu l'hai perso?
 rei.hi2	Don't make that face. Missing the last train of the year is practically a tradition.	Non fare quella faccia. Perdere l'ultimo treno dell'anno è praticamente una tradizione.
 c.who	"Who are you?"	«Chi sei?»
@@ -4079,24 +4163,55 @@ rei.who	Rei. Just Rei. I come here every New Year's Eve, so technically this is 
 rei.who2	But I'll share. I'm generous like that.	Ma la divido volentieri. Sono generosa, io.
 rei.letgo	...Oh. That's different.	...Oh. Questo è diverso.
 rei.letgo2	Letting something go on purpose is the hardest way to lose it.	Lasciar andare qualcosa apposta è il modo più difficile di perderla.
+p.waiting	"Are you waiting for someone?"	«Aspetti qualcuno?»
+rei.wait1	Mmh... good question.	Mmh... bella domanda.
+rei.wait2	Maybe!	Forse sì!
+p.maybe	"What do you mean, maybe?"	«Come sarebbe a dire, forse?»
+rei.wait3	It's strange. Every year I come here, I get the feeling I forgot something important.	È strano. Ogni anno che vengo qui ho la sensazione di aver dimenticato qualcosa di importante.
+rei.wait4	But it's probably just the cold! Ehehe!	Ma probabilmente è soltanto il freddo! Ehehe!
+start.carving	I think of the letters carved into the bench. {c:8}R.{/c} Every year, up to this one.	Penso alle lettere incise sulla panchina. {c:8}R.{/c} Ogni anno, fino a questo.
 rei.soda	Wait. Is that {c:8}MELON SODA ROYALE{/c}?! Nobody ever buys that one. It's the best one!	Aspetta. Quella è {c:8}MELON SODA ROYALE{/c}?! Non la compra mai nessuno. È la migliore!
-start.soda	I hand her the second can. Now I know why I bought two.	Le porgo la seconda lattina. Adesso so perché ne ho prese due.
+start.soda	I hand her the second can. It feels right, giving away the half somebody used to steal.	Le porgo la seconda lattina. Mi sembra giusto regalare la metà che qualcuno mi rubava.
 start.city	She watches the city across the river as if it were a show put on just for her.	Guarda la città oltre il fiume come se fosse uno spettacolo messo in scena solo per lei.
 rei.city	I like the city at night. Everyone's busy with their own lives, so nobody's watching you.	Mi piace la città di notte. Sono tutti presi dalle loro vite, così nessuno ti guarda.
-rei.city2	You can just... be yourself. Even if you're not completely sure who that is.	Puoi essere... te stessa. Anche se non sei del tutto sicura di chi sia.
-start.pager3	The pager buzzes. {c:8}HOME{/c}.	Il cercapersone vibra. {c:8}CASA{/c}.
+rei.city2	You can just... be yourself. Even if you're not completely sure who that is.	Puoi essere... te stesso. Anche se non sei del tutto sicuro di chi sia.
+start.pager5	The pager buzzes again. {c:8}I KEPT YOUR SEAT.{/c}	Il cercapersone vibra di nuovo. {c:8}TI HO TENUTO IL POSTO.{/c}
 rei.pager	Someone really wants you to come home.	Qualcuno ci tiene davvero che tu torni a casa.
+c.tell	Tell her about your sister	Parlale di tua sorella
+c.dodge	Change the subject	Cambia discorso
+p.tell	"I told my sister to stop waiting for me."	«Ho detto a mia sorella di smettere di aspettarmi.»
+rei.tell1	And did she?	E l'ha fatto?
+p.tell2	"...She kept my seat."	«...Mi ha tenuto il posto.»
+rei.tell2	Then she's still waiting, silly. That's the good news!	Allora ti sta ancora aspettando, sciocchino. È una bella notizia!
+rei.dodge	Okay. You don't have to tell me.	Va bene. Non devi dirmelo per forza.
+rei.dodge2	...I'm the same, you know.	...Anch'io sono così, sai.
 rei.pager2	It's going to be fine, you know. Whatever it is. It's always fine in the end!	Andrà tutto bene, sai. Qualunque cosa sia. Alla fine va sempre tutto bene!
 c.thanks	"Thanks."	«Grazie.»
 c.ask	"And you? Are you okay?"	«E tu? Tu stai bene?»
+rei.thanks	Anytime. Cheering up strangers is my second job.	Quando vuoi. Tirare su di morale gli sconosciuti è il mio secondo lavoro.
 rei.ask1	Me?	Io?
 rei.ask2	...Nobody's asked me that in a long time.	...Era tanto che nessuno me lo chiedeva.
 rei.ask3	I'm fine! Really! Everything's fine.	Sto bene! Davvero! Va tutto bene.
-start.ask4	She says it too fast. Like a line she's rehearsed in front of a mirror.	Lo dice troppo in fretta. Come una battuta provata davanti allo specchio.
-rei.thanks	Anytime. Cheering up strangers is my second job.	Quando vuoi. Tirare su di morale gli sconosciuti è il mio secondo lavoro.
+start.ask4	She says it too fast, and her voice shakes a little. Like a line rehearsed in front of a mirror.	Lo dice troppo in fretta, e la voce le trema un po'. Come una battuta provata davanti allo specchio.
+c.pretend	"You don't have to pretend with me."	«Non devi fingere con me.»
+c.song	"Then let's listen to another song."	«Allora ascoltiamo un'altra canzone.»
+c.gohome	"You should go home too."	«Dovresti tornare a casa anche tu.»
+rei.pretend	...Is it that obvious?	...Si vede così tanto?
+start.pretend	For a moment she stops smiling. It makes her look younger, not older.	Per un attimo smette di sorridere. La fa sembrare più giovane, non più grande.
+rei.song	Ehehe. You're learning fast.	Ehehe. Impari in fretta.
+rei.gohome	Maybe I don't have one. ...Kidding! Kidding.	Forse non ce l'ho. ...Scherzo! Scherzo.
 start.radio	She pulls a small, scratched radio out of her coat.	Tira fuori dal cappotto una radiolina tutta graffiata.
 rei.radio	Want to hear something strange? This station only plays songs from next year.	Vuoi sentire una cosa strana? Questa stazione trasmette solo canzoni dell'anno prossimo.
-start.song	A melody leaks out of the speaker. I've never heard it, and I know every word.	Dalla cassa esce una melodia. Non l'ho mai sentita, eppure ne conosco ogni parola.
+start.radio2	Before the music starts, the speaker gives three notes. The same chime as the platform.	Prima della musica, la cassa emette tre note. Lo stesso segnale del binario.
+start.song	Then a melody. I've never heard it, and I know every word.	Poi una melodia. Non l'ho mai sentita, eppure ne conosco ogni parola.
+rei.best	Do you know the best thing about this radio?	Sai qual è la cosa più bella di questa radio?
+p.future	"That it plays music from the future?"	«Che trasmette musica dal futuro?»
+rei.best2	No, silly! Every time I switch it on, there's something I haven't heard yet.	No, sciocchino! Ogni volta che la accendo c'è qualcosa che non ho ancora ascoltato.
+rei.best3	It means that somewhere, there's still a tomorrow.	Significa che da qualche parte esiste ancora un domani.
+c.notknow	"What if I don't want to know what happens tomorrow?"	«E se non volessi sapere cosa succederà domani?»
+c.foryou	"Is there one for you, too?"	«Ce n'è uno anche per te?»
+rei.notknow	Then we just listen to this song. Until the end.	Allora ascoltiamo soltanto questa canzone. Fino alla fine.
+rei.foryou	...I hope so. I really do.	...Lo spero. Lo spero davvero.
 rei.stop	Do you ever want to stop time? Not forever... just for a little while.	Ti capita mai di voler fermare il tempo? Non per sempre... solo per un pochino.
 q.midnight	It's almost midnight.	È quasi mezzanotte.
 c.stay	Stay and listen	Resta ad ascoltare
@@ -4109,39 +4224,49 @@ street.5	There are no trains at midnight. Not on this line.	Non ci sono treni a 
 c.runback	Run back	Torna indietro di corsa
 c.keep	Keep walking	Continua a camminare
 street.6	I keep walking. At the corner there's a payphone, still warm from the last person who cried into it.	Continuo a camminare. All'angolo c'è una cabina telefonica, ancora tiepida dall'ultima persona che ci ha pianto dentro.
-street.7	I dial a number I haven't dialed since the summer. She picks up on the first ring.	Compongo un numero che non faccio dall'estate. Lei risponde al primo squillo.
-street.8	Neither of us says sorry. We just talk, until the year changes in the middle of a sentence.	Nessuno dei due chiede scusa. Parliamo e basta, finché l'anno cambia a metà di una frase.
-street.9	I never find out who Rei was. Some nights I still go looking for her bench.	Non scoprirò mai chi fosse Rei. Certe notti vado ancora a cercare la sua panchina.
+street.7	I dial a number I haven't dialed since August. She picks up on the first ring.	Compongo un numero che non faccio da agosto. Lei risponde al primo squillo.
+street.8	I say I'm sorry. She says: {c:8}"Your seat's still here, idiot."{/c}	Le chiedo scusa. Lei dice: {c:8}«Il tuo posto è ancora qui, scemo.»{/c}
+street.9	We talk until the year changes in the middle of a sentence.	Parliamo finché l'anno cambia a metà di una frase.
+street.10	In the morning, walking home, I hear a radio in a shop window. It's the song from the bench. Now everyone knows the words.	La mattina, tornando a casa a piedi, sento una radio nella vetrina di un negozio. È la canzone della panchina. Adesso tutti ne conoscono le parole.
+street.11	No miracle brought me home. Just a phone call I should have made months ago.	Nessun miracolo mi ha riportato a casa. Solo una telefonata che avrei dovuto fare mesi fa.
 plat.ran	I'm soaked and out of breath. She hasn't moved an inch.	Sono fradicio e senza fiato. Lei non si è mossa di un centimetro.
 rei.back	Ehehe! I knew you'd come back! I was waiting for you!	Ehehe! Lo sapevo che saresti tornato! Ti stavo aspettando!
 rei.stayed	You stayed. Most people don't.	Sei rimasto. Di solito non resta nessuno.
 rei.here	You know... I like this place. I'm not sure why, but it feels like home.	Sai... mi piace questo posto. Non so bene perché, ma mi fa sentire a casa.
-rei.board1	You saw it too, didn't you? The last line on the board.	L'hai vista anche tu, vero? L'ultima riga del tabellone.
-rei.board2	It only shows up for people who still have somewhere to go.	Compare solo a chi ha ancora un posto dove andare.
-plat.train	The clock turns over. The chime again, and this time light spills down the tracks.	L'orologio scatta. Di nuovo il rintocco, e stavolta una luce scivola lungo i binari.
+plat.train	The clock turns over. Three notes, again. This time, light spills down the tracks.	L'orologio scatta. Di nuovo le tre note. Stavolta una luce scivola lungo i binari.
 plat.train2	A train with every window lit pulls in without a sound. The sign on the front says {c:8}HOME{/c}.	Un treno con tutti i finestrini accesi entra senza fare rumore. Il cartello sul davanti dice {c:8}CASA{/c}.
-rei.go	That's yours. Go on, she's waiting for you.	È il tuo. Vai, lei ti sta aspettando.
-rei.go2	It only takes one passenger. I already checked. So no arguing, okay?	Prende un solo passeggero. Ho già controllato. Quindi niente discussioni, okay?
-plat.decide	She has already decided for both of us. She's smiling, and her hands are shaking.	Ha già deciso per tutti e due. Sorride, e le tremano le mani.
+plat.board_yes	Just like the last line on the board.	Proprio come l'ultima riga del tabellone.
+plat.board_no	Above us, the board changes by itself: {c:8}00:00  HOME{/c}.	Sopra di noi il tabellone cambia da solo: {c:8}00:00  CASA{/c}.
+rei.yours	That's your train.	È il tuo treno.
+p.yours	"And yours?"	«E il tuo?»
+rei.mine	Mine... hasn't come yet.	Il mio... non è ancora arrivato.
+p.how	"How do you know?"	«Come fai a saperlo?»
+rei.just	I just do. Go on, hurry! Your sister's waiting!	Lo so e basta. Dai, sbrigati! Tua sorella ti aspetta!
+plat.decide	She's smiling. But her hands, wrapped around the little radio, are shaking.	Sorride. Ma le mani, strette attorno alla radiolina, tremano.
 c.alone	Get on alone	Sali da solo
 c.together	"Come with me."	«Vieni con me.»
+rei.fine	I'm fine. Really! Everything's fine.	Sto bene. Davvero! Va tutto bene.
+plat.fine	She says it the way people close a door.	Lo dice come si chiude una porta.
+rei.guilt	Hey. Don't feel guilty for being happy, okay?	Ehi. Non sentirti in colpa per essere felice, okay?
+plat.alone	The doors close between us. She waves until the platform is just a light in the dark.	Le porte si chiudono tra noi. Lei saluta con la mano finché il binario non diventa solo una luce nel buio.
+plat.morning	When the doors open again, it's morning, and the station is the one near my sister's place.	Quando le porte si riaprono è mattina, e la stazione è quella vicino a casa di mia sorella.
+plat.soda	On the seat beside me there's a can of melon soda. It's still cold.	Sul sedile accanto al mio c'è una lattina di soda al melone. È ancora fredda.
+plat.call	There's a payphone on the platform. I call her. {c:8}"I'm here,"{/c} I say. {c:8}"Keep my seat."{/c}	Sul binario c'è una cabina. La chiamo. {c:8}«Sono qui»{/c}, le dico. {c:8}«Tienimi il posto.»{/c}
+plat.next	Next New Year's Eve, I'll go back to that bench. And this time I'll ask her how she is. First thing.	Il prossimo ultimo dell'anno tornerò a quella panchina. E stavolta le chiederò come sta. Per prima cosa.
 rei.angry	You can't just decide what's best for me!	Non puoi decidere tu cosa sia meglio per me!
 rei.angry2	...Even if you're doing it because you care about me.	...Anche se lo fai perché mi vuoi bene.
 plat.mirror	"You did the exact same thing to me, a minute ago."	«Tu l'hai appena fatto con me, un minuto fa.»
 rei.admit	I've been saying "everything's fine" for so long, I forgot how to say anything else.	Ripeto «va tutto bene» da così tanto tempo che ho dimenticato come si dice qualcos'altro.
+rei.home	Maybe home isn't the place you have to go back to. Maybe it's the place where someone's waiting for you.	Forse casa non è il posto in cui devi tornare. Forse è il posto in cui qualcuno ti aspetta.
+p.waiting2	"Then someone's waiting for you, too. Right here."	«Allora qualcuno aspetta anche te. Proprio qui.»
 rei.admit2	...Okay. Just to the next stop. Then we'll see.	...Va bene. Solo fino alla prossima fermata. Poi vediamo.
-plat.dawn	When the doors open again, it's already morning.	Quando le porte si riaprono, è già mattina.
+plat.dawn	We cross the river as the sun comes up.	Attraversiamo il fiume mentre sorge il sole.
 rei.dawn	Look! A train crossing the river at sunrise! I always wanted to see one from the inside!	Guarda! Un treno che attraversa il fiume all'alba! Ho sempre voluto vederne uno da dentro!
+plat.newsong	Then the radio plays something new. Rei tilts her head.	Poi la radio trasmette qualcosa di nuovo. Rei inclina la testa.
+rei.newsong	I... don't know this one.	Questa... non la conosco.
+plat.newsong2	For the first time, she doesn't know what comes next. She laughs as if it were the best news in the world.	Per la prima volta non sa cosa verrà dopo. Ride come se fosse la notizia più bella del mondo.
 rei.promise	Promise me something. If one day we forget all of this... we come back here, okay?	Promettimi una cosa. Se un giorno dovessimo dimenticarci di tutto questo... torniamo qui, okay?
-plat.home	My pager buzzes. {c:8}HOME{/c}. For the first time all year, I answer it.	Il cercapersone vibra. {c:8}CASA{/c}. Per la prima volta quest'anno, rispondo.
-rei.fine	I'm fine. Really! Everything's fine.	Sto bene. Davvero! Va tutto bene.
-plat.push	She gives me a gentle push. The doors close between us before I can find the right question.	Mi dà una spinta leggera. Le porte si chiudono tra noi prima che io trovi la domanda giusta.
-plat.alone	I step on. She waves until the platform is just a light in the dark.	Salgo. Lei saluta con la mano finché il binario non diventa solo una luce nel buio.
-plat.soda	On the seat beside me there's a can of melon soda. It's still cold.	Sul sedile accanto al mio c'è una lattina di soda al melone. È ancora fredda.
-plat.next	Next year, I'll ask her how she is. First thing.	L'anno prossimo le chiederò come sta. Per prima cosa.
-rei.nextyear	Next year, then.	Allora all'anno prossimo.
-plat.vanish	She switches the radio off. When I look up, the bench is empty.	Spegne la radio. Quando alzo lo sguardo, la panchina è vuota.
-plat.board_end	The board blinks once and settles on {c:7}SERVICE ENDED{/c}.	Il tabellone lampeggia una volta e si ferma su {c:7}SERVIZIO TERMINATO{/c}.
+plat.call2	At the first stop I find a payphone and call home. Rei holds her can of soda and pretends not to listen.	Alla prima fermata trovo una cabina e chiamo a casa. Rei stringe la sua lattina di soda e fa finta di non ascoltare.
 end.home	HOME	CASA
 end.next_year	NEXT YEAR	L'ANNO PROSSIMO
 end.long_way	THE LONG WAY	LA STRADA LUNGA
