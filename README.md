@@ -2,7 +2,7 @@
 
 **NEVEL-98** is a fantasy computer for making visual novels the way they looked on the Japanese PC-9801 of the late '80s and '90s.
 
-It is a small, complete machine, like PICO-8 or TIC-80 but made for stories: a 640×400 screen with 16 colors out of 4096, a 6-channel FM synthesizer, and a visual novel engine in Lua. Code, pictures, texts, sounds and music are all made inside it, in five editors. A finished game is a single cart, shared as a text file, as a picture of a floppy disk, or as one web page that plays anywhere.
+It is a small, complete machine made for stories: a 640×400 screen with 16 colors out of 4096, a 6-channel FM synthesizer, and a visual novel engine in Lua. Code, pictures, texts, sounds and music are all made inside it, in five editors. A finished game is a single cart, shared as a text file, as a picture of a floppy disk, or as one web page that plays anywhere.
 
 - **Website:** https://nevel98.bluemoon.moe/
 - **Open the machine in the browser (free):** https://nevel98.bluemoon.moe/app/

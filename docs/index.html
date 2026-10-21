@@ -1239,7 +1239,7 @@ pre code{ font-size:inherit; }
 <h3 id="math-helpers">Math helpers<a class="anchor" aria-label="Link to this section" href="#math-helpers" title="Permanent link">¶</a></h3>
 <p><code>flr</code>, <code>ceil</code>, <code>abs</code>, <code>sgn</code>, <code>mid(a, b, c)</code>, <code>clamp(x, lo, hi)</code>, <code>lerp(a, b, t)</code>, <code>sin(t)</code> / <code>cos(t)</code> (t in turns), <code>rnd([x or table])</code>, <code>irnd(a, b)</code>, <code>srand(seed)</code>.</p>
 <h3 id="game-mode">Game mode<a class="anchor" aria-label="Link to this section" href="#game-mode" title="Permanent link">¶</a></h3>
-<p>A cart that defines <code>_draw</code> (and optionally <code>_init</code> and <code>_update</code>) and no scenes runs as a plain game loop, like PICO-8: <code>_init()</code> once, then <code>_update()</code> and <code>_draw()</code> 60 times per second.</p>
+<p>A cart that defines <code>_draw</code> (and optionally <code>_init</code> and <code>_update</code>) and no scenes runs as a plain game loop: <code>_init()</code> once, then <code>_update()</code> and <code>_draw()</code> 60 times per second.</p>
 <pre><code><span class="tk-kw">local</span> x = <span class="tk-num">320</span>
 <span class="tk-kw">function</span> _update()
   <span class="tk-kw">if</span> <span class="tk-api">btn</span>(<span class="tk-str">"left"</span>) <span class="tk-kw">then</span> x = x - <span class="tk-num">2</span> <span class="tk-kw">end</span>

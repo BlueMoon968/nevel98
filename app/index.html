@@ -22,7 +22,7 @@ body {
   background: radial-gradient(ellipse at 50% 30%, var(--wall) 0%, var(--wall-deep) 75%);
   color: var(--paper);
   font-family: "DotGothic16", "MS Gothic", ui-monospace, monospace;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: safe center;
   min-height: 100%; padding: 16px; gap: 14px;
 }
 /* the monitor: an ivory PC-98 style bezel around the canvas */
@@ -32,8 +32,15 @@ body {
   padding: 22px 22px 34px;
   box-shadow: inset 0 2px 0 #eee8da, inset 0 -3px 0 var(--ivory-shade), 0 18px 40px rgba(10, 12, 18, .45);
   position: relative;
-  width: min(100%, 1324px);
+  /* fit the window in both directions: as wide as possible, but never so tall
+     that the screen goes past the bottom (itch.io iframes, short laptop screens).
+     --chrome is the room taken by the bezel, the buttons and the note. */
+  --chrome: 170px;
+  --ratio: 1.6;
+  width: min(100%, 1324px, calc((100vh - var(--chrome)) * var(--ratio) + 44px));
+  width: min(100%, 1324px, calc((100dvh - var(--chrome)) * var(--ratio) + 44px));
 }
+.monitor.tall { --ratio: 1.3333; }
 .screen {
   position: relative; background: #000; border-radius: 6px; overflow: hidden;
   box-shadow: inset 0 0 0 3px #1a1a1a, inset 0 0 24px rgba(0,0,0,.8);
@@ -68,7 +75,7 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .note { font-size: 13px; color: #a9afbb; text-align: center; max-width: 70ch; line-height: 1.6; }
 .drop { outline: 3px dashed var(--led); outline-offset: 6px; }
 input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
-@media (max-width: 600px) { .monitor { padding: 10px 10px 26px; } .badge { left: 14px; bottom: 6px; } .led { right: 16px; bottom: 9px; } }
+@media (max-width: 600px) { .monitor { padding: 10px 10px 26px; --chrome: 150px; } .badge { left: 14px; bottom: 6px; } .led { right: 16px; bottom: 9px; } }
 </style>
 </head>
 <body>
@@ -235,7 +242,7 @@ input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
     ctx2d.putImageData(img, 0, 0);
   }
   function toggleScan() { scan = !scan; screenEl.classList.toggle("scan", scan); }
-  function toggleAspect() { tall = !tall; screenEl.classList.toggle("tall", tall); }
+  function toggleAspect() { tall = !tall; screenEl.classList.toggle("tall", tall); screenEl.parentElement.classList.toggle("tall", tall); }
   function toggleFullscreen() {
     if (document.fullscreenElement) document.exitFullscreen();
     else screenEl.requestFullscreen && screenEl.requestFullscreen().catch(() => {});
