@@ -10,16 +10,6 @@ It is a small, complete machine made for stories: a 640×400 screen with 16 colo
 - **Manual:** https://nevel98.bluemoon.moe/docs/
 - **Desktop version (Windows, pay what you want):** https://bluemooncoder.itch.io/nevel-98
 
-## This repository
-
-This repository holds the website, served by GitHub Pages from the root of `main` (custom domain in `CNAME`). It is generated: the sources live in the NEVEL-98 project (`site/`) and are rebuilt, together with the web version of the machine, the manual, the demo cart and the screenshots, by a single command:
-
-```sh
-python tools/release.py --site-repo path/to/this/repo
-```
-
-Changes made by hand here are overwritten by the next release.
-
 ## License
 
 NEVEL-98 is made by Bluemoon. The browser version is free to use for anything; the desktop version is sold on itch.io. Games you make with NEVEL-98 are yours to share and sell, with no fee or royalty, and exported pages may carry the NEVEL-98 player with them. The demo cart's story, characters and art are not for reuse. The full terms are in [LICENSE.md](LICENSE.md).
