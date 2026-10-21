@@ -215,7 +215,8 @@ h2{
 .get{ background:linear-gradient(180deg, var(--black) 0%, var(--navy) 100%); }
 .get .box{ display:flex; flex-direction:column; height:100%; box-sizing:border-box; }
 .get .box .price{ flex:none; margin:0 0 12px; font-family:var(--code); font-size:20px; color:var(--cyan); }
-.get .box p{ flex:1; }
+.get .box p{ margin:0 0 12px; }
+.get .box p:last-of-type{ flex:1; }
 .get .box .btn{ margin-top:20px; align-self:flex-start; }
 .get .fine{ margin:28px 0 0; color:#a9afbb; font-size:.95rem; max-width:70ch; }
 
@@ -478,7 +479,7 @@ h2{
     <a class="sec" href="#editors">Editors</a>
     <a class="sec" href="#carts">Carts</a>
     <a class="sec" href="#why">Why</a>
-    <a class="sec" href="#get">Get</a>
+    <a class="sec" href="#get">Download</a>
     <a href="docs/">Docs</a>
     <a href="app/">Open</a>
   </nav>
@@ -742,12 +743,12 @@ then SAVE &lt;name&gt; to keep your own copy.</span>
 <!-- ============ GET ============ -->
 <section class="get" id="get" aria-labelledby="t-get">
   <div class="wrap">
-    <h2 id="t-get">Get NEVEL-98</h2>
-    <p class="intro">Every editor and every feature is in the free browser version. The desktop version is for working offline, and buying it keeps the machine running.</p>
+    <h2 id="t-get">Play &amp; Download</h2>
+    <p class="intro">NEVEL-98 is free to use in your browser, with all its editors and features included. If you'd rather have it on your computer, there's a desktop version too.</p>
     <ul class="grid">
-      <li><div class="box"><h3>Browser</h3><p class="price">free</p><p>The whole machine and the demo, in any modern browser. Nothing to install. Carts are kept in the browser's storage, and you can save them to files.</p><a class="btn" href="app/">Open NEVEL-98</a></div></li>
-      <li><div class="box"><h3>Desktop</h3><p class="price">from $4.99 · pay what you want</p><p>Windows. Works offline, with real files and folders, fullscreen and no browser storage limits. Pay more if you want to support the project.</p><a class="btn primary" href="https://bluemooncoder.itch.io/nevel-98">Get it on itch.io</a></div></li>
-      <li><div class="box"><h3>Your games</h3><p class="price">yours</p><p>Floppies and exported pages are yours to share, give away or sell, with no fee and no royalty. The player inside an exported page is free to distribute with your game.</p><a class="btn" href="docs/">Read the docs</a></div></li>
+      <li><div class="box"><h3>Browser</h3><p class="price">Free</p><p>Everything you need to make and play games, right in your browser. No installation needed. You can save your work locally and pick it up later.</p><a class="btn" href="app/">Open NEVEL-98</a></div></li>
+      <li><div class="box"><h3>Desktop</h3><p class="price">$2+</p><p>NEVEL-98 also comes as a desktop app. It works offline, saves directly to your computer, and doesn't need a browser.</p><p>A small contribution helps me keep working on NEVEL-98.</p><a class="btn primary" href="https://bluemooncoder.itch.io/nevel-98">Download on itch.io</a></div></li>
+      <li><div class="box"><h3>Your games</h3><p class="price">Always yours</p><p>Whatever you make with NEVEL-98 is yours. Share it, publish it, or sell it. No royalties, no strings attached.</p><a class="btn" href="docs/">Read the docs</a></div></li>
     </ul>
   </div>
 </section>
