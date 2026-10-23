@@ -95,10 +95,14 @@ local function rei(face, pos, transition)
 end
 
 local function endings_found()
-  persist.endings = persist.endings or {}
-  local n = 0
-  for _ in pairs(persist.endings) do n = n + 1 end
-  return n
+  local found = persist.endings or {}
+  local count = 0
+
+  for _ in pairs(found) do
+    count = count + 1
+  end
+
+  return count
 end
 
 local function ending(id)
@@ -111,9 +115,17 @@ local function ending(id)
   the_end("@end." .. id)
 end
 
-local function set_clock(t) flag.clock = t end
-local function gain(stat, n) flag[stat] = (flag[stat] or 0) + n end
-local function new_year() flag.clock, flag.date, flag.day = "00:00", "01/01", "hud.sun" end
+local function set_clock(time) flag.clock = time end
+
+local function gain(stat, amount)
+  flag[stat] = (flag[stat] or 0) + amount
+end
+
+local function new_year()
+  flag.clock = "00:00"
+  flag.date = "01/01"
+  flag.day = "hud.sun"
+end
 
 --###############################################################################
 --
@@ -291,7 +303,11 @@ scene("start", function()
   rei("sad")
   say("@char.rei", "@rei.stop")
 
-  if choice({ "@c.stay", "@c.walk" }, "@q.midnight") == 1 then jump("platform") else jump("street") end
+  if choice({ "@c.stay", "@c.walk" }, "@q.midnight") == 1 then
+    jump("platform")
+  else
+    jump("street")
+  end
 end)
 
 -- THE LONG WAY
@@ -381,7 +397,7 @@ scene("platform", function()
     return
   end
 
-  -- trust and courage decide
+  -- The final choice only works if Rei trusts us and we're ready to leave.
   if (flag.trust or 0) < 4 or (flag.courage or 0) < 2 then
     say("@char.rei", "@rei.fine")
     say("@plat.fine")
