@@ -3,24 +3,25 @@ __meta__
 title=Last Train Home
 author=NEVEL-98
 __lua__
--- LAST TRAIN HOME
--- a short NEVEL-98 demo novel
+--=============================================================================
+-- LAST TRAIN HOME - a NEVEL-98 demo
 --
--- songs: 0 title, 1 night, 2 dawn
--- sfx:   40 station chime, 41 train rumble
+-- songs:  0 title, 1 night, 2 dawn
+-- sfx:    40 station chime, 41 train rumble
 -- images: title, frame, station, street, dawn, rei, rei_smile, rei_sad
 --
--- Every line of text lives in the TEXT editor (F3), in English and
--- Italian. In the code a string that starts with "@" is a text key:
---   say("@char.rei", "@rei.hi1")   is the same as
---   say(tr("char.rei"), tr("rei.hi1"))
--- Players switch language in Settings.
+-- texts are in the TEXT editor (F3), "@key" strings come from there:
+--   say("@char.rei", "@rei.hi1") == say(tr("char.rei"), tr("rei.hi1"))
+--=============================================================================
 
 speaker("@char.rei", 7)
 
----------------------------------------------------------------------------
--- seven-segment clock for the side panel
----------------------------------------------------------------------------
+--###############################################################################
+--
+-- LED CLOCK
+--
+--###############################################################################
+
 local SEGS = {
   ["0"] = "abcdef", ["1"] = "bc", ["2"] = "abdeg", ["3"] = "abcdg", ["4"] = "bcfg",
   ["5"] = "acdfg", ["6"] = "acdefg", ["7"] = "abc", ["8"] = "abcdefg", ["9"] = "abcdfg",
@@ -62,7 +63,6 @@ local function hud()
   print(tr(flag.day or "hud.sat"), 586, 38, 8)
   -- red LED clock
   clock(flag.clock or "23:52", 496, 76)
-  -- command panel heading
   local head = tr("hud.command")
   print(head, 552 - textw(head) // 2, 133, 1)
 end
@@ -79,7 +79,7 @@ layout("game", {
              name_style = "plate", name_x = 46, name_y = 288, cursor = 1 },
 })
 
--- rain inside the scene window
+-- rain in the scene window
 effect("rain", function(t)
   for i = 0, 60 do
     local x = (i * 97 + flr(t * 900)) % 480 - 16
@@ -88,7 +88,7 @@ effect("rain", function(t)
   end
 end)
 
--- Rei's three faces: "smile", "sad" or the default
+-- faces: "smile", "sad" or default
 local FACES = { smile = "rei_smile", sad = "rei_sad" }
 local function rei(face, pos, transition)
   show(FACES[face] or "rei", pos or "right", transition)
@@ -115,9 +115,12 @@ local function set_clock(t) flag.clock = t end
 local function gain(stat, n) flag[stat] = (flag[stat] or 0) + n end
 local function new_year() flag.clock, flag.date, flag.day = "00:00", "01/01", "hud.sun" end
 
----------------------------------------------------------------------------
--- scenes
----------------------------------------------------------------------------
+--###############################################################################
+--
+-- SCENES
+--
+--###############################################################################
+
 scene("title", function()
   layout(nil)
   title_screen{
@@ -135,7 +138,7 @@ end)
 scene("start", function()
   music(nil)
   flag.date, flag.day = "12/31", "hud.sat"
-  flag.trust, flag.courage = 0, 0    -- hidden: how understood Rei feels / how ready I am to face home
+  flag.trust, flag.courage = 0, 0 -- hidden: how understood Rei feels / how ready I am to face home
   set_clock("23:52")
   layout("game")
   bg(0)
@@ -151,7 +154,7 @@ scene("start", function()
   say("@start.pager3")
   say("@start.pager4")
 
-  -- look around before sitting down: what you notice comes back later
+  -- what you notice here comes back later
   while true do
     local c = menu{ "@menu.look", "@menu.board", "@menu.drink", "@menu.sit" }
     if c == 1 then
@@ -195,7 +198,6 @@ scene("start", function()
     say("@char.rei", "@rei.letgo2")
   end
 
-  -- what is she waiting for?
   rei()
   say("@p.waiting")
   rei("sad")
@@ -239,7 +241,6 @@ scene("start", function()
   rei("smile")
   say("@char.rei", "@rei.pager2")
 
-  -- the question nobody asks her
   if choice{ "@c.thanks", "@c.ask" } == 2 then
     gain("trust", 1)
     rei("sad")
@@ -266,7 +267,6 @@ scene("start", function()
     say("@char.rei", "@rei.thanks")
   end
 
-  -- the radio that plays next year's songs
   rei()
   say("@start.radio")
   say("@char.rei", "@rei.radio")
@@ -294,7 +294,7 @@ scene("start", function()
   if choice({ "@c.stay", "@c.walk" }, "@q.midnight") == 1 then jump("platform") else jump("street") end
 end)
 
--- THE LONG WAY: no miracle, just a phone call
+-- THE LONG WAY
 scene("street", function()
   hide(nil)
   bg("street", "wipe", 1.0)
@@ -326,7 +326,7 @@ scene("street", function()
   ending("long_way")
 end)
 
--- HOME: I go back alone, and she stays on the platform
+-- HOME
 local function go_home()
   rei("smile")
   say("@char.rei", "@rei.guilt")
@@ -359,7 +359,7 @@ scene("platform", function()
   rei()
   say("@char.rei", "@rei.here")
 
-  -- midnight: the train that shouldn't exist
+  -- midnight
   new_year()
   sfx(40)
   say("@plat.train")
@@ -381,7 +381,7 @@ scene("platform", function()
     return
   end
 
-  -- she only lets someone in if she feels understood, and if I mean it
+  -- trust and courage decide
   if (flag.trust or 0) < 4 or (flag.courage or 0) < 2 then
     say("@char.rei", "@rei.fine")
     say("@plat.fine")

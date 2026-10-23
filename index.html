@@ -16,51 +16,48 @@
 <link rel="icon" type="image/png" href="assets/icon64.png">
 <link rel="apple-touch-icon" href="assets/icon.png">
 <style>
-/* fonts are served from this site: DotGothic16 and M PLUS 1p (OFL), Spleen (BSD) */
+/* self-hosted fonts: DotGothic16, M PLUS 1p (OFL), Spleen (BSD) */
 @font-face{ font-family:"DotGothic16"; src:url("assets/fonts/dotgothic16.woff2") format("woff2"); font-display:swap; }
 @font-face{ font-family:"M PLUS 1p"; font-weight:400; src:url("assets/fonts/mplus1p-400.woff2") format("woff2"); font-display:swap; }
 @font-face{ font-family:"M PLUS 1p"; font-weight:700; src:url("assets/fonts/mplus1p-700.woff2") format("woff2"); font-display:swap; }
 @font-face{ font-family:"Spleen"; src:url("assets/fonts/spleen-8x16.woff2") format("woff2"); font-display:swap; }
 
 :root{
-  /* the machine's 16-color interface palette */
-  --black:#000000;
-  --blue:#0000AA;
-  --navy:#111144;
-  --lblue:#5555FF;
-  --cyan:#55FFFF;
-  --green:#55FF55;
-  --yellow:#FFFF55;
-  --magenta:#FF55FF;
-  --grey:#AAAAAA;
-  --dgrey:#555555;
-  --white:#FFFFFF;
-  /* the room and the monitor, from the web player */
-  --wall:#3b4250;
-  --wall-d:#2c313c;
-  --ivory:#d9d3c3;
-  --ivory-s:#b9b19c;
-  --paper:#ece6d6;
-  --led:#6fd36a;
-  /* the demo cart */
-  --gold:#DDAA44;
-  --red:#EE2222;
+	--black:#000000;
+	--blue:#0000AA;
+	--navy:#111144;
+	--lblue:#5555FF;
+	--cyan:#55FFFF;
+	--green:#55FF55;
+	--yellow:#FFFF55;
+	--magenta:#FF55FF;
+	--grey:#AAAAAA;
+	--dgrey:#555555;
+	--white:#FFFFFF;
+	--wall:#3b4250;
+	--wall-d:#2c313c;
+	--ivory:#d9d3c3;
+	--ivory-s:#b9b19c;
+	--paper:#ece6d6;
+	--led:#6fd36a;
+	--gold:#DDAA44;
+	--red:#EE2222;
 
-  --pixel:"DotGothic16", "MS Gothic", ui-monospace, monospace;
-  --prose:"M PLUS 1p", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --code:"Spleen", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  color-scheme:dark;
+	--pixel:"DotGothic16", "MS Gothic", ui-monospace, monospace;
+	--prose:"M PLUS 1p", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--code:"Spleen", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+	color-scheme:dark;
 }
 
 *{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; scroll-padding-top:48px; }
 body{
-  margin:0;
-  background:var(--black);
-  color:var(--paper);
-  font-family:var(--prose);
-  font-size:1.0625rem;
-  line-height:1.65;
+	margin:0;
+	background:var(--black);
+	color:var(--paper);
+	font-family:var(--prose);
+	font-size:1.0625rem;
+	line-height:1.65;
 }
 img{ max-width:100%; }
 a{ color:var(--cyan); text-underline-offset:3px; }
@@ -70,20 +67,20 @@ a:hover{ color:var(--white); }
 
 .pixelated{ image-rendering:pixelated; image-rendering:crisp-edges; }
 
-/* ---------- top bar, like the editors' ---------- */
+/* TOP BAR */
 
 .topbar{
-  position:sticky; top:0; z-index:20;
-  display:flex; align-items:stretch; gap:4px;
-  height:34px;
-  padding:0 12px;
-  padding-left:max(12px, env(safe-area-inset-left));
-  padding-right:max(12px, env(safe-area-inset-right));
-  background:var(--blue);
-  font-family:var(--pixel);
-  font-size:17px;
-  line-height:34px;
-  white-space:nowrap;
+	position:sticky; top:0; z-index:20;
+	display:flex; align-items:stretch; gap:4px;
+	height:34px;
+	padding:0 12px;
+	padding-left:max(12px, env(safe-area-inset-left));
+	padding-right:max(12px, env(safe-area-inset-right));
+	background:var(--blue);
+	font-family:var(--pixel);
+	font-size:17px;
+	line-height:34px;
+	white-space:nowrap;
 }
 .topbar .brand{ color:var(--white); text-decoration:none; margin-right:14px; }
 .topbar nav{ display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1; min-width:0; }
@@ -94,35 +91,35 @@ a:hover{ color:var(--white); }
 .topbar .right{ color:var(--cyan); text-decoration:none; padding:0 4px 0 10px; }
 .topbar .right:hover{ color:var(--white); }
 
-/* ---------- inline code and code windows ---------- */
+/* INLINE CODE AND CODE WINDOWS */
 
 code, kbd, .mono{ font-family:var(--code); font-size:16px; }
 :not(pre) > code{
-  padding:0 4px;
-  background:var(--navy);
-  color:var(--white);
-  border-radius:2px;
+	padding:0 4px;
+	background:var(--navy);
+	color:var(--white);
+	border-radius:2px;
 }
 kbd{
-  display:inline-block;
-  padding:0 5px;
-  border:1px solid var(--grey);
-  border-bottom-width:3px;
-  border-radius:3px;
-  color:var(--white);
-  line-height:1.2;
+	display:inline-block;
+	padding:0 5px;
+	border:1px solid var(--grey);
+	border-bottom-width:3px;
+	border-radius:3px;
+	color:var(--white);
+	line-height:1.2;
 }
 
 pre{
-  margin:0;
-  padding:14px 16px;
-  overflow-x:auto;
-  background:var(--black);
-  color:var(--white);
-  font-family:var(--code);
-  font-size:16px;
-  line-height:20px;
-  tab-size:2;
+	margin:0;
+	padding:14px 16px;
+	overflow-x:auto;
+	background:var(--black);
+	color:var(--white);
+	font-family:var(--code);
+	font-size:16px;
+	line-height:20px;
+	tab-size:2;
 }
 pre code{ font-size:inherit; }
 .tk-kw{ color:var(--yellow); }
@@ -131,70 +128,72 @@ pre code{ font-size:inherit; }
 .tk-num{ color:var(--magenta); }
 .tk-com{ color:#8c8c8c; }
 
-/* ---------- buttons, like PC-98 menus ---------- */
+/* BUTTONS */
 
 .btn{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:10px 18px 9px;
-  border:2px solid var(--white);
-  background:var(--blue);
-  color:var(--white);
-  font-family:var(--pixel);
-  font-size:18px;
-  line-height:1.2;
-  text-decoration:none;
-  box-shadow:4px 4px 0 var(--black);
-  transition:transform .08s ease, box-shadow .08s ease;
+	display:inline-flex; align-items:center; gap:10px;
+	padding:10px 18px 9px;
+	border:2px solid var(--white);
+	background:var(--blue);
+	color:var(--white);
+	font-family:var(--pixel);
+	font-size:18px;
+	line-height:1.2;
+	text-decoration:none;
+	box-shadow:4px 4px 0 var(--black);
+	transition:transform .08s ease, box-shadow .08s ease;
 }
 .btn:hover{ color:var(--white); background:var(--lblue); }
 .btn:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--black); }
 .btn.primary{ background:var(--cyan); color:var(--black); border-color:var(--cyan); }
 .btn.primary:hover{ background:var(--white); border-color:var(--white); color:var(--black); }
 
-/* a play triangle: the bitmap fonts have no ▶ */
+/* no ▶ in the bitmap fonts */
 .tri{
-  display:inline-block;
-  width:.55em; height:.7em;
-  background:currentColor;
-  clip-path:polygon(0 0, 100% 50%, 0 100%);
-  vertical-align:-.02em;
+	display:inline-block;
+	width:.55em; height:.7em;
+	background:currentColor;
+	clip-path:polygon(0 0, 100% 50%, 0 100%);
+	vertical-align:-.02em;
 }
 
-/* ---------- footer ---------- */
+/* FOOTER */
 
 .foot{
-  padding:40px 24px 48px;
-  padding-bottom:calc(48px + env(safe-area-inset-bottom, 0px));
-  border-top:2px solid var(--blue);
-  color:var(--grey);
-  font-size:.9375rem;
+	padding:40px 24px 48px;
+	padding-bottom:calc(48px + env(safe-area-inset-bottom, 0px));
+	border-top:2px solid var(--blue);
+	color:var(--grey);
+	font-size:.9375rem;
 }
 .foot .wrap{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:space-between; }
 .foot p{ margin:0; max-width:62ch; }
+.foot .info{ display:flex; flex-direction:column; gap:10px; }
+.foot .ai{ color:#a9afbb; font-size:.9em; }
+.foot .ai b{ color:var(--yellow); font-weight:400; }
 .foot nav{ display:flex; flex-wrap:wrap; gap:6px 18px; font-family:var(--pixel); }
 .foot nav a{ color:var(--white); text-decoration:none; }
 .foot nav a:hover{ color:var(--cyan); }
 
 @media (prefers-reduced-motion:reduce){
-  *{ transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
-  html{ scroll-behavior:auto; }
+	*{ transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+	html{ scroll-behavior:auto; }
 }
 
 
 .wrap{ max-width:1180px; margin:0 auto; }
 section{ padding:96px 24px; }
-/* headings use Spleen, the machine's own bitmap font, at whole multiples of 16px */
 h2{
-  margin:0 0 16px;
-  font-family:var(--code);
-  font-weight:400;
-  font-size:48px;
-  line-height:1.05;
-  color:var(--white);
+	margin:0 0 16px;
+	font-family:var(--code);
+	font-weight:400;
+	font-size:48px;
+	line-height:1.05;
+	color:var(--white);
 }
 .intro{ max-width:58ch; margin:0 0 36px; color:#cfcabd; font-size:1.125rem; }
 
-/* ---------- why: a note from the author ---------- */
+/* WHY */
 .why{ background:var(--black); border-top:2px solid var(--dgrey); border-bottom:2px solid var(--dgrey); }
 .why .wrap{ max-width:760px; }
 .why h2{ font-size:64px; }
@@ -202,16 +201,16 @@ h2{
 .why p.first::first-letter{ font-family:var(--code); font-size:3.2em; float:left; line-height:.9; margin:6px 10px 0 0; color:var(--magenta); }
 .why em{ color:var(--white); font-style:normal; }
 .why .limits{
-  margin:40px 0; padding:28px 30px 12px;
-  border:2px solid var(--cyan); background:var(--navy);
-  box-shadow:6px 6px 0 var(--blue);
+	margin:40px 0; padding:28px 30px 12px;
+	border:2px solid var(--cyan); background:var(--navy);
+	box-shadow:6px 6px 0 var(--blue);
 }
 .why .limits h3{ margin:0 0 14px; font-family:var(--code); font-weight:400; font-size:32px; color:var(--cyan); }
 .why .limits p{ color:#e3e1f4; }
 .why .specs{ font-family:var(--code); color:var(--yellow); letter-spacing:.04em; }
 .why .sign{ margin-top:30px; font-family:var(--code); font-size:24px; color:var(--yellow); }
 
-/* ---------- get ---------- */
+/* GET */
 .get{ background:linear-gradient(180deg, var(--black) 0%, var(--navy) 100%); }
 .get .box{ display:flex; flex-direction:column; height:100%; box-sizing:border-box; }
 .get .box .price{ flex:none; margin:0 0 12px; font-family:var(--code); font-size:20px; color:var(--cyan); }
@@ -220,33 +219,33 @@ h2{
 .get .box .btn{ margin-top:20px; align-self:flex-start; }
 .get .fine{ margin:28px 0 0; color:#a9afbb; font-size:.95rem; max-width:70ch; }
 
-/* ---------- hero: a monitor in a room ---------- */
+/* HERO */
 
 .hero{
-  padding:64px 24px 88px;
-  background:radial-gradient(ellipse at 62% 38%, var(--wall) 0%, var(--wall-d) 72%);
+	padding:64px 24px 88px;
+	background:radial-gradient(ellipse at 62% 38%, var(--wall) 0%, var(--wall-d) 72%);
 }
 .hero .wrap{
-  display:grid;
-  grid-template-columns:minmax(0, 4.6fr) minmax(0, 7.4fr);
-  gap:56px;
-  align-items:center;
+	display:grid;
+	grid-template-columns:minmax(0, 4.6fr) minmax(0, 7.4fr);
+	gap:56px;
+	align-items:center;
 }
 .eyebrow{
-  margin:0 0 14px;
-  font-family:var(--code);
-  font-size:16px;
-  letter-spacing:.14em;
-  color:var(--cyan);
+	margin:0 0 14px;
+	font-family:var(--code);
+	font-size:16px;
+	letter-spacing:.14em;
+	color:var(--cyan);
 }
 .hero h1{
-  margin:0;
-  font-family:var(--code);
-  font-weight:400;
-  font-size:96px;
-  line-height:1;
-  white-space:nowrap;
-  color:var(--white);
+	margin:0;
+	font-family:var(--code);
+	font-weight:400;
+	font-size:96px;
+	line-height:1;
+	white-space:nowrap;
+	color:var(--white);
 }
 @media (max-width:1180px) and (min-width:961px){ .hero h1{ font-size:80px; } }
 .hero h1 span{ color:var(--red); }
@@ -256,72 +255,72 @@ h2{
 .note{ margin:18px 0 0; font-size:.9375rem; color:#a9afbb; }
 
 .monitor{
-  position:relative;
-  padding:20px 20px 36px;
-  border-radius:14px 14px 10px 10px;
-  background:linear-gradient(180deg, var(--ivory) 0%, #cfc8b6 100%);
-  box-shadow:inset 0 2px 0 #eee8da, inset 0 -3px 0 var(--ivory-s), 0 26px 50px rgba(10,12,18,.5);
+	position:relative;
+	padding:20px 20px 36px;
+	border-radius:14px 14px 10px 10px;
+	background:linear-gradient(180deg, var(--ivory) 0%, #cfc8b6 100%);
+	box-shadow:inset 0 2px 0 #eee8da, inset 0 -3px 0 var(--ivory-s), 0 26px 50px rgba(10,12,18,.5);
 }
 .screen{
-  position:relative;
-  aspect-ratio:640 / 400;
-  overflow:hidden;
-  border-radius:6px;
-  background:#000;
-  box-shadow:inset 0 0 0 3px #1a1a1a;
+	position:relative;
+	aspect-ratio:640 / 400;
+	overflow:hidden;
+	border-radius:6px;
+	background:#000;
+	box-shadow:inset 0 0 0 3px #1a1a1a;
 }
 .screen canvas, .screen img{ display:block; width:100%; height:100%; }
 .screen::after{
-  content:""; position:absolute; inset:0; pointer-events:none;
-  box-shadow:inset 0 0 26px rgba(0,0,0,.75);
-  border-radius:6px;
+	content:""; position:absolute; inset:0; pointer-events:none;
+	box-shadow:inset 0 0 26px rgba(0,0,0,.75);
+	border-radius:6px;
 }
 .monitor .badge{ position:absolute; left:24px; bottom:9px; font-family:var(--pixel); font-size:14px; letter-spacing:.08em; color:#7d7563; }
 .monitor .led{ position:absolute; right:28px; bottom:14px; width:9px; height:9px; border-radius:50%; background:var(--led); box-shadow:0 0 6px var(--led); }
 
 .slidebar{
-  display:flex; align-items:center; gap:14px;
-  margin-top:16px;
-  font-family:var(--code);
-  font-size:16px;
-  color:#c9c3b3;
-  min-height:28px;
+	display:flex; align-items:center; gap:14px;
+	margin-top:16px;
+	font-family:var(--code);
+	font-size:16px;
+	color:#c9c3b3;
+	min-height:28px;
 }
 .slidebar .dots{ display:flex; gap:6px; flex:none; }
 .slidebar button{
-  width:28px; height:24px;
-  padding:0;
-  border:2px solid #7d7563;
-  border-radius:3px;
-  background:transparent;
-  color:#c9c3b3;
-  font-family:var(--code);
-  font-size:14px;
-  cursor:pointer;
+	width:28px; height:24px;
+	padding:0;
+	border:2px solid #7d7563;
+	border-radius:3px;
+	background:transparent;
+	color:#c9c3b3;
+	font-family:var(--code);
+	font-size:14px;
+	cursor:pointer;
 }
 .slidebar button[aria-current="true"]{ background:var(--cyan); border-color:var(--cyan); color:var(--black); }
 .slidebar .cap{ min-width:0; }
 .slidebar .cap b{ color:var(--white); font-weight:400; }
 
-/* ---------- the machine: console printout ---------- */
+/* THE MACHINE */
 
 .machine{ background:var(--black); }
 .split{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:56px; align-items:start; }
 .split .intro{ margin-bottom:20px; }
 .window{
-  border:2px solid var(--blue);
-  background:var(--black);
+	border:2px solid var(--blue);
+	background:var(--black);
 }
 .window .bar{
-  display:flex; justify-content:space-between; gap:12px;
-  padding:0 10px;
-  background:var(--blue);
-  color:var(--white);
-  font-family:var(--pixel);
-  font-size:16px;
-  line-height:28px;
-  white-space:nowrap;
-  overflow:hidden;
+	display:flex; justify-content:space-between; gap:12px;
+	padding:0 10px;
+	background:var(--blue);
+	color:var(--white);
+	font-family:var(--pixel);
+	font-size:16px;
+	line-height:28px;
+	white-space:nowrap;
+	overflow:hidden;
 }
 .window .bar .tabs{ display:flex; gap:2px; }
 .window .bar .tabs span{ padding:0 6px; }
@@ -338,7 +337,7 @@ h2{
 .limits li{ padding-left:22px; position:relative; color:#cfcabd; }
 .limits li::before{ content:""; position:absolute; left:2px; top:.55em; width:9px; height:11px; background:var(--cyan); clip-path:polygon(0 0, 100% 50%, 0 100%); }
 
-/* ---------- Lua → screen ---------- */
+/* LUA */
 
 .lua{ background:linear-gradient(180deg, var(--black) 0%, var(--navy) 100%); }
 .pair{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:22px; align-items:center; }
@@ -354,37 +353,37 @@ h2{
 .calls{ display:flex; flex-wrap:wrap; gap:8px; margin:36px 0 0; padding:0; list-style:none; }
 .calls li code{ display:inline-block; padding:4px 8px; background:var(--black); border:1px solid var(--blue); }
 
-/* ---------- editors ---------- */
+/* EDITORS */
 
 .editors{ background:var(--black); }
 .tablist{
-  display:flex; gap:2px;
-  overflow-x:auto;
-  padding:0 8px;
-  background:var(--blue);
-  scrollbar-width:none;
+	display:flex; gap:2px;
+	overflow-x:auto;
+	padding:0 8px;
+	background:var(--blue);
+	scrollbar-width:none;
 }
 .tablist::-webkit-scrollbar{ display:none; }
 .tablist button{
-  flex:none;
-  padding:0 12px;
-  border:0;
-  background:transparent;
-  color:var(--white);
-  font-family:var(--pixel);
-  font-size:17px;
-  line-height:34px;
-  cursor:pointer;
-  white-space:nowrap;
+	flex:none;
+	padding:0 12px;
+	border:0;
+	background:transparent;
+	color:var(--white);
+	font-family:var(--pixel);
+	font-size:17px;
+	line-height:34px;
+	cursor:pointer;
+	white-space:nowrap;
 }
 .tablist button kbd{ margin-right:8px; border-color:currentColor; font-size:13px; padding:0 4px; border-bottom-width:2px; vertical-align:1px; }
 .tablist button:hover{ background:var(--lblue); }
 .tablist button[aria-selected="true"]{ background:var(--cyan); color:var(--black); }
 .panel{
-  display:grid;
-  grid-template-columns:minmax(0, 7.2fr) minmax(0, 4.8fr);
-  border:2px solid var(--blue);
-  border-top:0;
+	display:grid;
+	grid-template-columns:minmax(0, 7.2fr) minmax(0, 4.8fr);
+	border:2px solid var(--blue);
+	border-top:0;
 }
 .panel[hidden]{ display:none; }
 .panel img{ display:block; width:100%; height:auto; background:#000; }
@@ -395,23 +394,23 @@ h2{
 .panel li{ margin-bottom:6px; }
 .panel li::marker{ color:var(--cyan); }
 
-/* ---------- features as PC-98 windows ---------- */
+/* FEATURES */
 
 .features{ background:linear-gradient(180deg, var(--navy) 0%, var(--black) 100%); }
 .grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:22px; margin:0; padding:0; list-style:none; }
 .box{
-  height:100%;
-  padding:20px 20px 22px;
-  background:var(--navy);
-  border:2px solid var(--white);
-  outline:2px solid var(--navy);
-  outline-offset:-6px;
-  box-shadow:inset 0 0 0 6px var(--navy), inset 0 0 0 8px var(--grey);
+	height:100%;
+	padding:20px 20px 22px;
+	background:var(--navy);
+	border:2px solid var(--white);
+	outline:2px solid var(--navy);
+	outline-offset:-6px;
+	box-shadow:inset 0 0 0 6px var(--navy), inset 0 0 0 8px var(--grey);
 }
 .box h3{ margin:0 0 10px; font-family:var(--code); font-weight:400; font-size:24px; line-height:1.15; color:var(--yellow); }
 .box p{ margin:0; color:#d9d4c6; }
 
-/* ---------- carts ---------- */
+/* CARTS */
 
 .carts{ background:radial-gradient(ellipse at 30% 40%, var(--wall) 0%, var(--wall-d) 75%); }
 .carts .split{ align-items:center; }
@@ -425,7 +424,7 @@ h2{
 .formats p{ margin:0; color:#d9d4c6; }
 .formats small{ display:block; margin-top:4px; color:#a9afbb; font-size:.875rem; }
 
-/* ---------- start ---------- */
+/* START */
 
 .start{ background:var(--blue); }
 .start .wrap{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px; align-items:center; }
@@ -437,103 +436,103 @@ h2{
 .start .console{ border-color:var(--white); }
 
 @media (max-width:960px){
-  .hero .wrap, .split, .start .wrap{ grid-template-columns:minmax(0,1fr); gap:40px; }
-  .hero h1{ font-size:96px; }
-  .hero .wrap > div:first-child{ max-width:640px; }
-  .hero{ padding-top:44px; }
-  .lede{ max-width:none; }
-  .grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
-  .panel{ grid-template-columns:minmax(0,1fr); }
-  .pair{ grid-template-columns:minmax(0,1fr); }
-  .arrow{ flex-direction:row; justify-content:center; }
-  .arrow span:first-child{ transform:rotate(90deg); }
+	.hero .wrap, .split, .start .wrap{ grid-template-columns:minmax(0,1fr); gap:40px; }
+	.hero h1{ font-size:96px; }
+	.hero .wrap > div:first-child{ max-width:640px; }
+	.hero{ padding-top:44px; }
+	.lede{ max-width:none; }
+	.grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+	.panel{ grid-template-columns:minmax(0,1fr); }
+	.pair{ grid-template-columns:minmax(0,1fr); }
+	.arrow{ flex-direction:row; justify-content:center; }
+	.arrow span:first-child{ transform:rotate(90deg); }
 }
 @media (max-width:620px){
-  .why h2{ font-size:40px; }
-  .why .limits{ padding:22px 18px 6px; }
-  section{ padding:72px 16px; }
-  .hero{ padding:36px 16px 64px; }
-  .monitor{ padding:10px 10px 28px; }
-  .monitor .badge{ left:14px; bottom:6px; font-size:12px; }
-  .monitor .led{ right:16px; bottom:10px; }
-  .grid{ grid-template-columns:minmax(0,1fr); }
-  .formats li{ grid-template-columns:minmax(0,1fr); gap:4px; }
-  .hero h1{ font-size:64px; }
-  h2, .start h2{ font-size:32px; }
-  .panel h3{ font-size:24px; }
-  pre{ font-size:16px; }
-  .panel .txt{ padding:22px 18px; }
-  .btn{ font-size:17px; }
-  .slidebar{ flex-direction:column; align-items:flex-start; gap:8px; }
-  .topbar nav a.sec{ display:none; }
+	.why h2{ font-size:40px; }
+	.why .limits{ padding:22px 18px 6px; }
+	section{ padding:72px 16px; }
+	.hero{ padding:36px 16px 64px; }
+	.monitor{ padding:10px 10px 28px; }
+	.monitor .badge{ left:14px; bottom:6px; font-size:12px; }
+	.monitor .led{ right:16px; bottom:10px; }
+	.grid{ grid-template-columns:minmax(0,1fr); }
+	.formats li{ grid-template-columns:minmax(0,1fr); gap:4px; }
+	.hero h1{ font-size:64px; }
+	h2, .start h2{ font-size:32px; }
+	.panel h3{ font-size:24px; }
+	pre{ font-size:16px; }
+	.panel .txt{ padding:22px 18px; }
+	.btn{ font-size:17px; }
+	.slidebar{ flex-direction:column; align-items:flex-start; gap:8px; }
+	.topbar nav a.sec{ display:none; }
 }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <a class="brand" href="./">NEVEL-98</a>
-  <nav aria-label="Sections">
-    <a class="sec" href="#machine">Machine</a>
-    <a class="sec" href="#lua">Lua</a>
-    <a class="sec" href="#editors">Editors</a>
-    <a class="sec" href="#carts">Carts</a>
-    <a class="sec" href="#why">Why</a>
-    <a class="sec" href="#get">Download</a>
-    <a href="docs/">Docs</a>
-    <a href="app/">Open</a>
-  </nav>
-  <a class="right" href="play/">Play <span class="tri" aria-hidden="true"></span></a>
+	<a class="brand" href="./">NEVEL-98</a>
+	<nav aria-label="Sections">
+		<a class="sec" href="#machine">Machine</a>
+		<a class="sec" href="#lua">Lua</a>
+		<a class="sec" href="#editors">Editors</a>
+		<a class="sec" href="#carts">Carts</a>
+		<a class="sec" href="#why">Why</a>
+		<a class="sec" href="#get">Download</a>
+		<a href="docs/">Docs</a>
+		<a href="app/">Open</a>
+	</nav>
+	<a class="right" href="play/">Play <span class="tri" aria-hidden="true"></span></a>
 </header>
 
 <main>
 
 <!-- ============ HERO ============ -->
 <section class="hero" aria-labelledby="t-hero">
-  <div class="wrap">
-    <div>
-      <p class="eyebrow">VISUAL NOVEL FANTASY COMPUTER</p>
-      <h1 id="t-hero">NEVEL<span>-98</span></h1>
-      <p class="lede">Make visual novels the way they looked on a 1990s Japanese computer.</p>
-      <p class="sub">Draw in 16 colors, compose FM music and write the story in Lua, all inside one machine inspired by the NEC PC-9801 adventures. Then share your game as a floppy disk or a web page.</p>
-      <div class="ctas">
-        <a class="btn primary" href="play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
-        <a class="btn" href="app/">Open NEVEL-98</a>
-      </div>
-      <p class="note">Both run in your browser. New here? Start with the <a href="docs/">manual</a>.</p>
-    </div>
+	<div class="wrap">
+		<div>
+			<p class="eyebrow">VISUAL NOVEL FANTASY COMPUTER</p>
+			<h1 id="t-hero">NEVEL<span>-98</span></h1>
+			<p class="lede">Make visual novels the way they looked on a 1990s Japanese computer.</p>
+			<p class="sub">Draw in 16 colors, compose FM music and write the story in Lua, all inside one machine inspired by the NEC PC-9801 adventures. Then share your game as a floppy disk or a web page.</p>
+			<div class="ctas">
+				<a class="btn primary" href="play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
+				<a class="btn" href="app/">Open NEVEL-98</a>
+			</div>
+			<p class="note">Both run in your browser. New here? Start with the <a href="docs/">manual</a>.</p>
+		</div>
 
-    <div>
-      <div class="monitor">
-        <div class="screen">
-          <canvas id="tv" class="pixelated" width="640" height="400" role="img" aria-label="Screens from Last Train Home, the demo cart"></canvas>
-          <noscript><img class="pixelated" src="assets/screens/rei.png" width="640" height="400" alt="Rei on the station platform, from the demo cart"></noscript>
-        </div>
-        <div class="badge">NEVEL-98</div>
-        <div class="led" aria-hidden="true"></div>
-      </div>
-      <div class="slidebar">
-        <div class="dots" id="dots"></div>
-        <div class="cap" id="cap" aria-live="polite"></div>
-      </div>
-    </div>
-  </div>
+		<div>
+			<div class="monitor">
+				<div class="screen">
+					<canvas id="tv" class="pixelated" width="640" height="400" role="img" aria-label="Screens from Last Train Home, the demo cart"></canvas>
+					<noscript><img class="pixelated" src="assets/screens/rei.png" width="640" height="400" alt="Rei on the station platform, from the demo cart"></noscript>
+				</div>
+				<div class="badge">NEVEL-98</div>
+				<div class="led" aria-hidden="true"></div>
+			</div>
+			<div class="slidebar">
+				<div class="dots" id="dots"></div>
+				<div class="cap" id="cap" aria-live="polite"></div>
+			</div>
+		</div>
+	</div>
 </section>
 
 <!-- ============ MACHINE ============ -->
 <section class="machine" id="machine" aria-labelledby="t-machine">
-  <div class="wrap split">
-    <div>
-      <h2 id="t-machine">A computer that never existed</h2>
-      <p class="intro">NEVEL-98 imagines the machine behind the PC-98 adventures of the late '80s and '90s. Its limits are the style: dithered pixel art, square text windows, FM music.</p>
-      <ul class="limits">
-        <li>16 colors on screen, so shading comes from dithering, like the originals.</li>
-        <li>Every image can carry its own palette, so each scene gets its own mood.</li>
-        <li>The machine's Lua has no file or OS access: a cart only talks to the API, and saved games replay exactly.</li>
-      </ul>
-    </div>
-    <div class="window console">
-      <div class="bar"><span>NEVEL-98 FANTASY COMPUTER</span><span class="dim">Version 1.0.0</span></div>
+	<div class="wrap split">
+		<div>
+			<h2 id="t-machine">A computer that never existed</h2>
+			<p class="intro">NEVEL-98 imagines the machine behind the PC-98 adventures of the late '80s and '90s. Its limits are the style: dithered pixel art, square text windows, FM music.</p>
+			<ul class="limits">
+				<li>16 colors on screen, so shading comes from dithering, like the originals.</li>
+				<li>Every image can carry its own palette, so each scene gets its own mood.</li>
+				<li>The machine's Lua has no file or OS access: a cart only talks to the API, and saved games replay exactly.</li>
+			</ul>
+		</div>
+		<div class="window console">
+			<div class="bar"><span>NEVEL-98 FANTASY COMPUTER</span><span class="dim">Version 1.0.0</span></div>
 <pre><span class="w">&gt; specs</span>
 <span class="k">display  </span> 640×400, 60 frames per second
 <span class="k">colors   </span> 16 on screen, each one of 4096 (0xRGB)
@@ -545,20 +544,20 @@ h2{
 <span class="k">texts    </span> key tables, up to 8 languages
 <span class="k">code     </span> Lua 5.4, up to 512 KB
 <span class="w">&gt;</span> <span class="cur"></span></pre>
-    </div>
-  </div>
+		</div>
+	</div>
 </section>
 
 <!-- ============ LUA ============ -->
 <section class="lua" id="lua" aria-labelledby="t-lua">
-  <div class="wrap">
-    <h2 id="t-lua">A visual novel is just Lua</h2>
-    <p class="intro">Every call waits as long as it needs to: <code>say</code> waits for the player to read, <code>choice</code> waits for an answer, a transition waits until it ends. You write the story from top to bottom.</p>
+	<div class="wrap">
+		<h2 id="t-lua">A visual novel is just Lua</h2>
+		<p class="intro">Every call waits as long as it needs to: <code>say</code> waits for the player to read, <code>choice</code> waits for an answer, a transition waits until it ends. You write the story from top to bottom.</p>
 
-    <div class="pair">
-      <div class="window codewin">
-        <div class="bar"><span class="tabs"><span>NEVEL-98</span><span class="on">CODE</span><span>IMAGE</span><span>TEXT</span><span>SOUND</span><span>MUSIC</span></span></div>
-        <pre><span class="gut" aria-hidden="true">1
+		<div class="pair">
+			<div class="window codewin">
+				<div class="bar"><span class="tabs"><span>NEVEL-98</span><span class="on">CODE</span><span>IMAGE</span><span>TEXT</span><span>SOUND</span><span>MUSIC</span></span></div>
+				<pre><span class="gut" aria-hidden="true">1
 2
 3
 4
@@ -581,297 +580,308 @@ h2{
   <span class="tk-kw">end</span>
   <span class="tk-api">jump</span>(<span class="tk-str">"platform"</span>)
 <span class="tk-kw">end</span>)</code></pre>
-        <div class="status">ctrl+r run</div>
-      </div>
-      <div class="arrow" aria-hidden="true"><span>→</span><span>F6</span></div>
-      <figure class="shot">
-        <img class="pixelated" src="assets/screens/rei.png" width="640" height="400" loading="lazy" alt="Rei, smiling on the station platform, says: Ehehe! You missed it too?">
-        <figcaption>The same scene in the demo cart, with its framed layout and LED clock.</figcaption>
-      </figure>
-    </div>
+				<div class="status">ctrl+r run</div>
+			</div>
+			<div class="arrow" aria-hidden="true"><span>→</span><span>F6</span></div>
+			<figure class="shot">
+				<img class="pixelated" src="assets/screens/rei.png" width="640" height="400" loading="lazy" alt="Rei, smiling on the station platform, says: Ehehe! You missed it too?">
+				<figcaption>The same scene in the demo cart, with its framed layout and LED clock.</figcaption>
+			</figure>
+		</div>
 
-    <ul class="calls" aria-label="A few engine calls">
-      <li><code>bg()</code></li><li><code>show()</code></li><li><code>say()</code></li><li><code>choice{}</code></li><li><code>menu{}</code></li><li><code>jump()</code></li><li><code>layout()</code></li><li><code>music()</code></li><li><code>quake()</code></li><li><code>flag</code></li><li><code>the_end()</code></li>
-    </ul>
-  </div>
+		<ul class="calls" aria-label="A few engine calls">
+			<li><code>bg()</code></li><li><code>show()</code></li><li><code>say()</code></li><li><code>choice{}</code></li><li><code>menu{}</code></li><li><code>jump()</code></li><li><code>layout()</code></li><li><code>music()</code></li><li><code>quake()</code></li><li><code>flag</code></li><li><code>the_end()</code></li>
+		</ul>
+	</div>
 </section>
 
 <!-- ============ EDITORS ============ -->
 <section class="editors" id="editors" aria-labelledby="t-editors">
-  <div class="wrap">
-    <h2 id="t-editors">Five editors behind the function keys</h2>
-    <p class="intro">Everything you need lives inside the machine. Press <kbd>Esc</kbd> for the console, <kbd>F1</kbd>–<kbd>F5</kbd> for the editors, <kbd>F6</kbd> to run your game.</p>
+	<div class="wrap">
+		<h2 id="t-editors">Five editors behind the function keys</h2>
+		<p class="intro">Everything you need lives inside the machine. Press <kbd>Esc</kbd> for the console, <kbd>F1</kbd>–<kbd>F5</kbd> for the editors, <kbd>F6</kbd> to run your game.</p>
 
-    <div class="tablist" role="tablist" aria-label="Editors">
-      <button role="tab" id="tab-code" aria-controls="p-code" aria-selected="true"><kbd>F1</kbd>CODE</button>
-      <button role="tab" id="tab-image" aria-controls="p-image" aria-selected="false" tabindex="-1"><kbd>F2</kbd>IMAGE</button>
-      <button role="tab" id="tab-text" aria-controls="p-text" aria-selected="false" tabindex="-1"><kbd>F3</kbd>TEXT</button>
-      <button role="tab" id="tab-sound" aria-controls="p-sound" aria-selected="false" tabindex="-1"><kbd>F4</kbd>SOUND</button>
-      <button role="tab" id="tab-music" aria-controls="p-music" aria-selected="false" tabindex="-1"><kbd>F5</kbd>MUSIC</button>
-      <button role="tab" id="tab-console" aria-controls="p-console" aria-selected="false" tabindex="-1"><kbd>Esc</kbd>CONSOLE</button>
-    </div>
+		<div class="tablist" role="tablist" aria-label="Editors">
+			<button role="tab" id="tab-code" aria-controls="p-code" aria-selected="true"><kbd>F1</kbd>CODE</button>
+			<button role="tab" id="tab-image" aria-controls="p-image" aria-selected="false" tabindex="-1"><kbd>F2</kbd>IMAGE</button>
+			<button role="tab" id="tab-text" aria-controls="p-text" aria-selected="false" tabindex="-1"><kbd>F3</kbd>TEXT</button>
+			<button role="tab" id="tab-sound" aria-controls="p-sound" aria-selected="false" tabindex="-1"><kbd>F4</kbd>SOUND</button>
+			<button role="tab" id="tab-music" aria-controls="p-music" aria-selected="false" tabindex="-1"><kbd>F5</kbd>MUSIC</button>
+			<button role="tab" id="tab-console" aria-controls="p-console" aria-selected="false" tabindex="-1"><kbd>Esc</kbd>CONSOLE</button>
+		</div>
 
-    <div class="panel" role="tabpanel" id="p-code" aria-labelledby="tab-code">
-      <img class="pixelated" src="assets/screens/ed-code.png" width="640" height="400" loading="lazy" alt="The code editor showing the demo's command menu loop">
-      <div class="txt">
-        <h3>Code</h3>
-        <p>A Lua editor with syntax highlighting for keywords, API names, strings and numbers.</p>
-        <ul><li>Undo, find, go to line, comment, duplicate</li><li>Indent a whole selection with Tab</li><li>A runtime error stops the cart: press F1 to open the line that failed</li></ul>
-      </div>
-    </div>
-    <div class="panel" role="tabpanel" id="p-image" aria-labelledby="tab-image" hidden>
-      <img class="pixelated" src="assets/screens/ed-image.png" width="640" height="400" loading="lazy" alt="The image editor with Rei's portrait and the 16-color palette strip">
-      <div class="txt">
-        <h3>Image</h3>
-        <p>A pixel art editor built around two colors and a dither pattern, the classic PC-98 shading.</p>
-        <ul><li>Pen, line, boxes, ovals, fill, selection and stamps</li><li>Dither brushes that mix the primary and secondary color</li><li>Edit the cart palette or the image's own palette</li></ul>
-      </div>
-    </div>
-    <div class="panel" role="tabpanel" id="p-text" aria-labelledby="tab-text" hidden>
-      <img class="pixelated" src="assets/screens/ed-text.png" width="640" height="400" loading="lazy" alt="The text editor with the keys and texts of the demo">
-      <div class="txt">
-        <h3>Text</h3>
-        <p>Your script as a table of keys, one column per language. Call a line with <code>"@rei.hello"</code>.</p>
-        <ul><li>Up to 8 languages, with a Language option for players</li><li>Missing translations are shown in red</li><li>CSV import and export for translators</li></ul>
-      </div>
-    </div>
-    <div class="panel" role="tabpanel" id="p-sound" aria-labelledby="tab-sound" hidden>
-      <img class="pixelated" src="assets/screens/ed-sound.png" width="640" height="400" loading="lazy" alt="The sound editor showing an FM algorithm diagram and operator parameters">
-      <div class="txt">
-        <h3>Sound</h3>
-        <p>32 instruments in the spirit of the PC-98's OPNA chip.</p>
-        <ul><li>4-operator FM with 8 algorithms, drawn as a diagram</li><li>SSG square waves and noise</li><li>Play them on your keyboard while you tweak, or start from a preset</li></ul>
-      </div>
-    </div>
-    <div class="panel" role="tabpanel" id="p-music" aria-labelledby="tab-music" hidden>
-      <img class="pixelated" src="assets/screens/ed-music.png" width="640" height="400" loading="lazy" alt="The music tracker with six channels of notes">
-      <div class="txt">
-        <h3>Music</h3>
-        <p>A 6-channel tracker for the songs of your game.</p>
-        <ul><li>64 patterns of 32 rows, 8 songs with loop points</li><li>Transpose, copy and paste whole patterns</li><li>Sound effects borrow only the channels they use</li></ul>
-      </div>
-    </div>
-    <div class="panel" role="tabpanel" id="p-console" aria-labelledby="tab-console" hidden>
-      <img class="pixelated" src="assets/screens/console.png" width="640" height="400" loading="lazy" alt="The console after loading the demo and typing info">
-      <div class="txt">
-        <h3>Console</h3>
-        <p>Where the machine boots. Load and save carts, import pictures, export your game.</p>
-        <ul><li><code>import photo.png</code> turns any picture into 16-color art</li><li><code>export game.html</code> makes a web player</li><li>Tab completes file names, Up recalls commands</li></ul>
-      </div>
-    </div>
-  </div>
+		<div class="panel" role="tabpanel" id="p-code" aria-labelledby="tab-code">
+			<img class="pixelated" src="assets/screens/ed-code.png" width="640" height="400" loading="lazy" alt="The code editor showing the demo's command menu loop">
+			<div class="txt">
+				<h3>Code</h3>
+				<p>A Lua editor with syntax highlighting for keywords, API names, strings and numbers.</p>
+				<ul><li>Undo, find, go to line, comment, duplicate</li><li>Indent a whole selection with Tab</li><li>A runtime error stops the cart: press F1 to open the line that failed</li></ul>
+			</div>
+		</div>
+		<div class="panel" role="tabpanel" id="p-image" aria-labelledby="tab-image" hidden>
+			<img class="pixelated" src="assets/screens/ed-image.png" width="640" height="400" loading="lazy" alt="The image editor with Rei's portrait and the 16-color palette strip">
+			<div class="txt">
+				<h3>Image</h3>
+				<p>A pixel art editor built around two colors and a dither pattern, the classic PC-98 shading.</p>
+				<ul><li>Pen, line, boxes, ovals, fill, selection and stamps</li><li>Dither brushes that mix the primary and secondary color</li><li>Edit the cart palette or the image's own palette</li></ul>
+			</div>
+		</div>
+		<div class="panel" role="tabpanel" id="p-text" aria-labelledby="tab-text" hidden>
+			<img class="pixelated" src="assets/screens/ed-text.png" width="640" height="400" loading="lazy" alt="The text editor with the keys and texts of the demo">
+			<div class="txt">
+				<h3>Text</h3>
+				<p>Your script as a table of keys, one column per language. Call a line with <code>"@rei.hello"</code>.</p>
+				<ul><li>Up to 8 languages, with a Language option for players</li><li>Missing translations are shown in red</li><li>CSV import and export for translators</li></ul>
+			</div>
+		</div>
+		<div class="panel" role="tabpanel" id="p-sound" aria-labelledby="tab-sound" hidden>
+			<img class="pixelated" src="assets/screens/ed-sound.png" width="640" height="400" loading="lazy" alt="The sound editor showing an FM algorithm diagram and operator parameters">
+			<div class="txt">
+				<h3>Sound</h3>
+				<p>32 instruments in the spirit of the PC-98's OPNA chip.</p>
+				<ul><li>4-operator FM with 8 algorithms, drawn as a diagram</li><li>SSG square waves and noise</li><li>Play them on your keyboard while you tweak, or start from a preset</li></ul>
+			</div>
+		</div>
+		<div class="panel" role="tabpanel" id="p-music" aria-labelledby="tab-music" hidden>
+			<img class="pixelated" src="assets/screens/ed-music.png" width="640" height="400" loading="lazy" alt="The music tracker with six channels of notes">
+			<div class="txt">
+				<h3>Music</h3>
+				<p>A 6-channel tracker for the songs of your game.</p>
+				<ul><li>64 patterns of 32 rows, 8 songs with loop points</li><li>Transpose, copy and paste whole patterns</li><li>Sound effects borrow only the channels they use</li></ul>
+			</div>
+		</div>
+		<div class="panel" role="tabpanel" id="p-console" aria-labelledby="tab-console" hidden>
+			<img class="pixelated" src="assets/screens/console.png" width="640" height="400" loading="lazy" alt="The console after loading the demo and typing info">
+			<div class="txt">
+				<h3>Console</h3>
+				<p>Where the machine boots. Load and save carts, import pictures, export your game.</p>
+				<ul><li><code>import photo.png</code> turns any picture into 16-color art</li><li><code>export game.html</code> makes a web player</li><li>Tab completes file names, Up recalls commands</li></ul>
+			</div>
+		</div>
+	</div>
 </section>
 
 <!-- ============ FEATURES ============ -->
 <section class="features" aria-labelledby="t-features">
-  <div class="wrap">
-    <h2 id="t-features">Built for the PC-98 look</h2>
-    <p class="intro">The visual novel engine is part of the machine, so a new cart already has saves, a backlog and a title screen.</p>
-    <ul class="grid">
-      <li><div class="box"><h3>Framed layouts</h3><p>The scene in an ornate frame, side panels for a clock, the date or a command menu, the text in a console below.</p></div></li>
-      <li><div class="box"><h3>Adventure commands</h3><p>Choices, PC-98 style command menus like Look / Talk / Move, flags and multiple endings.</p></div></li>
-      <li><div class="box"><h3>Transitions</h3><p>Dither, wipe, blinds, curtain and mosaic dissolves, palette fades, flashes and screen shake.</p></div></li>
-      <li><div class="box"><h3>Saves included</h3><p>6 save slots, backlog, auto and skip, text speed and volume. Loading replays the scene exactly.</p></div></li>
-      <li><div class="box"><h3>Any picture, 16 colors</h3><p>Import a PNG or JPG and get ordered (Bayer) or error-diffusion dithering, with a shared or own palette.</p></div></li>
-      <li><div class="box"><h3>Game mode too</h3><p>Define <code>_draw</code> (and <code>_update</code>) with no scenes, and the cart runs as a plain game loop.</p></div></li>
-    </ul>
-  </div>
+	<div class="wrap">
+		<h2 id="t-features">Built for the PC-98 look</h2>
+		<p class="intro">The visual novel engine is part of the machine, so a new cart already has saves, a backlog and a title screen.</p>
+		<ul class="grid">
+			<li><div class="box"><h3>Framed layouts</h3><p>The scene in an ornate frame, side panels for a clock, the date or a command menu, the text in a console below.</p></div></li>
+			<li><div class="box"><h3>Adventure commands</h3><p>Choices, PC-98 style command menus like Look / Talk / Move, flags and multiple endings.</p></div></li>
+			<li><div class="box"><h3>Transitions</h3><p>Dither, wipe, blinds, curtain and mosaic dissolves, palette fades, flashes and screen shake.</p></div></li>
+			<li><div class="box"><h3>Saves included</h3><p>6 save slots, backlog, auto and skip, text speed and volume. Loading replays the scene exactly.</p></div></li>
+			<li><div class="box"><h3>Any picture, 16 colors</h3><p>Import a PNG or JPG and get ordered (Bayer) or error-diffusion dithering, with a shared or own palette.</p></div></li>
+			<li><div class="box"><h3>Game mode too</h3><p>Define <code>_draw</code> (and <code>_update</code>) with no scenes, and the cart runs as a plain game loop.</p></div></li>
+		</ul>
+	</div>
 </section>
 
 <!-- ============ CARTS ============ -->
 <section class="carts" id="carts" aria-labelledby="t-carts">
-  <div class="wrap split">
-    <figure class="floppy">
-      <a href="carts/demo.n98.png" download="demo.n98.png"><img class="pixelated" src="carts/demo.n98.png" width="400" height="420" loading="lazy" alt="A 3.5-inch floppy disk labeled Last Train Home"></a>
-      <figcaption>This picture is the whole demo. <a href="carts/demo.n98.png" download="demo.n98.png">Download it</a> and drop it on NEVEL-98.</figcaption>
-    </figure>
-    <div>
-      <h2 id="t-carts">Share it on a floppy disk</h2>
-      <p class="intro">A game is a cartridge, and a cartridge travels three ways.</p>
-      <ul class="formats">
-        <li><code>.n98</code><p>The whole game as one text file: code, palette, images, music and texts. Easy to read and to keep in git.</p></li>
-        <li><code>.n98.png</code><p>A picture of a 3.5" floppy with your game's label. The cart is hidden inside the PNG.<small>Share floppies as files: image hosts that re-encode pictures remove the cart.</small></p></li>
-        <li><code>.html</code><p>One page with the machine and your game inside. Upload it anywhere and it plays.</p></li>
-      </ul>
-    </div>
-  </div>
+	<div class="wrap split">
+		<figure class="floppy">
+			<a href="carts/demo.n98.png" download="demo.n98.png"><img class="pixelated" src="carts/demo.n98.png" width="400" height="420" loading="lazy" alt="A 3.5-inch floppy disk labeled Last Train Home"></a>
+			<figcaption>This picture is the whole demo. <a href="carts/demo.n98.png" download="demo.n98.png">Download it</a> and drop it on NEVEL-98.</figcaption>
+		</figure>
+		<div>
+			<h2 id="t-carts">Share it on a floppy disk</h2>
+			<p class="intro">A game is a cartridge, and a cartridge travels three ways.</p>
+			<ul class="formats">
+				<li><code>.n98</code><p>The whole game as one text file: code, palette, images, music and texts. Easy to read and to keep in git.</p></li>
+				<li><code>.n98.png</code><p>A picture of a 3.5" floppy with your game's label. The cart is hidden inside the PNG.<small>Share floppies as files: image hosts that re-encode pictures remove the cart.</small></p></li>
+				<li><code>.html</code><p>One page with the machine and your game inside. Upload it anywhere and it plays.</p></li>
+			</ul>
+		</div>
+	</div>
 </section>
 
 <!-- ============ WHY ============ -->
 <section class="why" id="why" aria-labelledby="t-why">
-  <div class="wrap">
-    <p class="eyebrow">WHY · A NOTE FROM BLUEMOON</p>
-    <h2 id="t-why">Sixteen colors were enough</h2>
-    <p class="first">I have loved PC-98 visual novels for a long time. NEC's PC-9801 and the machines that followed it were the computers of Japan from the early 1980s to the late 1990s, and the stories written for them shaped what visual novels and adventure games still are today.</p>
-    <p>The spark for NEVEL-98 came from an anime, <em>16bit Sensation: Another Layer</em> (2023), in which an illustrator from today ends up in 1992, drawing for a bishoujo game studio. The show itself didn't stay with me for long. What stayed was its love for the PC-98: the pixels placed one by one, the cramped studio, the people who made it all work. I was already a fan, and it made me want to build something.</p>
-    <p>The PC-98 showed 640×400 pixels and sixteen colors at once, picked from 4096. On that screen Hideo Kojima made <em>Policenauts</em>, ELF made <em>YU-NO</em> and ZUN started <em>Touhou</em>, and a whole generation of artists learned to dither a sunset and shade a face by hand.</p>
-    <div class="limits">
-      <h3>The philosophy of limits</h3>
-      <p>Those developers didn't have infinite memory, infinite colors or infinite time. They had sixteen colors, a few FM voices and a floppy disk. And that was the point. When you can't add more, you have to choose: every color has to earn its place, every melody has to say something with a handful of voices, every scene has to work with one background and a few lines of text.</p>
-      <p>Limits take away the endless options and leave the one question that matters: <em>what is this story about, and how do I make you feel it?</em> That is why those games are still remembered. Not for what the machines could do, but for what people did with so little.</p>
-      <p>NEVEL-98 keeps those limits on purpose: <span class="specs">640×400 · 16 colors · 6 FM channels · one cart</span>. Not out of nostalgia, but so you stop worrying about tools and start making something.</p>
-    </div>
-    <p>I hope NEVEL-98 can be a small machine that lights a spark. If it makes you want to draw one face, write one scene or compose one melody, and then finish your story, it has done its job.</p>
-    <p class="sign">Bluemoon</p>
-  </div>
+	<div class="wrap">
+		<p class="eyebrow">WHY · A NOTE FROM BLUEMOON</p>
+		<h2 id="t-why">Sixteen colors were enough</h2>
+		<p class="first">I have loved PC-98 visual novels for a long time. NEC's PC-9801 and the machines that followed it were the computers of Japan from the early 1980s to the late 1990s, and the stories written for them shaped what visual novels and adventure games still are today.</p>
+		<p>The spark for NEVEL-98 came from an anime, <em>16bit Sensation: Another Layer</em> (2023), in which an illustrator from today ends up in 1992, drawing for a bishoujo game studio. The show itself didn't stay with me for long. What stayed was its love for the PC-98: the pixels placed one by one, the cramped studio, the people who made it all work. I was already a fan, and it made me want to build something.</p>
+		<p>The PC-98 showed 640×400 pixels and sixteen colors at once, picked from 4096. On that screen Hideo Kojima made <em>Policenauts</em>, ELF made <em>YU-NO</em> and ZUN started <em>Touhou</em>, and a whole generation of artists learned to dither a sunset and shade a face by hand.</p>
+		<div class="limits">
+			<h3>The philosophy of limits</h3>
+			<p>Those developers didn't have infinite memory, infinite colors or infinite time. They had sixteen colors, a few FM voices and a floppy disk. And that was the point. When you can't add more, you have to choose: every color has to earn its place, every melody has to say something with a handful of voices, every scene has to work with one background and a few lines of text.</p>
+			<p>Limits take away the endless options and leave the one question that matters: <em>what is this story about, and how do I make you feel it?</em> That is why those games are still remembered. Not for what the machines could do, but for what people did with so little.</p>
+			<p>NEVEL-98 keeps those limits on purpose: <span class="specs">640×400 · 16 colors · 6 FM channels · one cart</span>. Not out of nostalgia, but so you stop worrying about tools and start making something.</p>
+		</div>
+		<p>I hope NEVEL-98 can be a small machine that lights a spark. If it makes you want to draw one face, write one scene or compose one melody, and then finish your story, it has done its job.</p>
+		<p class="sign">Bluemoon</p>
+	</div>
 </section>
 
 <!-- ============ START ============ -->
 <section class="start" aria-labelledby="t-start">
-  <div class="wrap">
-    <div>
-      <h2 id="t-start">Last Train Home</h2>
-      <p>December 31st, 1994. You've just missed the last train of the year. On the empty platform you meet Rei, whose radio plays songs from next year.</p>
-      <p>The demo cart: 3 endings, 3 FM tracks and a red LED clock counting down to midnight. Its source is open in the editors, ready to take apart.</p>
-      <div class="ctas">
-        <a class="btn primary" href="play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
-        <a class="btn" href="app/">Open NEVEL-98</a>
-        <a class="btn" href="docs/">Read the docs</a>
-      </div>
-    </div>
-    <div class="window console" aria-hidden="true">
-      <div class="bar"><span>NEVEL-98 FANTASY COMPUTER</span><span class="dim">Version 1.0.0</span></div>
+	<div class="wrap">
+		<div>
+			<h2 id="t-start">Last Train Home</h2>
+			<p>December 31st, 1994. You've just missed the last train of the year. On the empty platform you meet Rei, whose radio plays songs from next year.</p>
+			<p>The demo cart: 3 endings, 3 FM tracks and a red LED clock counting down to midnight. Its source is open in the editors, ready to take apart.</p>
+			<div class="ctas">
+				<a class="btn primary" href="play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
+				<a class="btn" href="app/">Open NEVEL-98</a>
+				<a class="btn" href="docs/">Read the docs</a>
+			</div>
+		</div>
+		<div class="window console" aria-hidden="true">
+			<div class="bar"><span>NEVEL-98 FANTASY COMPUTER</span><span class="dim">Version 1.0.0</span></div>
 <pre><span class="w">&gt; demo</span>
 <span class="g">loaded the demo novel. type RUN (or press f6) to play,
 then SAVE &lt;name&gt; to keep your own copy.</span>
 <span class="w">&gt; run</span>
 <span class="w">&gt;</span> <span class="cur"></span></pre>
-    </div>
-  </div>
+		</div>
+	</div>
 </section>
 
 <!-- ============ GET ============ -->
 <section class="get" id="get" aria-labelledby="t-get">
-  <div class="wrap">
-    <h2 id="t-get">Play &amp; Download</h2>
-    <p class="intro">NEVEL-98 is free to use in your browser, with all its editors and features included. If you'd rather have it on your computer, there's a desktop version too.</p>
-    <ul class="grid">
-      <li><div class="box"><h3>Browser</h3><p class="price">Free</p><p>Everything you need to make and play games, right in your browser. No installation needed. You can save your work locally and pick it up later.</p><a class="btn" href="app/">Open NEVEL-98</a></div></li>
-      <li><div class="box"><h3>Desktop</h3><p class="price">$2+</p><p>NEVEL-98 also comes as a desktop app. It works offline, saves directly to your computer, and doesn't need a browser.</p><p>A small contribution helps me keep working on NEVEL-98.</p><a class="btn primary" href="https://bluemooncoder.itch.io/nevel-98">Download on itch.io</a></div></li>
-      <li><div class="box"><h3>Your games</h3><p class="price">Always yours</p><p>Whatever you make with NEVEL-98 is yours. Share it, publish it, or sell it. No royalties, no strings attached.</p><a class="btn" href="docs/">Read the docs</a></div></li>
-    </ul>
-  </div>
+	<div class="wrap">
+		<h2 id="t-get">Play &amp; Download</h2>
+		<p class="intro">NEVEL-98 is free to use in your browser, with all its editors and features included. If you'd rather have it on your computer, there's a desktop version too.</p>
+		<ul class="grid">
+			<li><div class="box"><h3>Browser</h3><p class="price">Free</p><p>Everything you need to make and play games, right in your browser. No installation needed. You can save your work locally and pick it up later.</p><a class="btn" href="app/">Open NEVEL-98</a></div></li>
+			<li><div class="box"><h3>Desktop</h3><p class="price">$2+</p><p>NEVEL-98 also comes as a desktop app. It works offline, saves directly to your computer, and doesn't need a browser.</p><p>A small contribution helps me keep working on NEVEL-98.</p><a class="btn primary" href="https://bluemooncoder.itch.io/nevel-98">Download on itch.io</a></div></li>
+			<li><div class="box"><h3>Your games</h3><p class="price">Always yours</p><p>Whatever you make with NEVEL-98 is yours. Share it, publish it, or sell it. No royalties, no strings attached.</p><a class="btn" href="docs/">Read the docs</a></div></li>
+		</ul>
+	</div>
 </section>
 
 </main>
 
 <footer class="foot">
-  <div class="wrap">
-    <p>NEVEL-98 © 2026 Bluemoon. Free in the browser; games you make are yours to share and sell. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation. Games you make are yours.</p>
-    <nav aria-label="Footer">
-      <a href="play/">Play</a>
-      <a href="app/">Open</a>
-      <a href="docs/">Docs</a>
-      <a href="https://bluemooncoder.itch.io/nevel-98">itch.io</a>
-    </nav>
-  </div>
+	<div class="wrap">
+		<div class="info">
+			<p>NEVEL-98 © 2026 Bluemoon. Free in the browser; games you make are yours to share and sell. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation.</p>
+			<p class="ai"><b>AI disclosure:</b> the artwork of the demo cart <i>Last Train Home</i> (Rei and the backgrounds) was made with the help of generative AI.</p>
+		</div>
+		<nav aria-label="Footer">
+			<a href="play/">Play</a>
+			<a href="app/">Open</a>
+			<a href="docs/">Docs</a>
+			<a href="https://bluemooncoder.itch.io/nevel-98">itch.io</a>
+		</nav>
+	</div>
 </footer>
 
 <script>
 (function () {
-  /* ---- hero: real screens, swapped with the machine's own dither transition ---- */
-  var SLIDES = [
-    { src: "assets/screens/title.png",   cap: "<b>Title screen</b> · title_screen{}" },
-    { src: "assets/screens/menu.png",    cap: "<b>Command menu</b> · menu{}" },
-    { src: "assets/screens/rei.png",     cap: "<b>Dialogue</b> · say(\"Rei\", …)" },
-    { src: "assets/screens/choice.png",  cap: "<b>Choices</b> · choice{}" },
-    { src: "assets/screens/newyear.png", cap: "<b>Panels</b> · a hud() that draws the clock" }
-  ];
-  var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-  var tv = document.getElementById("tv"), ctx = tv.getContext("2d");
-  var dots = document.getElementById("dots"), cap = document.getElementById("cap");
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var tmp = document.createElement("canvas"); tmp.width = 640; tmp.height = 400;
-  var tctx = tmp.getContext("2d");
+	//###############################################################################
+	//
+	// HERO
+	//
+	//###############################################################################
+	var SLIDES = [
+		{ src: "assets/screens/title.png",   cap: "<b>Title screen</b> · title_screen{}" },
+		{ src: "assets/screens/menu.png",    cap: "<b>Command menu</b> · menu{}" },
+		{ src: "assets/screens/rei.png",     cap: "<b>Dialogue</b> · say(\"Rei\", …)" },
+		{ src: "assets/screens/choice.png",  cap: "<b>Choices</b> · choice{}" },
+		{ src: "assets/screens/newyear.png", cap: "<b>Panels</b> · a hud() that draws the clock" }
+	];
+	var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+	var tv = document.getElementById("tv"), ctx = tv.getContext("2d");
+	var dots = document.getElementById("dots"), cap = document.getElementById("cap");
+	var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	var tmp = document.createElement("canvas"); tmp.width = 640; tmp.height = 400;
+	var tctx = tmp.getContext("2d");
 
-  /* one 4×4 mask per step: pixel opaque when its Bayer threshold is below the step */
-  var masks = [];
-  for (var s = 0; s <= 16; s++) {
-    var m = document.createElement("canvas"); m.width = m.height = 4;
-    var mc = m.getContext("2d");
-    for (var i = 0; i < 16; i++) if (BAYER[i] < s) { mc.fillStyle = "#000"; mc.fillRect(i % 4, i >> 2, 1, 1); }
-    masks.push(ctx.createPattern(m, "repeat"));
-  }
+	// 4x4 bayer mask per step
+	var masks = [];
+	for(var s = 0; s <= 16; s++) {
+		var m = document.createElement("canvas"); m.width = m.height = 4;
+		var mc = m.getContext("2d");
+		for(var i = 0; i < 16; i++) if(BAYER[i] < s) { mc.fillStyle = "#000"; mc.fillRect(i % 4, i >> 2, 1, 1); }
+		masks.push(ctx.createPattern(m, "repeat"));
+	}
 
-  var imgs = SLIDES.map(function (sl) { var im = new Image(); im.src = sl.src; return im; });
-  var cur = 0, busy = false, timer = 0, visible = true;
+	var imgs = SLIDES.map(function (sl) { var im = new Image(); im.src = sl.src; return im; });
+	var cur = 0, busy = false, timer = 0, visible = true;
 
-  SLIDES.forEach(function (sl, i) {
-    var b = document.createElement("button");
-    b.type = "button"; b.textContent = i + 1;
-    b.setAttribute("aria-label", "Screen " + (i + 1));
-    b.onclick = function () { go(i, true); };
-    dots.appendChild(b);
-  });
+	SLIDES.forEach(function (sl, i) {
+		var b = document.createElement("button");
+		b.type = "button"; b.textContent = i + 1;
+		b.setAttribute("aria-label", "Screen " + (i + 1));
+		b.onclick = function () { go(i, true); };
+		dots.appendChild(b);
+	});
 
-  function mark(i) {
-    [].forEach.call(dots.children, function (b, k) { b.setAttribute("aria-current", k === i ? "true" : "false"); });
-    cap.innerHTML = SLIDES[i].cap;
-  }
-  function ready(im) { return im.complete && im.naturalWidth > 0; }
+	function mark(i) {
+		[].forEach.call(dots.children, function (b, k) { b.setAttribute("aria-current", k === i ? "true" : "false"); });
+		cap.innerHTML = SLIDES[i].cap;
+	}
+	function ready(im) { return im.complete && im.naturalWidth > 0; }
 
-  function go(next, user) {
-    if (busy || next === cur) return;
-    clearTimeout(timer);
-    var a = imgs[cur], b = imgs[next];
-    cur = next; mark(cur);
-    if (reduce || !ready(a)) { if (ready(b)) ctx.drawImage(b, 0, 0); schedule(); return; }
-    busy = true;
-    var step = 0;
-    (function frame() {
-      step++;
-      ctx.drawImage(a, 0, 0);
-      tctx.globalCompositeOperation = "source-over";
-      tctx.clearRect(0, 0, 640, 400);
-      tctx.drawImage(b, 0, 0);
-      tctx.globalCompositeOperation = "destination-in";
-      tctx.fillStyle = masks[step];
-      tctx.fillRect(0, 0, 640, 400);
-      ctx.drawImage(tmp, 0, 0);
-      if (step < 16) setTimeout(frame, 45);
-      else { busy = false; schedule(); }
-    })();
-  }
-  function schedule() {
-    clearTimeout(timer);
-    if (reduce || !visible) return;
-    timer = setTimeout(function () { go((cur + 1) % SLIDES.length); }, 4200);
-  }
+	function go(next, user) {
+		if(busy || next === cur) return;
+		clearTimeout(timer);
+		var a = imgs[cur], b = imgs[next];
+		cur = next; mark(cur);
+		if(reduce || !ready(a)) { if(ready(b)) ctx.drawImage(b, 0, 0); schedule(); return; }
+		busy = true;
+		var step = 0;
+		(function frame() {
+			step++;
+			ctx.drawImage(a, 0, 0);
+			tctx.globalCompositeOperation = "source-over";
+			tctx.clearRect(0, 0, 640, 400);
+			tctx.drawImage(b, 0, 0);
+			tctx.globalCompositeOperation = "destination-in";
+			tctx.fillStyle = masks[step];
+			tctx.fillRect(0, 0, 640, 400);
+			ctx.drawImage(tmp, 0, 0);
+			if(step < 16) setTimeout(frame, 45);
+			else { busy = false; schedule(); }
+		})();
+	}
+	function schedule() {
+		clearTimeout(timer);
+		if(reduce || !visible) return;
+		timer = setTimeout(function () { go((cur + 1) % SLIDES.length); }, 4200);
+	}
 
-  mark(0);
-  imgs[0].onload = function () { ctx.drawImage(imgs[0], 0, 0); schedule(); };
-  if (ready(imgs[0])) imgs[0].onload();
+	mark(0);
+	imgs[0].onload = function () { ctx.drawImage(imgs[0], 0, 0); schedule(); };
+	if(ready(imgs[0])) imgs[0].onload();
 
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (e) {
-      visible = e[0].isIntersecting && !document.hidden;
-      if (visible) schedule(); else clearTimeout(timer);
-    }).observe(tv);
-  }
-  document.addEventListener("visibilitychange", function () {
-    visible = !document.hidden; if (visible) schedule(); else clearTimeout(timer);
-  });
+	if("IntersectionObserver" in window) {
+		new IntersectionObserver(function (e) {
+			visible = e[0].isIntersecting && !document.hidden;
+			if(visible) schedule(); else clearTimeout(timer);
+		}).observe(tv);
+	}
+	document.addEventListener("visibilitychange", function () {
+		visible = !document.hidden; if(visible) schedule(); else clearTimeout(timer);
+	});
 
-  /* ---- editor tabs ---- */
-  var tabs = [].slice.call(document.querySelectorAll('[role="tab"]'));
-  function select(t, focus) {
-    tabs.forEach(function (x) {
-      var on = x === t;
-      x.setAttribute("aria-selected", on ? "true" : "false");
-      x.tabIndex = on ? 0 : -1;
-      document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
-    });
-    if (focus) t.focus();
-  }
-  tabs.forEach(function (t, i) {
-    t.addEventListener("click", function () { select(t); });
-    t.addEventListener("keydown", function (e) {
-      var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : null;
-      if (j === null) return;
-      e.preventDefault();
-      select(tabs[(j + tabs.length) % tabs.length], true);
-    });
-  });
+	//###############################################################################
+	//
+	// EDITOR TABS
+	//
+	//###############################################################################
+	var tabs = [].slice.call(document.querySelectorAll('[role="tab"]'));
+	function select(t, focus) {
+		tabs.forEach(function (x) {
+			var on = x === t;
+			x.setAttribute("aria-selected", on ? "true" : "false");
+			x.tabIndex = on ? 0 : -1;
+			document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+		});
+		if(focus) t.focus();
+	}
+	tabs.forEach(function (t, i) {
+		t.addEventListener("click", function () { select(t); });
+		t.addEventListener("keydown", function (e) {
+			var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : null;
+			if(j === null) return;
+			e.preventDefault();
+			select(tabs[(j + tabs.length) % tabs.length], true);
+		});
+	});
 })();
 </script>
 </body>

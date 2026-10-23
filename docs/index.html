@@ -15,51 +15,48 @@
 <link rel="icon" type="image/png" href="../assets/icon64.png">
 <link rel="apple-touch-icon" href="../assets/icon.png">
 <style>
-/* fonts are served from this site: DotGothic16 and M PLUS 1p (OFL), Spleen (BSD) */
+/* self-hosted fonts: DotGothic16, M PLUS 1p (OFL), Spleen (BSD) */
 @font-face{ font-family:"DotGothic16"; src:url("../assets/fonts/dotgothic16.woff2") format("woff2"); font-display:swap; }
 @font-face{ font-family:"M PLUS 1p"; font-weight:400; src:url("../assets/fonts/mplus1p-400.woff2") format("woff2"); font-display:swap; }
 @font-face{ font-family:"M PLUS 1p"; font-weight:700; src:url("../assets/fonts/mplus1p-700.woff2") format("woff2"); font-display:swap; }
 @font-face{ font-family:"Spleen"; src:url("../assets/fonts/spleen-8x16.woff2") format("woff2"); font-display:swap; }
 
 :root{
-  /* the machine's 16-color interface palette */
-  --black:#000000;
-  --blue:#0000AA;
-  --navy:#111144;
-  --lblue:#5555FF;
-  --cyan:#55FFFF;
-  --green:#55FF55;
-  --yellow:#FFFF55;
-  --magenta:#FF55FF;
-  --grey:#AAAAAA;
-  --dgrey:#555555;
-  --white:#FFFFFF;
-  /* the room and the monitor, from the web player */
-  --wall:#3b4250;
-  --wall-d:#2c313c;
-  --ivory:#d9d3c3;
-  --ivory-s:#b9b19c;
-  --paper:#ece6d6;
-  --led:#6fd36a;
-  /* the demo cart */
-  --gold:#DDAA44;
-  --red:#EE2222;
+	--black:#000000;
+	--blue:#0000AA;
+	--navy:#111144;
+	--lblue:#5555FF;
+	--cyan:#55FFFF;
+	--green:#55FF55;
+	--yellow:#FFFF55;
+	--magenta:#FF55FF;
+	--grey:#AAAAAA;
+	--dgrey:#555555;
+	--white:#FFFFFF;
+	--wall:#3b4250;
+	--wall-d:#2c313c;
+	--ivory:#d9d3c3;
+	--ivory-s:#b9b19c;
+	--paper:#ece6d6;
+	--led:#6fd36a;
+	--gold:#DDAA44;
+	--red:#EE2222;
 
-  --pixel:"DotGothic16", "MS Gothic", ui-monospace, monospace;
-  --prose:"M PLUS 1p", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --code:"Spleen", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  color-scheme:dark;
+	--pixel:"DotGothic16", "MS Gothic", ui-monospace, monospace;
+	--prose:"M PLUS 1p", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--code:"Spleen", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+	color-scheme:dark;
 }
 
 *{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; scroll-padding-top:48px; }
 body{
-  margin:0;
-  background:var(--black);
-  color:var(--paper);
-  font-family:var(--prose);
-  font-size:1.0625rem;
-  line-height:1.65;
+	margin:0;
+	background:var(--black);
+	color:var(--paper);
+	font-family:var(--prose);
+	font-size:1.0625rem;
+	line-height:1.65;
 }
 img{ max-width:100%; }
 a{ color:var(--cyan); text-underline-offset:3px; }
@@ -69,20 +66,20 @@ a:hover{ color:var(--white); }
 
 .pixelated{ image-rendering:pixelated; image-rendering:crisp-edges; }
 
-/* ---------- top bar, like the editors' ---------- */
+/* TOP BAR */
 
 .topbar{
-  position:sticky; top:0; z-index:20;
-  display:flex; align-items:stretch; gap:4px;
-  height:34px;
-  padding:0 12px;
-  padding-left:max(12px, env(safe-area-inset-left));
-  padding-right:max(12px, env(safe-area-inset-right));
-  background:var(--blue);
-  font-family:var(--pixel);
-  font-size:17px;
-  line-height:34px;
-  white-space:nowrap;
+	position:sticky; top:0; z-index:20;
+	display:flex; align-items:stretch; gap:4px;
+	height:34px;
+	padding:0 12px;
+	padding-left:max(12px, env(safe-area-inset-left));
+	padding-right:max(12px, env(safe-area-inset-right));
+	background:var(--blue);
+	font-family:var(--pixel);
+	font-size:17px;
+	line-height:34px;
+	white-space:nowrap;
 }
 .topbar .brand{ color:var(--white); text-decoration:none; margin-right:14px; }
 .topbar nav{ display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1; min-width:0; }
@@ -93,35 +90,35 @@ a:hover{ color:var(--white); }
 .topbar .right{ color:var(--cyan); text-decoration:none; padding:0 4px 0 10px; }
 .topbar .right:hover{ color:var(--white); }
 
-/* ---------- inline code and code windows ---------- */
+/* INLINE CODE AND CODE WINDOWS */
 
 code, kbd, .mono{ font-family:var(--code); font-size:16px; }
 :not(pre) > code{
-  padding:0 4px;
-  background:var(--navy);
-  color:var(--white);
-  border-radius:2px;
+	padding:0 4px;
+	background:var(--navy);
+	color:var(--white);
+	border-radius:2px;
 }
 kbd{
-  display:inline-block;
-  padding:0 5px;
-  border:1px solid var(--grey);
-  border-bottom-width:3px;
-  border-radius:3px;
-  color:var(--white);
-  line-height:1.2;
+	display:inline-block;
+	padding:0 5px;
+	border:1px solid var(--grey);
+	border-bottom-width:3px;
+	border-radius:3px;
+	color:var(--white);
+	line-height:1.2;
 }
 
 pre{
-  margin:0;
-  padding:14px 16px;
-  overflow-x:auto;
-  background:var(--black);
-  color:var(--white);
-  font-family:var(--code);
-  font-size:16px;
-  line-height:20px;
-  tab-size:2;
+	margin:0;
+	padding:14px 16px;
+	overflow-x:auto;
+	background:var(--black);
+	color:var(--white);
+	font-family:var(--code);
+	font-size:16px;
+	line-height:20px;
+	tab-size:2;
 }
 pre code{ font-size:inherit; }
 .tk-kw{ color:var(--yellow); }
@@ -130,108 +127,111 @@ pre code{ font-size:inherit; }
 .tk-num{ color:var(--magenta); }
 .tk-com{ color:#8c8c8c; }
 
-/* ---------- buttons, like PC-98 menus ---------- */
+/* BUTTONS */
 
 .btn{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:10px 18px 9px;
-  border:2px solid var(--white);
-  background:var(--blue);
-  color:var(--white);
-  font-family:var(--pixel);
-  font-size:18px;
-  line-height:1.2;
-  text-decoration:none;
-  box-shadow:4px 4px 0 var(--black);
-  transition:transform .08s ease, box-shadow .08s ease;
+	display:inline-flex; align-items:center; gap:10px;
+	padding:10px 18px 9px;
+	border:2px solid var(--white);
+	background:var(--blue);
+	color:var(--white);
+	font-family:var(--pixel);
+	font-size:18px;
+	line-height:1.2;
+	text-decoration:none;
+	box-shadow:4px 4px 0 var(--black);
+	transition:transform .08s ease, box-shadow .08s ease;
 }
 .btn:hover{ color:var(--white); background:var(--lblue); }
 .btn:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--black); }
 .btn.primary{ background:var(--cyan); color:var(--black); border-color:var(--cyan); }
 .btn.primary:hover{ background:var(--white); border-color:var(--white); color:var(--black); }
 
-/* a play triangle: the bitmap fonts have no ▶ */
+/* no ▶ in the bitmap fonts */
 .tri{
-  display:inline-block;
-  width:.55em; height:.7em;
-  background:currentColor;
-  clip-path:polygon(0 0, 100% 50%, 0 100%);
-  vertical-align:-.02em;
+	display:inline-block;
+	width:.55em; height:.7em;
+	background:currentColor;
+	clip-path:polygon(0 0, 100% 50%, 0 100%);
+	vertical-align:-.02em;
 }
 
-/* ---------- footer ---------- */
+/* FOOTER */
 
 .foot{
-  padding:40px 24px 48px;
-  padding-bottom:calc(48px + env(safe-area-inset-bottom, 0px));
-  border-top:2px solid var(--blue);
-  color:var(--grey);
-  font-size:.9375rem;
+	padding:40px 24px 48px;
+	padding-bottom:calc(48px + env(safe-area-inset-bottom, 0px));
+	border-top:2px solid var(--blue);
+	color:var(--grey);
+	font-size:.9375rem;
 }
 .foot .wrap{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:space-between; }
 .foot p{ margin:0; max-width:62ch; }
+.foot .info{ display:flex; flex-direction:column; gap:10px; }
+.foot .ai{ color:#a9afbb; font-size:.9em; }
+.foot .ai b{ color:var(--yellow); font-weight:400; }
 .foot nav{ display:flex; flex-wrap:wrap; gap:6px 18px; font-family:var(--pixel); }
 .foot nav a{ color:var(--white); text-decoration:none; }
 .foot nav a:hover{ color:var(--cyan); }
 
 @media (prefers-reduced-motion:reduce){
-  *{ transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
-  html{ scroll-behavior:auto; }
+	*{ transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+	html{ scroll-behavior:auto; }
 }
 
 
 .layout{
-  display:grid;
-  grid-template-columns:280px minmax(0, 1fr);
-  max-width:1280px;
-  margin:0 auto;
+	display:grid;
+	grid-template-columns:280px minmax(0, 1fr);
+	max-width:1280px;
+	margin:0 auto;
 }
 
-/* ---------- sidebar ---------- */
+/* SIDEBAR */
 
 .side{
-  position:sticky; top:34px;
-  height:calc(100vh - 34px);
-  height:calc(100dvh - 34px);
-  overflow-y:auto;
-  padding:22px 16px 40px 20px;
-  border-right:2px solid var(--blue);
-  background:var(--black);
-  scrollbar-width:thin;
-  scrollbar-color:var(--blue) var(--black);
+	position:sticky; top:34px;
+	height:calc(100vh - 34px);
+	height:calc(100dvh - 34px);
+	overflow-y:auto;
+	padding:22px 16px 40px 20px;
+	border-right:2px solid var(--blue);
+	background:var(--black);
+	scrollbar-width:thin;
+	scrollbar-color:var(--blue) var(--black);
 }
 .finder{ position:relative; margin-bottom:22px; }
 .finder label{ display:block; margin-bottom:6px; font-family:var(--pixel); font-size:15px; color:var(--cyan); }
 .finder input{
-  width:100%;
-  padding:8px 10px;
-  border:2px solid var(--blue);
-  border-radius:0;
-  background:var(--navy);
-  color:var(--white);
-  font-family:var(--code);
-  font-size:16px;
+	width:100%;
+	padding:8px 10px;
+	border:2px solid var(--blue);
+	border-radius:0;
+	background:var(--navy);
+	color:var(--white);
+	font-family:var(--code);
+	font-size:16px;
 }
 .finder input::placeholder{ color:#7b7bb8; }
 .finder input:focus{ outline:none; border-color:var(--cyan); }
 .results{
-  position:absolute; left:0; right:0; top:100%;
-  z-index:5;
-  margin:4px 0 0; padding:4px 0;
-  list-style:none;
-  background:var(--blue);
-  border:2px solid var(--white);
-  max-height:60vh; overflow-y:auto;
+	position:absolute; left:0; right:0; top:100%;
+	z-index:5;
+	margin:4px 0 0; padding:4px 0;
+	list-style:none;
+	background:var(--blue);
+	border:2px solid var(--white);
+	max-height:60vh; overflow-y:auto;
 }
 .results[hidden]{ display:none; }
 .results a{
-  display:block;
-  padding:4px 10px;
-  color:var(--white);
-  text-decoration:none;
-  font-family:var(--code);
-  font-size:15px;
-  line-height:1.3;
+	display:block;
+	padding:4px 10px;
+	color:var(--white);
+	text-decoration:none;
+	font-family:var(--code);
+	font-size:15px;
+	line-height:1.3;
 }
 .results a small{ display:block; color:#b8b8ff; font-family:var(--prose); font-size:12px; }
 .results a:hover, .results a.sel{ background:var(--cyan); color:var(--black); }
@@ -249,44 +249,44 @@ pre code{ font-size:inherit; }
 .toc a.on{ background:var(--cyan); color:var(--black); }
 .toc-mobile{ display:none; }
 
-/* ---------- article ---------- */
+/* ARTICLE */
 
 .doc{ padding:40px 48px 96px; min-width:0; }
 .doc > *{ max-width:860px; }
 .doc .hello{
-  display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center;
-  margin:0 0 36px; padding:16px 18px;
-  border:2px solid var(--blue);
-  background:var(--navy);
+	display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center;
+	margin:0 0 36px; padding:16px 18px;
+	border:2px solid var(--blue);
+	background:var(--navy);
 }
 .doc .hello p{ margin:0; flex:1 1 280px; color:#d9d4c6; }
 .doc .hello .btn{ font-size:16px; padding:8px 14px 7px; box-shadow:3px 3px 0 var(--black); }
 
 .doc h1{
-  margin:0 0 20px;
-  font-family:var(--code);
-  font-weight:400;
-  font-size:64px;
-  line-height:1;
-  color:var(--white);
+	margin:0 0 20px;
+	font-family:var(--code);
+	font-weight:400;
+	font-size:64px;
+	line-height:1;
+	color:var(--white);
 }
 .doc h2{
-  margin:64px 0 18px;
-  padding:4px 12px;
-  background:var(--blue);
-  font-family:var(--code);
-  font-weight:400;
-  font-size:32px;
-  line-height:1.25;
-  color:var(--white);
+	margin:64px 0 18px;
+	padding:4px 12px;
+	background:var(--blue);
+	font-family:var(--code);
+	font-weight:400;
+	font-size:32px;
+	line-height:1.25;
+	color:var(--white);
 }
 .doc h3{
-  margin:40px 0 12px;
-  font-family:var(--code);
-  font-weight:400;
-  font-size:24px;
-  line-height:1.2;
-  color:var(--cyan);
+	margin:40px 0 12px;
+	font-family:var(--code);
+	font-weight:400;
+	font-size:24px;
+	line-height:1.2;
+	color:var(--cyan);
 }
 .doc h4{ margin:28px 0 10px; font-family:var(--code); font-weight:400; font-size:20px; color:var(--yellow); }
 .doc h2 a.anchor, .doc h3 a.anchor{ margin-left:8px; color:inherit; opacity:0; text-decoration:none; font-size:.8em; }
@@ -304,13 +304,13 @@ pre code{ font-size:inherit; }
 .tablewrap{ overflow-x:auto; margin:16px 0 24px; border:2px solid var(--blue); }
 .doc table{ width:100%; border-collapse:collapse; font-size:.9688rem; }
 .doc th{
-  padding:6px 12px;
-  background:var(--blue);
-  color:var(--white);
-  font-family:var(--pixel);
-  font-weight:400;
-  text-align:left;
-  white-space:nowrap;
+	padding:6px 12px;
+	background:var(--blue);
+	color:var(--white);
+	font-family:var(--pixel);
+	font-weight:400;
+	text-align:left;
+	white-space:nowrap;
 }
 .doc td{ padding:8px 12px; border-top:1px solid #1f1f5c; vertical-align:top; color:#ddd8ca; }
 .doc tbody tr:nth-child(even) td{ background:#05051c; }
@@ -322,49 +322,49 @@ pre code{ font-size:inherit; }
 .doc .end{ margin-top:72px; padding-top:20px; border-top:2px solid var(--blue); color:var(--grey); font-size:.9375rem; }
 
 @media (max-width:900px){
-  .layout{ grid-template-columns:minmax(0,1fr); }
-  .doc h1{ font-size:48px; }
-  .doc h2{ font-size:24px; }
-  .side{ position:static; height:auto; overflow:visible; border-right:0; border-bottom:2px solid var(--blue); padding:16px; }
-  .toc{ display:none; }
-  .toc-mobile{ display:block; }
-  .toc-mobile summary{ cursor:pointer; font-family:var(--pixel); color:var(--white); padding:6px 0; }
-  .toc-mobile .toc{ display:block; margin-top:10px; }
-  .doc{ padding:28px 16px 72px; }
-  .doc td:first-child{ white-space:normal; }
+	.layout{ grid-template-columns:minmax(0,1fr); }
+	.doc h1{ font-size:48px; }
+	.doc h2{ font-size:24px; }
+	.side{ position:static; height:auto; overflow:visible; border-right:0; border-bottom:2px solid var(--blue); padding:16px; }
+	.toc{ display:none; }
+	.toc-mobile{ display:block; }
+	.toc-mobile summary{ cursor:pointer; font-family:var(--pixel); color:var(--white); padding:6px 0; }
+	.toc-mobile .toc{ display:block; margin-top:10px; }
+	.doc{ padding:28px 16px 72px; }
+	.doc td:first-child{ white-space:normal; }
 }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <a class="brand" href="../">NEVEL-98</a>
-  <nav aria-label="Site">
-    <a href="../">Home</a>
-    <a href="./" aria-current="page">Docs</a>
-    <a href="../app/">Open</a>
-  </nav>
-  <a class="right" href="../play/">Play <span class="tri" aria-hidden="true"></span></a>
+	<a class="brand" href="../">NEVEL-98</a>
+	<nav aria-label="Site">
+		<a href="../">Home</a>
+		<a href="./" aria-current="page">Docs</a>
+		<a href="../app/">Open</a>
+	</nav>
+	<a class="right" href="../play/">Play <span class="tri" aria-hidden="true"></span></a>
 </header>
 
 <div class="layout">
-  <aside class="side" aria-label="Manual navigation">
-    <div class="finder" role="search">
-      <label for="q">Find a function or command</label>
-      <input id="q" type="search" placeholder="say, import, fillp…" autocomplete="off" spellcheck="false" aria-controls="res" aria-expanded="false">
-      <ul class="results" id="res" hidden></ul>
-    </div>
-    <nav class="toc" aria-label="Contents"><ol><li><a href="#1-the-machine">1. The machine</a></li><li><a href="#2-getting-around">2. Getting around</a></li><li><a href="#3-console-commands">3. Console commands</a><ol><li><a href="#files">Files</a></li><li><a href="#carts">Carts</a></li><li><a href="#media">Media</a></li><li><a href="#text-tables">Text tables</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#system">System</a></li></ol></li><li><a href="#4-writing-a-visual-novel">4. Writing a visual novel</a><ol><li><a href="#texts-and-languages">Texts and languages</a></li><li><a href="#scenes-and-flow">Scenes and flow</a></li><li><a href="#pictures">Pictures</a></li><li><a href="#text">Text</a></li><li><a href="#framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)</a></li><li><a href="#choices">Choices</a></li><li><a href="#timing-and-effects">Timing and effects</a></li><li><a href="#state-and-saving">State and saving</a></li><li><a href="#the-system-menu">The system menu</a></li></ol></li><li><a href="#5-machine-api">5. Machine API</a><ol><li><a href="#drawing">Drawing</a></li><li><a href="#images">Images</a></li><li><a href="#palette-and-screen">Palette and screen</a></li><li><a href="#input">Input</a></li><li><a href="#sound">Sound</a></li><li><a href="#data-and-system">Data and system</a></li><li><a href="#math-helpers">Math helpers</a></li><li><a href="#game-mode">Game mode</a></li></ol></li><li><a href="#6-the-editors">6. The editors</a><ol><li><a href="#code-f1">Code (F1)</a></li><li><a href="#image-f2">Image (F2)</a></li><li><a href="#text-f3">Text (F3)</a></li><li><a href="#sound-f4">Sound (F4)</a></li><li><a href="#music-f5">Music (F5)</a></li></ol></li><li><a href="#7-cartridge-format">7. Cartridge format</a><ol><li><a href="#custom-fonts">Custom fonts</a></li></ol></li><li><a href="#8-limits-and-tips">8. Limits and tips</a></li><li><a href="#9-running-and-building">9. Running and building</a><ol><li><a href="#playing-in-the-browser">Playing in the browser</a></li><li><a href="#building">Building</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#fonts">Fonts</a></li><li><a href="#license">License</a></li></ol></li></ol></nav>
-    <details class="toc-mobile"><summary>Contents</summary><nav class="toc" aria-label="Contents"><ol><li><a href="#1-the-machine">1. The machine</a></li><li><a href="#2-getting-around">2. Getting around</a></li><li><a href="#3-console-commands">3. Console commands</a><ol><li><a href="#files">Files</a></li><li><a href="#carts">Carts</a></li><li><a href="#media">Media</a></li><li><a href="#text-tables">Text tables</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#system">System</a></li></ol></li><li><a href="#4-writing-a-visual-novel">4. Writing a visual novel</a><ol><li><a href="#texts-and-languages">Texts and languages</a></li><li><a href="#scenes-and-flow">Scenes and flow</a></li><li><a href="#pictures">Pictures</a></li><li><a href="#text">Text</a></li><li><a href="#framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)</a></li><li><a href="#choices">Choices</a></li><li><a href="#timing-and-effects">Timing and effects</a></li><li><a href="#state-and-saving">State and saving</a></li><li><a href="#the-system-menu">The system menu</a></li></ol></li><li><a href="#5-machine-api">5. Machine API</a><ol><li><a href="#drawing">Drawing</a></li><li><a href="#images">Images</a></li><li><a href="#palette-and-screen">Palette and screen</a></li><li><a href="#input">Input</a></li><li><a href="#sound">Sound</a></li><li><a href="#data-and-system">Data and system</a></li><li><a href="#math-helpers">Math helpers</a></li><li><a href="#game-mode">Game mode</a></li></ol></li><li><a href="#6-the-editors">6. The editors</a><ol><li><a href="#code-f1">Code (F1)</a></li><li><a href="#image-f2">Image (F2)</a></li><li><a href="#text-f3">Text (F3)</a></li><li><a href="#sound-f4">Sound (F4)</a></li><li><a href="#music-f5">Music (F5)</a></li></ol></li><li><a href="#7-cartridge-format">7. Cartridge format</a><ol><li><a href="#custom-fonts">Custom fonts</a></li></ol></li><li><a href="#8-limits-and-tips">8. Limits and tips</a></li><li><a href="#9-running-and-building">9. Running and building</a><ol><li><a href="#playing-in-the-browser">Playing in the browser</a></li><li><a href="#building">Building</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#fonts">Fonts</a></li><li><a href="#license">License</a></li></ol></li></ol></nav></details>
-  </aside>
+	<aside class="side" aria-label="Manual navigation">
+		<div class="finder" role="search">
+			<label for="q">Find a function or command</label>
+			<input id="q" type="search" placeholder="say, import, fillp…" autocomplete="off" spellcheck="false" aria-controls="res" aria-expanded="false">
+			<ul class="results" id="res" hidden></ul>
+		</div>
+		<nav class="toc" aria-label="Contents"><ol><li><a href="#1-the-machine">1. The machine</a></li><li><a href="#2-getting-around">2. Getting around</a></li><li><a href="#3-console-commands">3. Console commands</a><ol><li><a href="#files">Files</a></li><li><a href="#carts">Carts</a></li><li><a href="#media">Media</a></li><li><a href="#text-tables">Text tables</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#system">System</a></li></ol></li><li><a href="#4-writing-a-visual-novel">4. Writing a visual novel</a><ol><li><a href="#texts-and-languages">Texts and languages</a></li><li><a href="#scenes-and-flow">Scenes and flow</a></li><li><a href="#pictures">Pictures</a></li><li><a href="#text">Text</a></li><li><a href="#framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)</a></li><li><a href="#choices">Choices</a></li><li><a href="#timing-and-effects">Timing and effects</a></li><li><a href="#state-and-saving">State and saving</a></li><li><a href="#the-system-menu">The system menu</a></li></ol></li><li><a href="#5-machine-api">5. Machine API</a><ol><li><a href="#drawing">Drawing</a></li><li><a href="#images">Images</a></li><li><a href="#palette-and-screen">Palette and screen</a></li><li><a href="#input">Input</a></li><li><a href="#sound">Sound</a></li><li><a href="#data-and-system">Data and system</a></li><li><a href="#math-helpers">Math helpers</a></li><li><a href="#game-mode">Game mode</a></li></ol></li><li><a href="#6-the-editors">6. The editors</a><ol><li><a href="#code-f1">Code (F1)</a></li><li><a href="#image-f2">Image (F2)</a></li><li><a href="#text-f3">Text (F3)</a></li><li><a href="#sound-f4">Sound (F4)</a></li><li><a href="#music-f5">Music (F5)</a></li></ol></li><li><a href="#7-cartridge-format">7. Cartridge format</a><ol><li><a href="#custom-fonts">Custom fonts</a></li></ol></li><li><a href="#8-limits-and-tips">8. Limits and tips</a></li><li><a href="#9-running-and-building">9. Running and building</a><ol><li><a href="#playing-in-the-browser">Playing in the browser</a></li><li><a href="#building">Building</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#fonts">Fonts</a></li><li><a href="#license">License</a></li></ol></li></ol></nav>
+		<details class="toc-mobile"><summary>Contents</summary><nav class="toc" aria-label="Contents"><ol><li><a href="#1-the-machine">1. The machine</a></li><li><a href="#2-getting-around">2. Getting around</a></li><li><a href="#3-console-commands">3. Console commands</a><ol><li><a href="#files">Files</a></li><li><a href="#carts">Carts</a></li><li><a href="#media">Media</a></li><li><a href="#text-tables">Text tables</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#system">System</a></li></ol></li><li><a href="#4-writing-a-visual-novel">4. Writing a visual novel</a><ol><li><a href="#texts-and-languages">Texts and languages</a></li><li><a href="#scenes-and-flow">Scenes and flow</a></li><li><a href="#pictures">Pictures</a></li><li><a href="#text">Text</a></li><li><a href="#framed-layouts-the-pc-98-look">Framed layouts (the PC-98 look)</a></li><li><a href="#choices">Choices</a></li><li><a href="#timing-and-effects">Timing and effects</a></li><li><a href="#state-and-saving">State and saving</a></li><li><a href="#the-system-menu">The system menu</a></li></ol></li><li><a href="#5-machine-api">5. Machine API</a><ol><li><a href="#drawing">Drawing</a></li><li><a href="#images">Images</a></li><li><a href="#palette-and-screen">Palette and screen</a></li><li><a href="#input">Input</a></li><li><a href="#sound">Sound</a></li><li><a href="#data-and-system">Data and system</a></li><li><a href="#math-helpers">Math helpers</a></li><li><a href="#game-mode">Game mode</a></li></ol></li><li><a href="#6-the-editors">6. The editors</a><ol><li><a href="#code-f1">Code (F1)</a></li><li><a href="#image-f2">Image (F2)</a></li><li><a href="#text-f3">Text (F3)</a></li><li><a href="#sound-f4">Sound (F4)</a></li><li><a href="#music-f5">Music (F5)</a></li></ol></li><li><a href="#7-cartridge-format">7. Cartridge format</a><ol><li><a href="#custom-fonts">Custom fonts</a></li></ol></li><li><a href="#8-limits-and-tips">8. Limits and tips</a></li><li><a href="#9-running-and-building">9. Running and building</a><ol><li><a href="#playing-in-the-browser">Playing in the browser</a></li><li><a href="#building">Building</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#fonts">Fonts</a></li><li><a href="#license">License</a></li></ol></li></ol></nav></details>
+	</aside>
 
-  <main class="doc" id="doc">
-    <h1>NEVEL-98 Manual</h1>
-    <div class="hello">
-      <p>New to NEVEL-98? Open the machine in your browser, type <code>demo</code> and then <code>run</code>.</p>
-      <a class="btn primary" href="../app/">Open NEVEL-98</a>
-      <a class="btn" href="../play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
-    </div>
+	<main class="doc" id="doc">
+		<h1>NEVEL-98 Manual</h1>
+		<div class="hello">
+			<p>New to NEVEL-98? Open the machine in your browser, type <code>demo</code> and then <code>run</code>.</p>
+			<a class="btn primary" href="../app/">Open NEVEL-98</a>
+			<a class="btn" href="../play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
+		</div>
 <p>NEVEL-98 is a fantasy computer for visual novels. It imagines a 1990s Japanese personal computer in the style of the NEC PC-9801: a 640×400 screen, 16 colors from a palette of 4096, FM sound, and a Lua interpreter with a visual novel engine built in.</p>
 <p>This manual covers the machine, the console, every API function, the editors, and the cartridge format.</p>
 <hr />
@@ -1548,99 +1548,110 @@ docs/MANUAL.md   the complete manual
 <p>The built-in fonts are converted from <a href="https://github.com/fcambus/spleen">Spleen</a> (BSD 2-Clause). The original NEC PC-98 font ROM is copyrighted and is not included; if you own one, you can draw or convert its glyphs into a 16×16 sheet of 8×16 cells and install it in a cart with <code>importfont sheet.png</code>.</p>
 <h3 id="license">License<a class="anchor" aria-label="Link to this section" href="#license" title="Permanent link">¶</a></h3>
 <p>NEVEL-98 is free to use in the browser; the desktop version is sold on itch.io. Carts and exported games you make are yours to share and sell, with no fee. The demo cart's story, characters and art are not for reuse. The full terms are in <code>LICENSE</code>. Third-party components keep their own licenses: Lua (MIT), stb (public domain / MIT), Spleen (BSD 2-Clause), SDL3 (zlib).</p>
-    <p class="end">This page is generated from <code>docs/MANUAL.md</code> and the README of NEVEL-98.</p>
-  </main>
+		<p class="end">This page is generated from <code>docs/MANUAL.md</code> and the README of NEVEL-98.</p>
+	</main>
 </div>
 
 <footer class="foot">
-  <div class="wrap">
-    <p>NEVEL-98 is released under the MIT license. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation.</p>
-    <nav aria-label="Footer">
-      <a href="../play/">Play</a>
-      <a href="../app/">Open</a>
-      <a href="../">Home</a>
-      <a href="https://bluemooncoder.itch.io/">itch.io</a>
-    </nav>
-  </div>
+	<div class="wrap">
+		<div class="info">
+			<p>NEVEL-98 © 2026 Bluemoon. Free in the browser; games you make are yours to share and sell. Built with Lua 5.4 (MIT), stb (public domain), Spleen fonts (BSD 2-Clause) and SDL3 (zlib). This site uses Spleen, DotGothic16 and M PLUS 1p (SIL Open Font License). Not affiliated with NEC Corporation.</p>
+			<p class="ai"><b>AI disclosure:</b> the artwork of the demo cart <i>Last Train Home</i> (Rei and the backgrounds) was made with the help of generative AI.</p>
+		</div>
+		<nav aria-label="Footer">
+			<a href="../play/">Play</a>
+			<a href="../app/">Open</a>
+			<a href="../">Home</a>
+			<a href="https://bluemooncoder.itch.io/nevel-98">itch.io</a>
+		</nav>
+	</div>
 </footer>
 
 <script>
 (function () {
-  var doc = document.getElementById("doc");
+	var doc = document.getElementById("doc");
 
-  /* ---- index every table row by its first cell: functions, commands, keys ---- */
-  var index = [];
-  var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); };
-  var seen = {};
-  [].forEach.call(doc.querySelectorAll("table"), function (t) {
-    var h = t.closest(".tablewrap").previousElementSibling;
-    while (h && !/^H[234]$/.test(h.tagName)) h = h.previousElementSibling;
-    var section = h ? h.textContent.replace(/¶$/, "").trim() : "";
-    [].forEach.call(t.querySelectorAll("tbody tr"), function (tr) {
-      var first = tr.cells[0]; if (!first) return;
-      var label = first.textContent.trim(); if (!label) return;
-      var id = "r-" + slug(label).slice(0, 48);
-      if (seen[id]) id += "-" + (++seen[id]); else seen[id] = 1;
-      tr.id = id;
-      var desc = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-      index.push({ id: id, label: label, desc: desc, section: section, hay: (label + " " + desc).toLowerCase() });
-    });
-  });
+	//###############################################################################
+	//
+	// SEARCH INDEX
+	//
+	//###############################################################################
+	var index = [];
+	var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); };
+	var seen = {};
+	[].forEach.call(doc.querySelectorAll("table"), function (t) {
+		var h = t.closest(".tablewrap").previousElementSibling;
+		while(h && !/^H[234]$/.test(h.tagName)) h = h.previousElementSibling;
+		var section = h ? h.textContent.replace(/¶$/, "").trim() : "";
+		[].forEach.call(t.querySelectorAll("tbody tr"), function (tr) {
+			var first = tr.cells[0]; if(!first) return;
+			var label = first.textContent.trim(); if(!label) return;
+			var id = "r-" + slug(label).slice(0, 48);
+			if(seen[id]) id += "-" + (++seen[id]); else seen[id] = 1;
+			tr.id = id;
+			var desc = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
+			index.push({ id: id, label: label, desc: desc, section: section, hay: (label + " " + desc).toLowerCase() });
+		});
+	});
 
-  var q = document.getElementById("q"), res = document.getElementById("res");
-  var sel = -1, items = [];
-  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function render() {
-    var v = q.value.trim().toLowerCase();
-    sel = -1;
-    if (!v) { res.hidden = true; q.setAttribute("aria-expanded", "false"); return; }
-    var starts = [], label = [], other = [];
-    index.forEach(function (e) {
-      var l = e.label.toLowerCase();
-      if (l.indexOf(v) === 0 || l.indexOf("`" + v) === 0) starts.push(e);
-      else if (l.indexOf(v) >= 0) label.push(e);
-      else if (e.hay.indexOf(v) >= 0) other.push(e);
-    });
-    items = starts.concat(label, other).slice(0, 14);
-    res.innerHTML = items.length ? items.map(function (e, i) {
-      return '<li><a href="#' + e.id + '" data-i="' + i + '">' + esc(e.label) + "<small>" + esc(e.section) + (e.desc ? " · " + esc(e.desc.slice(0, 70)) : "") + "</small></a></li>";
-    }).join("") : '<li class="none">Nothing found. Try a shorter word.</li>';
-    res.hidden = false; q.setAttribute("aria-expanded", "true");
-  }
-  function mark() { [].forEach.call(res.querySelectorAll("a"), function (a, i) { a.classList.toggle("sel", i === sel); if (i === sel) { var t = a.offsetTop, h = a.offsetHeight; if (t < res.scrollTop) res.scrollTop = t; else if (t + h > res.scrollTop + res.clientHeight) res.scrollTop = t + h - res.clientHeight; } }); }
-  q.addEventListener("input", render);
-  q.addEventListener("keydown", function (e) {
-    if (res.hidden) return;
-    if (e.key === "ArrowDown") { sel = Math.min(items.length - 1, sel + 1); mark(); e.preventDefault(); }
-    else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); mark(); e.preventDefault(); }
-    else if (e.key === "Enter") { var it = items[sel < 0 ? 0 : sel]; if (it) { location.hash = it.id; close(); } e.preventDefault(); }
-    else if (e.key === "Escape") { close(); }
-  });
-  function close() { res.hidden = true; q.setAttribute("aria-expanded", "false"); }
-  res.addEventListener("click", function (e) { if (e.target.closest("a")) close(); });
-  document.addEventListener("click", function (e) { if (!e.target.closest(".finder")) close(); });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "/" && document.activeElement !== q && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
-  });
+	var q = document.getElementById("q"), res = document.getElementById("res");
+	var sel = -1, items = [];
+	function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+	function render() {
+		var v = q.value.trim().toLowerCase();
+		sel = -1;
+		if(!v) { res.hidden = true; q.setAttribute("aria-expanded", "false"); return; }
+		var starts = [], label = [], other = [];
+		index.forEach(function (e) {
+			var l = e.label.toLowerCase();
+			if(l.indexOf(v) === 0 || l.indexOf("`" + v) === 0) starts.push(e);
+			else if(l.indexOf(v) >= 0) label.push(e);
+			else if(e.hay.indexOf(v) >= 0) other.push(e);
+		});
+		items = starts.concat(label, other).slice(0, 14);
+		res.innerHTML = items.length ? items.map(function (e, i) {
+			return '<li><a href="#' + e.id + '" data-i="' + i + '">' + esc(e.label) + "<small>" + esc(e.section) + (e.desc ? " · " + esc(e.desc.slice(0, 70)) : "") + "</small></a></li>";
+		}).join("") : '<li class="none">Nothing found. Try a shorter word.</li>';
+		res.hidden = false; q.setAttribute("aria-expanded", "true");
+	}
+	function mark() { [].forEach.call(res.querySelectorAll("a"), function (a, i) { a.classList.toggle("sel", i === sel); if(i === sel) { var t = a.offsetTop, h = a.offsetHeight; if(t < res.scrollTop) res.scrollTop = t; else if(t + h > res.scrollTop + res.clientHeight) res.scrollTop = t + h - res.clientHeight; } }); }
+	q.addEventListener("input", render);
+	q.addEventListener("keydown", function (e) {
+		if(res.hidden) return;
+		if(e.key === "ArrowDown") { sel = Math.min(items.length - 1, sel + 1); mark(); e.preventDefault(); }
+		else if(e.key === "ArrowUp") { sel = Math.max(0, sel - 1); mark(); e.preventDefault(); }
+		else if(e.key === "Enter") { var it = items[sel < 0 ? 0 : sel]; if(it) { location.hash = it.id; close(); } e.preventDefault(); }
+		else if(e.key === "Escape") { close(); }
+	});
+	function close() { res.hidden = true; q.setAttribute("aria-expanded", "false"); }
+	res.addEventListener("click", function (e) { if(e.target.closest("a")) close(); });
+	document.addEventListener("click", function (e) { if(!e.target.closest(".finder")) close(); });
+	document.addEventListener("keydown", function (e) {
+		if(e.key === "/" && document.activeElement !== q && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+	});
 
-  /* ---- highlight the current section in the contents ---- */
-  var links = {};
-  [].forEach.call(document.querySelectorAll(".side > .toc a"), function (a) { links[a.getAttribute("href").slice(1)] = a; });
-  var heads = [].slice.call(doc.querySelectorAll("h2[id], h3[id]"));
-  var on = null;
-  function spy() {
-    var cur = null;
-    for (var i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top < 120) cur = heads[i]; else break; }
-    var a = cur && links[cur.id];
-    if (a === on) return;
-    if (on) on.classList.remove("on");
-    on = a || null;
-    if (on) { on.classList.add("on"); var side = on.closest(".side"); var r = on.getBoundingClientRect(), s = side.getBoundingClientRect(); if (side.scrollHeight > side.clientHeight && (r.top < s.top + 80 || r.bottom > s.bottom - 20)) side.scrollTop += r.top - s.top - s.height / 2; }
-  }
-  var raf = 0;
-  window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; spy(); }); }, { passive: true });
-  spy();
-  [].forEach.call(document.querySelectorAll(".toc-mobile a"), function (a) { a.addEventListener("click", function () { a.closest("details").open = false; }); });
+	//###############################################################################
+	//
+	// CONTENTS HIGHLIGHT
+	//
+	//###############################################################################
+	var links = {};
+	[].forEach.call(document.querySelectorAll(".side > .toc a"), function (a) { links[a.getAttribute("href").slice(1)] = a; });
+	var heads = [].slice.call(doc.querySelectorAll("h2[id], h3[id]"));
+	var on = null;
+	function spy() {
+		var cur = null;
+		for(var i = 0; i < heads.length; i++) { if(heads[i].getBoundingClientRect().top < 120) cur = heads[i]; else break; }
+		var a = cur && links[cur.id];
+		if(a === on) return;
+		if(on) on.classList.remove("on");
+		on = a || null;
+		if(on) { on.classList.add("on"); var side = on.closest(".side"); var r = on.getBoundingClientRect(), s = side.getBoundingClientRect(); if(side.scrollHeight > side.clientHeight && (r.top < s.top + 80 || r.bottom > s.bottom - 20)) side.scrollTop += r.top - s.top - s.height / 2; }
+	}
+	var raf = 0;
+	window.addEventListener("scroll", function () { if(!raf) raf = requestAnimationFrame(function () { raf = 0; spy(); }); }, { passive: true });
+	spy();
+	[].forEach.call(document.querySelectorAll(".toc-mobile a"), function (a) { a.addEventListener("click", function () { a.closest("details").open = false; }); });
 })();
 </script>
 </body>
