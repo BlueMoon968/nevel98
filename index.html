@@ -210,6 +210,16 @@ h2{
 .why .specs{ font-family:var(--code); color:var(--yellow); letter-spacing:.04em; }
 .why .sign{ margin-top:30px; font-family:var(--code); font-size:24px; color:var(--yellow); }
 
+/* DEVLOG */
+.devlog{ background:var(--navy); }
+.devlog[hidden]{ display:none; }
+.devlog .grid a{ color:inherit; text-decoration:none; display:block; height:100%; }
+.devlog .box{ height:100%; box-sizing:border-box; }
+.devlog .box:hover h3{ color:var(--cyan); }
+.devlog .date{ margin:0 0 8px; font-family:var(--code); font-size:16px; color:var(--cyan); }
+.devlog .thumb{ display:block; width:100%; aspect-ratio:16/9; object-fit:cover; margin:0 0 14px; image-rendering:pixelated; background:var(--black); }
+.devlog .all{ margin-top:28px; }
+
 /* GET */
 .get{ background:linear-gradient(180deg, var(--black) 0%, var(--navy) 100%); }
 .get .box{ display:flex; flex-direction:column; height:100%; box-sizing:border-box; }
@@ -478,6 +488,7 @@ h2{
 		<a class="sec" href="#editors">Editors</a>
 		<a class="sec" href="#carts">Carts</a>
 		<a class="sec" href="#why">Why</a>
+		<a class="sec" href="#devlog" id="devlog-nav" hidden>Devlog</a>
 		<a class="sec" href="#get">Download</a>
 		<a href="docs/">Docs</a>
 		<a href="app/">Open</a>
@@ -498,6 +509,7 @@ h2{
 			<div class="ctas">
 				<a class="btn primary" href="play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
 				<a class="btn" href="app/">Open NEVEL-98</a>
+				<a class="btn" href="https://bluemooncoder.itch.io/nevel-98">itch.io</a>
 			</div>
 			<p class="note">Both run in your browser. New here? Start with the <a href="docs/">manual</a>.</p>
 		</div>
@@ -715,6 +727,16 @@ h2{
 	</div>
 </section>
 
+<!-- ============ DEVLOG ============ -->
+<section class="devlog" id="devlog" aria-labelledby="t-devlog" hidden>
+	<div class="wrap">
+		<h2 id="t-devlog">Devlog</h2>
+		<p class="intro">News from the machine, posted on itch.io.</p>
+		<ul class="grid" id="devlog-list"></ul>
+		<p class="all"><a class="btn" href="https://bluemooncoder.itch.io/nevel-98/devlog">All posts on itch.io</a></p>
+	</div>
+</section>
+
 <!-- ============ START ============ -->
 <section class="start" aria-labelledby="t-start">
 	<div class="wrap">
@@ -882,6 +904,39 @@ then SAVE &lt;name&gt; to keep your own copy.</span>
 			select(tabs[(j + tabs.length) % tabs.length], true);
 		});
 	});
+	//###############################################################################
+	//
+	// DEVLOG
+	//
+	//###############################################################################
+
+	// devlog.json is refreshed from the itch RSS by a GitHub action
+	fetch("devlog.json", { cache: "no-cache" }).then(function(r) { return r.ok ? r.json() : []; }).then(function(posts) {
+		if(!posts || !posts.length) return;
+		var list = document.getElementById("devlog-list");
+		posts.forEach(function(p) {
+			var li = document.createElement("li");
+			var a = document.createElement("a");
+			a.href = p.link;
+			var box = document.createElement("div");
+			box.className = "box";
+			if(p.image) {
+				var im = document.createElement("img");
+				im.className = "thumb"; im.src = p.image; im.alt = ""; im.loading = "lazy";
+				box.appendChild(im);
+			}
+			if(p.date) {
+				var d = document.createElement("p");
+				d.className = "date"; d.textContent = p.date.replace(/-/g, "/");
+				box.appendChild(d);
+			}
+			var h = document.createElement("h3"); h.textContent = p.title; box.appendChild(h);
+			var t = document.createElement("p"); t.textContent = p.summary || ""; box.appendChild(t);
+			a.appendChild(box); li.appendChild(a); list.appendChild(li);
+		});
+		document.getElementById("devlog").hidden = false;
+		document.getElementById("devlog-nav").hidden = false;
+	}).catch(function() {});
 })();
 </script>
 </body>
