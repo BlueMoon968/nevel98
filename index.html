@@ -212,7 +212,7 @@ h2{
 
 /* DEVLOG */
 .devlog{ background:var(--navy); }
-.devlog[hidden]{ display:none; }
+.devlog[hidden], #devlog-btn[hidden]{ display:none; }
 .devlog .grid a{ color:inherit; text-decoration:none; display:block; height:100%; }
 .devlog .box{ height:100%; box-sizing:border-box; }
 .devlog .box:hover h3{ color:var(--cyan); }
@@ -510,6 +510,7 @@ h2{
 				<a class="btn primary" href="play/"><span class="tri" aria-hidden="true"></span> Play the demo</a>
 				<a class="btn" href="app/">Open NEVEL-98</a>
 				<a class="btn" href="https://bluemooncoder.itch.io/nevel-98">itch.io</a>
+				<a class="btn" href="#devlog" id="devlog-btn" hidden>Devlog</a>
 			</div>
 			<p class="note">Both run in your browser. New here? Start with the <a href="docs/">manual</a>.</p>
 		</div>
@@ -936,6 +937,7 @@ then SAVE &lt;name&gt; to keep your own copy.</span>
 		});
 		document.getElementById("devlog").hidden = false;
 		document.getElementById("devlog-nav").hidden = false;
+		document.getElementById("devlog-btn").hidden = false;
 	}).catch(function() {});
 })();
 </script>
