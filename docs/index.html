@@ -567,6 +567,10 @@ pre code{ font-size:inherit; }
 <td>install a custom 8×16 font in the cart</td>
 </tr>
 <tr>
+<td><code>importmidi &lt;file.mid&gt; [song] [-r n]</code></td>
+<td>turn a MIDI file into a song (see Music)</td>
+</tr>
+<tr>
 <td><code>font reset</code></td>
 <td>go back to the built-in font</td>
 </tr>
@@ -1453,6 +1457,14 @@ pre code{ font-size:inherit; }
 </table></div>
 <p>The left panel picks the song, its speed (frames per row at 60 frames per second; 6 means 10 rows per second) and loop point, and edits the order list: ADD inserts the current pattern after the selected slot, REMOVE deletes the slot, − and + change the slot's pattern. STEP is how many rows the cursor moves after each entry.</p>
 <p><code>sfx(n)</code> plays pattern n once and borrows only the channels the pattern uses, so put sound effects on channel 6 to keep the music going.</p>
+<h4 id="importing-midi">Importing MIDI<a class="anchor" aria-label="Link to this section" href="#importing-midi" title="Permanent link">¶</a></h4>
+<p><code>importmidi song.mid</code> (or dropping a <code>.mid</code> file on the machine) turns a MIDI file into a song: notes go to the 6 channels, the General MIDI instruments become the closest factory presets (pianos and guitars → E.PIANO, basses → BASS, strings and pads → STRINGS, brass and winds → LEAD, synth leads → SSG SQ, bells → BELL, organs → SINE) and drums on MIDI channel 10 become KICK, SNARE and HIHAT. The song uses empty patterns and the first empty song slot, or the one you give (<code>importmidi song.mid 2</code>). Speed comes from the file's tempo.</p>
+<ul>
+<li><code>-r n</code> sets the rows per beat (default 4, sixteenth notes). Use 8 for fast passages, 2 for slow pieces that need fewer patterns.</li>
+<li>Only 6 notes can play at once: when a chord or a dense part needs more, the extra notes are left out and the console says so. Simple arrangements (a melody, a bass, a few chord notes, drums) come out best.</li>
+<li>A song can be up to 64 patterns long (2048 rows); longer files are cut.</li>
+<li>Recorded audio (WAV, MP3, OGG) can't be imported: the machine has no samples, only FM and SSG voices.</li>
+</ul>
 <hr />
 <h2 id="7-cartridge-format">7. Cartridge format<a class="anchor" aria-label="Link to this section" href="#7-cartridge-format" title="Permanent link">¶</a></h2>
 <p>A <code>.n98</code> cart is UTF-8 text, made of sections:</p>
